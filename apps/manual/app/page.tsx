@@ -116,7 +116,7 @@ export default function Manual() {
           <p className="nota" style={{ marginTop: 16 }}>O ícone sozinho só aparece quando o nome Encibra já está visível por perto ou quando o espaço é pequeno demais para a versão horizontal.</p>
         </div>
 
-        <div className="sub grid g2" style={{ alignItems: "start" }}>
+        <div className="sub grid aureo" style={{ alignItems: "start" }}>
           <div>
             <Rotulo proposta>Área de proteção </Rotulo>
             <div className="protecao" role="img" aria-label="Logotipo com margem x em volta; x é metade da altura do ícone">
@@ -143,21 +143,27 @@ export default function Manual() {
 
       <Capitulo id="cores" numero="03" titulo="Cores" md={markdown.cores}
         lead="Cinco cores, com os nomes do manual no Figma. O Ouro Encibra é a cor da marca, o Cinza azulado é a cor de ação, e Chumbo, Intermédio e Básico fazem o texto e os fundos.">
-        <div className="cores-grid">
-          {tokens.cores.map((c, i) => (
-            <div key={c.id} className={i < 2 ? "cor grande" : "cor"}>
-              <div className="amostra" style={{ background: c.hex, color: cor[c.texto] }}>{c.nome}</div>
-              <dl className="dados">
-                <dt>Papel</dt><dd><b>{c.papel}</b></dd>
-                <dt>HEX</dt><dd><code>{c.hex}</code></dd>
-                <dt>RGB</dt><dd><code>{rgb(c.hex)}</code></dd>
-                <dt>CMYK</dt><dd><code>{c.cmyk}</code></dd>
-                <dt>Pantone</dt><dd><code>{c.pantone.c}</code><br /><code>{c.pantone.u}</code></dd>
-              </dl>
-              <div className="uso">{c.uso}{"impressao" in c && <><br /><i>{c.impressao}</i></>}</div>
-            </div>
-          ))}
-        </div>
+        {/* Divisão áurea na primeira linha: marca e ação; a segunda linha leva as três cores de base */}
+        {[tokens.cores.slice(0, 2), tokens.cores.slice(2)].map((linha, l) => (
+          <div key={l} className={`cores-grid ${l === 0 ? "aureo" : "g3"}`}>
+            {linha.map((c) => {
+              const grande = l === 0;
+              return (
+                  <div key={c.id} className={grande ? "cor grande" : "cor"}>
+                    <div className="amostra" style={{ background: c.hex, color: cor[c.texto] }}>{c.nome}</div>
+                    <dl className="dados">
+                      <dt>Papel</dt><dd><b>{c.papel}</b></dd>
+                      <dt>HEX</dt><dd><code>{c.hex}</code></dd>
+                      <dt>RGB</dt><dd><code>{rgb(c.hex)}</code></dd>
+                      <dt>CMYK</dt><dd><code>{c.cmyk}</code></dd>
+                      <dt>Pantone</dt><dd><code>{c.pantone.c}</code><br /><code>{c.pantone.u}</code></dd>
+                    </dl>
+                    <div className="uso">{c.uso}{"impressao" in c && <><br /><i>{c.impressao}</i></>}</div>
+                  </div>
+              );
+            })}
+          </div>
+        ))}
         <div className="sub nota-tecnica">
           <p className="nota"><b>CMYK</b> convertido com o perfil ICC ISO Coated v2 (FOGRA39), intenção colorimétrica relativa e compensação de ponto preto. Em papel não revestido, peça à gráfica a conversão com o perfil PSO Uncoated v3 (FOGRA52).</p>
           <p className="nota"><b>Pantone</b> escolhido pela menor diferença de cor (ΔE 2000) na biblioteca Solid Coated (C) e Uncoated (U). O 7408 U sai alaranjado no papel não revestido, por isso o ouro usa 7406 U. Confirme sempre na escala física antes da primeira impressão.</p>
@@ -262,7 +268,7 @@ export default function Manual() {
 
       <Capitulo id="tipografia" numero="05" titulo="Tipografia" md={markdown.tipografia}
         lead="DM Sans é a voz da marca: geométrica, direta e com pesos fortes. Em documentos Word, o texto corrido usa Aptos, a fonte padrão do Microsoft 365, pela leitura confortável em páginas longas.">
-        <div className="grid g2" style={{ alignItems: "start" }}>
+        <div className="grid aureo-inv" style={{ alignItems: "start" }}>
           <div className="especime">
             <Rotulo>Fonte principal</Rotulo>
             <div className="aa">Aa</div>
@@ -508,7 +514,7 @@ export default function Manual() {
           </div>
         </div>
 
-        <div className="sub grid g2" style={{ gap: "0 48px" }}>
+        <div className="sub grid g2" style={{ columnGap: "var(--e5)" }}>
           {d.arquivosExtras.map((a) => (
             <div className="arquivo" key={a.titulo}>
               <div className="ico">{a.tipo}</div>
