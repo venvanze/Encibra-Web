@@ -335,11 +335,11 @@ export default function Manual() {
 
         <div className="sub">
           <Rotulo>Variações</Rotulo>
-          <p className="muted">Dois tamanhos, três estilos e dois preenchimentos. O estilo expandido só existe no tamanho grande.</p>
+          <p className="muted">Dois tamanhos, três estilos e dois preenchimentos, todos na mesma escala. Padrão e grande têm sempre a mesma altura e mudam só na largura. O expandido só existe no tamanho grande e é o único com altura diferente.</p>
           <div className="grid g5 grafismos">
             {d.variantesGrafismo.map((v) => (
               <figure key={v.arquivo}>
-                <div className="palco-g p-basico"><img src={svgGrafismo(v.arquivo)} alt={`Grafismo ${v.titulo}`} /></div>
+                <div className="palco-g p-basico"><img src={svgGrafismo(v.arquivo)} alt={`Grafismo ${v.titulo}`} style={{ width: `${(v.largura / 247) * 100}%` }} /></div>
                 <figcaption>{v.titulo}</figcaption>
               </figure>
             ))}

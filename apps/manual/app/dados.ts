@@ -111,8 +111,8 @@ export const grafismo = {
     ["Filete em toda quina", "As quinas onde o chanfro encontra os lados também são arredondadas. O grafismo nunca tem quina viva."],
   ],
   tamanhos: [
-    ["Padrão", "Proporção próxima do quadrado. Uso geral, ícones de seção, padrões."],
-    ["Grande", "Mais largo. Placas de logotipo, faixas e painéis."],
+    ["Padrão", "Mesma altura do grande, mais estreito. Uso geral, ícones de seção, padrões."],
+    ["Grande", "Mesma altura do padrão, mais largo. Placas de logotipo, faixas e painéis."],
   ],
   estilos: [
     ["Simples", "simples", "Uma forma. A base de tudo."],
@@ -129,6 +129,7 @@ export const grafismo = {
     ["branco", "Branco", "p-chumbo"],
   ],
   regras: [
+    "Padrão e grande têm sempre a mesma altura; só a largura muda. O expandido é o único que pode ter altura diferente.",
     "Use só os arquivos oficiais desta página; não redesenhe a forma.",
     "Mantenha a proporção. Para mudar o tamanho, escale a forma inteira.",
     "Os chanfros ficam sempre no canto superior esquerdo e no inferior direito.",
@@ -143,6 +144,8 @@ export const variantesGrafismo = (["padrao", "grande"] as const).flatMap((tamanh
     .flatMap(([nomeEstilo, estilo]) =>
       grafismo.preenchimentos.map(([nomePreench, preench]) => ({
         arquivo: `grafismo-${tamanho}-${estilo}-${preench}`,
+        // Largura no desenho oficial, com a altura comum de 135 unidades: mostra todas na mesma escala.
+        largura: tamanho === "padrao" ? 155 : estilo === "expandido" ? 245 : 247,
         titulo: `${tamanho === "padrao" ? "Padrão" : "Grande"} · ${nomeEstilo} · ${nomePreench}`,
       })),
     ),

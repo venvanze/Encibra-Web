@@ -285,9 +285,11 @@ table.t.compacta td { padding: 6px 10px; font-size: 13px; }
 .g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .grafismos figure, .cores-g { margin: 0; }
 .palco-g { display: flex; align-items: center; justify-content: center; gap: 6%; aspect-ratio: 4 / 3; border-radius: 4px; padding: 14%; }
-.palco-g img { max-width: 100%; max-height: 100%; min-width: 0; }
+.palco-g img { display: block; height: auto; min-width: 0; }
+.grafismos .palco-g { aspect-ratio: 1 / 1; padding: 10%; }
 .cores-g .palco-g { padding: 10%; }
-.cores-g .palco-g img { flex: 1 1 0; }
+/* Mesma altura para padrão e grande: só a largura muda */
+.cores-g .palco-g img { height: clamp(36px, 4.6vw, 64px); width: auto; }
 .grafismos figcaption, .cores-g figcaption { margin-top: 8px; font-size: 13px; color: var(--texto-2); }
 .brasilia { display: block; width: 100%; height: auto; border-radius: 4px; background: var(--basico); }
 .regras li { margin-bottom: 8px; max-width: 70ch; }
