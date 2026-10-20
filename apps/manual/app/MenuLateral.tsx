@@ -40,7 +40,7 @@ export function MenuLateral({ secoes }: { secoes: readonly Secao[] }) {
           ))}
         </ol>
       </nav>
-      <p className="lateral-rodape">Manual de Marca<br />versão 1.0 (rascunho)</p>
+      <p className="lateral-rodape">Manual de Marca<br />versão 1.1 (rascunho)<br /><a href="/llms-full.txt">Versão para LLMs</a></p>
     </aside>
   );
 }

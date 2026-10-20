@@ -2,8 +2,15 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
 const tokens = JSON.parse(readFileSync(new URL("../src/tokens.json", import.meta.url), "utf8"));
+// Cores principais, tons das escalas (--cor-ouro-700), apoio e semânticas.
+const todas = [
+  ...tokens.cores.map((c) => [c.id, c.hex]),
+  ...Object.entries(tokens.escalas).flatMap(([id, e]) => Object.entries(e.tons).map(([t, hex]) => [`${id}-${t}`, hex])),
+  ...tokens.apoio.map((c) => [c.id, c.hex]),
+  ...tokens.semanticas.map((c) => [c.id, c.hex]),
+];
 const linhas = [
-  ...tokens.cores.map((c) => `  --cor-${c.id}: ${c.hex};`),
+  ...todas.map(([id, hex]) => `  --cor-${id}: ${hex};`),
   ...Object.entries(tokens.fontes).map(([nome, pilha]) => `  --fonte-${nome}: ${pilha};`),
 ];
 mkdirSync(new URL("../dist/", import.meta.url), { recursive: true });
@@ -13,9 +20,9 @@ writeFileSync(
 );
 console.log(`tokens.css: ${linhas.length} variáveis`);
 
-// Tema para Tailwind v4: classes como bg-amarelo, text-grafite e font-display.
+// Tema para Tailwind v4: classes como bg-ouro, text-chumbo, bg-ouro-50 e font-display.
 const tema = [
-  ...tokens.cores.map((c) => `  --color-${c.id}: ${c.hex};`),
+  ...todas.map(([id, hex]) => `  --color-${id}: ${hex};`),
   ...Object.entries(tokens.fontes).map(([nome, pilha]) => `  --font-${nome}: ${pilha};`),
 ];
 writeFileSync(

@@ -1,17 +1,8 @@
-import { contraste, cor, logos, tokens, Logo, type VarianteLogo } from "@encibra/marca";
+import { contraste, cor, tokens, Logo } from "@encibra/marca";
 import { Capitulo, Legenda, Rotulo } from "./componentes";
 import { MenuLateral } from "./MenuLateral";
-
-const secoes = [
-  ["principios", "Princípios"],
-  ["logotipo", "Logotipo"],
-  ["cores", "Cores"],
-  ["tipografia", "Tipografia"],
-  ["elementos", "Elementos"],
-  ["aplicacoes", "Aplicações"],
-  ["incorretos", "Usos incorretos"],
-  ["arquivos", "Arquivos"],
-] as const;
+import * as d from "./dados";
+import { markdown } from "./llm";
 
 function rgb(hex: string) {
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(" · ");
@@ -21,92 +12,89 @@ function razao(a: string, b: string) {
   return `${contraste(a, b).toFixed(1).replace(".", ",")} : 1`;
 }
 
-// Pares de texto/fundo avaliados na tabela de legibilidade.
-const pares: [texto: string, fundo: string][] = [
-  ["grafite", "branco"],
-  ["grafite", "destaque"],
-  ["grafite", "amarelo"],
-  ["amarelo", "grafite"],
-  ["cinza", "branco"],
-  ["cinza", "amarelo"],
-  ["amarelo", "branco"],
-  ["branco", "amarelo"],
-];
-const nomeCor = Object.fromEntries(tokens.cores.map((c) => [c.id, c.nome.split(" ")[0]]));
+// Texto legível sobre uma amostra: chumbo ou branco, o que tiver mais contraste.
+function textoSobre(hex: string) {
+  return contraste(hex, cor.chumbo) >= contraste(hex, cor.basico) ? cor.chumbo : cor.basico;
+}
 
-const variacoes: { variante: VarianteLogo; fundo: string; titulo: string; texto: string }[] = [
-  { variante: "horizontal-negativo", fundo: "p-grafite", titulo: "Negativa com ícone amarelo", texto: "Para fundos grafite e escuros. Versão preferida em slides escuros." },
-  { variante: "horizontal-preto", fundo: "p-branco", titulo: "Monocromática preta", texto: "Impressão em uma cor, carimbos, fundo amarelo e documentos em preto e branco." },
-  { variante: "horizontal-branco", fundo: "p-escuro-foto", titulo: "Monocromática branca", texto: "Sobre fotos e fundos escuros com textura, onde o amarelo perderia leitura." },
+// Construção do grafismo: dois retângulos arredondados deslocados na diagonal e o contorno que os une.
+// Largura = 1,1905 × altura; raio grande = 30% da largura; raio pequeno = metade do grande.
+const G = (() => {
+  const h = 100, w = 119.05, rb = 35.7, rs = 17.86, dd = 30, k = rs / Math.SQRT2;
+  const ret = (x: number, y: number) =>
+    `M${x + rs},${y} H${x + w - rb} A${rb},${rb} 0 0 1 ${x + w},${y + rb} V${y + h - rs} A${rs},${rs} 0 0 1 ${x + w - rs},${y + h} H${x + rb} A${rb},${rb} 0 0 1 ${x},${y + h - rb} V${y + rs} A${rs},${rs} 0 0 1 ${x + rs},${y} Z`;
+  const contorno = [
+    `M0,${dd + rs}`,
+    `A${rs},${rs} 0 0 1 ${rs - k},${dd + rs - k}`,
+    `L${dd + rs - k},${rs - k}`,
+    `A${rs},${rs} 0 0 1 ${dd + rs},0`,
+    `H${dd + w - rb}`,
+    `A${rb},${rb} 0 0 1 ${dd + w},${rb}`,
+    `V${h - rs}`,
+    `A${rs},${rs} 0 0 1 ${dd + w - rs + k},${h - rs + k}`,
+    `L${w - rs + k},${dd + h - rs + k}`,
+    `A${rs},${rs} 0 0 1 ${w - rs},${dd + h}`,
+    `H${rb}`,
+    `A${rb},${rb} 0 0 1 0,${dd + h - rb}`,
+    "Z",
+  ].join(" ");
+  return { a: ret(0, dd), b: ret(dd, 0), contorno, vb: `-6 -6 ${w + dd + 12} ${h + dd + 12}` };
+})();
+
+const etapas = [
+  <><path d={G.a} className="g-guia" /><path d={G.b} className="g-guia" /></>,
+  <><path d={G.a} className="g-guia" /><path d={G.b} className="g-guia" /><circle cx={35.7} cy={30 + 100 - 35.7} r={35.7} className="g-raio" /><circle cx={30 + 17.86} cy={17.86} r={17.86} className="g-raio" /></>,
+  <><path d={G.a} className="g-guia" /><path d={G.b} className="g-guia" /><path d={G.contorno} className="g-linha" /></>,
+  <path d={G.contorno} className="g-cheio" />,
 ];
 
-const icones: { variante: VarianteLogo; fundo: string; titulo: string; texto: string }[] = [
-  { variante: "icone-amarelo", fundo: "p-branco", titulo: "Amarelo", texto: "Avatar de redes, favicon, selos. Fundo claro ou grafite." },
-  { variante: "icone-preto", fundo: "p-amarelo", titulo: "Preto", texto: "Sobre o amarelo da marca e em impressão de uma cor." },
-  { variante: "icone-branco", fundo: "p-grafite", titulo: "Branco", texto: "Sobre fundos escuros e fotos." },
-];
-
-const errados: { fundo: string; estilo?: React.CSSProperties; titulo: string; texto: string }[] = [
-  { fundo: "p-branco", estilo: { transform: "scaleX(1.35)" }, titulo: "Distorcer", texto: "Nunca esticar ou achatar." },
-  { fundo: "p-branco", estilo: { transform: "rotate(-12deg)" }, titulo: "Girar", texto: "O logotipo fica sempre na horizontal." },
-  { fundo: "p-branco", estilo: { filter: "drop-shadow(4px 6px 4px rgba(0,0,0,.45))" }, titulo: "Aplicar sombra", texto: "Nenhum efeito: sombra, brilho ou contorno." },
-  { fundo: "p-branco", estilo: { filter: "hue-rotate(160deg) saturate(1.6)" }, titulo: "Trocar as cores", texto: "Use só as versões oficiais." },
-  { fundo: "p-grafite", titulo: "Colorida no escuro", texto: "O nome preto some. Use a versão negativa." },
-  { fundo: "p-amarelo", titulo: "Ícone amarelo no amarelo", texto: "Sobre o amarelo, use a versão preta." },
-];
-
-const arquivos = [
-  { tipo: "PNG", titulo: "Logotipos", texto: "Versões horizontais e ícones nas cores oficiais.",
-    links: Object.keys(logos).map((v) => [v, `/downloads/logos/${v === "horizontal-negativo" ? "logo-horizontal-neg-icone" : v.startsWith("icone") ? v : `logo-${v}`}.png`]) },
-  { tipo: "TTF", titulo: "Fontes", texto: "DM Sans Regular, Bold e Black. Aptos vem com o Microsoft 365.",
-    links: ["Regular", "Bold", "Black"].map((p) => [`DM Sans ${p}`, `/downloads/fonts/DMSans-${p}.ttf`]) },
-  { tipo: "JPG", titulo: "Artes de fundo", texto: "Capa A4, capa de slide e fundo escuro com o padrão de blocos.",
-    links: [["Capa A4", "/downloads/artes/capa-a4.jpg"], ["Capa de slide", "/downloads/artes/capa-slide.jpg"], ["Fundo escuro", "/downloads/artes/fundo-escuro.jpg"]] },
-];
+const svgLogo = (base: string) => `/downloads/logos/svg/${base}.svg`;
+const svgGrafismo = (arquivo: string, corG = "ouro") => `/downloads/grafismo/svg/${arquivo}-${corG}.svg`;
 
 export default function Manual() {
   return (
     <div className="layout">
-      <MenuLateral secoes={secoes} />
+      <MenuLateral secoes={d.secoes} />
       <main className="conteudo" id="topo">
 
       <header className="capa">
         <div className="wrap">
-          <div className="capa-arte" role="img" aria-label="Capa do manual sobre a faixa amarela da Encibra">
+          <div className="capa-arte" role="img" aria-label="Capa do manual sobre a faixa ouro da Encibra">
             <div className="capa-texto">
               <h1>Manual de Marca</h1>
               <p>Guia de identidade visual da Encibra S.A.</p>
             </div>
           </div>
           <div className="capa-meta">
-            <span><b>Versão</b> 1.0 (rascunho)</span>
-            <span><b>Data</b> outubro de 2026</span>
-            <span><b>Base</b> modelos oficiais de documentos Word e apresentações</span>
+            <span><b>Versão</b> {d.versao} (rascunho)</span>
+            <span><b>Data</b> {d.data}</span>
+            <span><b>Base</b> manual no Figma, modelos oficiais de Word e PowerPoint</span>
+            <span><b>Para LLMs</b> <a href="/llms-full.txt">manual em Markdown</a> · <a href="/llms.txt">llms.txt</a></span>
           </div>
         </div>
       </header>
 
-      <Capitulo id="principios" numero="01" titulo="Princípios"
-        lead="Este manual reúne as regras visuais da Encibra: logotipo, cores, tipografia, elementos gráficos e aplicações. Ele consolida o padrão que já está nos modelos oficiais de documentos e apresentações, para que toda peça da empresa saia reconhecível e consistente.">
+      <Capitulo id="principios" numero="01" titulo="Princípios" md={markdown.principios}
+        lead="Este manual reúne as regras visuais da Encibra: logotipo, cores, tipografia, grafismo e aplicações. Ele consolida o padrão dos modelos oficiais e do manual em construção no Figma, para que toda peça da empresa saia reconhecível.">
         <div className="grid g3">
-          <div className="principio"><h3>Sem sombras, sem enfeites</h3><p>Nada de sombras, contornos ou traços decorativos. A identidade é plana e limpa, como um bom desenho técnico.</p></div>
-          <div className="principio"><h3>Hierarquia por peso e cor</h3><p>O que é importante fica mais pesado (DM Sans Black) ou muda de cor. Não usamos caixas, sublinhados ou ícones para chamar atenção.</p></div>
-          <div className="principio"><h3>Amarelo com intenção</h3><p>O amarelo marca o que importa: a faixa da capa, números, destaques. Texto corrido nunca é amarelo, e o texto nunca é preto puro.</p></div>
+          {d.principios.map(([t, x]) => (
+            <div className="principio" key={t}><h3>{t}</h3><p>{x}</p></div>
+          ))}
         </div>
       </Capitulo>
 
-      <Capitulo id="logotipo" numero="02" titulo="Logotipo" fundo="papel"
-        lead="O logotipo combina o ícone, um “E” construído com o bloco chanfrado da marca, e o nome Encibra. A versão horizontal colorida sobre fundo claro é a principal e deve ser usada sempre que possível.">
+      <Capitulo id="logotipo" numero="02" titulo="Logotipo" fundo="intermedio" md={markdown.logotipo}
+        lead="O logotipo combina o ícone, um “E” construído com o grafismo chanfrado, e o nome Encibra. A versão horizontal colorida sobre fundo claro é a principal.">
         <div className="sub principal">
           <Rotulo>Versão principal</Rotulo>
-          <div className="palco p-branco"><Logo altura={120} style={{ width: "100%", height: "auto" }} /></div>
-          <Legenda titulo="Horizontal colorida">Ícone amarelo e nome em preto. Para fundos brancos ou claros. É a versão do cabeçalho dos documentos.</Legenda>
+          <div className="palco p-basico"><Logo altura={120} style={{ width: "100%", height: "auto" }} /></div>
+          <Legenda titulo="Horizontal colorida">Ícone em Ouro Encibra e nome em preto, para fundos brancos ou claros. É a versão do cabeçalho dos documentos.</Legenda>
         </div>
 
         <div className="sub">
           <Rotulo>Variações</Rotulo>
           <div className="grid g3">
-            {variacoes.map((v) => (
+            {d.variacoes.map((v) => (
               <div key={v.variante}>
                 <div className={`palco ${v.fundo}`}><Logo variante={v.variante} altura={80} style={{ width: "100%", height: "auto" }} /></div>
                 <Legenda titulo={v.titulo}>{v.texto}</Legenda>
@@ -118,58 +106,71 @@ export default function Manual() {
         <div className="sub">
           <Rotulo>Ícone</Rotulo>
           <div className="grid g3">
-            {icones.map((v) => (
+            {d.icones.map((v) => (
               <div key={v.variante}>
                 <div className={`palco icone ${v.fundo}`}><Logo variante={v.variante} altura={96} /></div>
                 <Legenda titulo={v.titulo}>{v.texto}</Legenda>
               </div>
             ))}
           </div>
-          <p className="nota" style={{ marginTop: 16 }}>O ícone sozinho só aparece quando o nome Encibra já está visível por perto ou o espaço é pequeno demais para a versão horizontal.</p>
+          <p className="nota" style={{ marginTop: 16 }}>O ícone sozinho só aparece quando o nome Encibra já está visível por perto ou quando o espaço é pequeno demais para a versão horizontal.</p>
         </div>
 
         <div className="sub grid g2" style={{ alignItems: "start" }}>
           <div>
             <Rotulo proposta>Área de proteção </Rotulo>
-            <div className="protecao">
-              <span className="x t">x</span><span className="x l">x</span>
+            <div className="protecao" role="img" aria-label="Logotipo com margem x em volta; x é metade da altura do ícone">
+              <span className="x t">x</span><span className="x l">x</span><span className="x r">x</span><span className="x b">x</span>
               <div className="miolo"><Logo altura={70} /></div>
             </div>
-            <p className="muted" style={{ marginTop: 16 }}>Mantenha livre ao redor do logotipo uma margem <b>x</b> igual a metade da altura do ícone. Nenhum texto, borda ou imagem entra nessa área.</p>
+            <p style={{ marginTop: 16 }}><b>x = metade da altura do ícone.</b> {d.protecao.regra}</p>
+            <p className="muted">{d.protecao.porque}</p>
           </div>
           <div>
             <Rotulo proposta>Tamanho mínimo </Rotulo>
             <div className="minimos">
-              <figure><Logo altura={22} /><figcaption>Horizontal: 100 px na tela ou 25 mm impresso</figcaption></figure>
-              <figure><Logo variante="icone-amarelo" altura={24} /><figcaption>Ícone: 24 px ou 6 mm</figcaption></figure>
+              <figure><Logo altura={22} /><figcaption>Horizontal: 100 px · 25 mm</figcaption></figure>
+              <figure><Logo variante="icone-amarelo" altura={20} /><figcaption>Ícone: 20 px · 6 mm</figcaption></figure>
             </div>
-            <p className="muted" style={{ marginTop: 16 }}>Abaixo disso o nome perde leitura. Em espaços menores, use só o ícone.</p>
+            <table className="t compacta" style={{ marginTop: 20 }}>
+              <tbody>{d.protecao.minimos.map(([a, b]) => <tr key={a}><td>{a}</td><td>{b}</td></tr>)}</tbody>
+            </table>
+            <p className="muted" style={{ marginTop: 12 }}>{d.protecao.abaixo}</p>
           </div>
         </div>
+        <p className="nota fontes">Referências: {d.fontesProtecao.map(([n, u], i) => <span key={u}>{i > 0 && " · "}<a href={u}>{n}</a></span>)}</p>
       </Capitulo>
 
-      <Capitulo id="cores" numero="03" titulo="Cores"
-        lead="Uma paleta curta: o amarelo Encibra como cor de marca, o grafite para texto e fundos escuros, e três tons de apoio para cinzas, tabelas e destaques.">
-        <div className="grid g4">
+      <Capitulo id="cores" numero="03" titulo="Cores" md={markdown.cores}
+        lead="Cinco cores, com os nomes do manual no Figma. O Ouro Encibra é a cor da marca, o Cinza azulado é a cor de ação, e Chumbo, Intermédio e Básico fazem o texto e os fundos.">
+        <div className="cores-grid">
           {tokens.cores.map((c, i) => (
             <div key={c.id} className={i < 2 ? "cor grande" : "cor"}>
               <div className="amostra" style={{ background: c.hex, color: cor[c.texto] }}>{c.nome}</div>
-              <div className="dados"><b>{c.papel}</b><code>HEX {c.hex}</code><code>RGB {rgb(c.hex)}</code></div>
-              <div className="uso">{c.uso}</div>
+              <dl className="dados">
+                <dt>Papel</dt><dd><b>{c.papel}</b></dd>
+                <dt>HEX</dt><dd><code>{c.hex}</code></dd>
+                <dt>RGB</dt><dd><code>{rgb(c.hex)}</code></dd>
+                <dt>CMYK</dt><dd><code>{c.cmyk}</code></dd>
+                <dt>Pantone</dt><dd><code>{c.pantone.c}</code><br /><code>{c.pantone.u}</code></dd>
+              </dl>
+              <div className="uso">{c.uso}{"impressao" in c && <><br /><i>{c.impressao}</i></>}</div>
             </div>
           ))}
         </div>
-        <p className="nota" style={{ marginTop: 16 }}>Equivalentes CMYK e Pantone para impressão gráfica ainda não foram definidos.</p>
+        <div className="sub nota-tecnica">
+          <p className="nota"><b>CMYK</b> convertido com o perfil ICC ISO Coated v2 (FOGRA39), intenção colorimétrica relativa e compensação de ponto preto. Em papel não revestido, peça à gráfica a conversão com o perfil PSO Uncoated v3 (FOGRA52).</p>
+          <p className="nota"><b>Pantone</b> escolhido pela menor diferença de cor (ΔE 2000) na biblioteca Solid Coated (C) e Uncoated (U). O 7408 U sai alaranjado no papel não revestido, por isso o ouro usa 7406 U. Confirme sempre na escala física antes da primeira impressão.</p>
+        </div>
 
         <div className="sub">
           <Rotulo proposta>Proporção de uso </Rotulo>
-          <div className="proporcao" role="img" aria-label="Branco 60%, grafite 25%, amarelo 10%, tons de apoio 5%">
-            <div style={{ flex: 60, background: cor.branco, color: cor.grafite }}>Branco 60%</div>
-            <div style={{ flex: 25, background: cor.grafite, color: cor.branco }}>Grafite 25%</div>
-            <div style={{ flex: 10, background: cor.amarelo, color: cor.grafite }}>Amarelo 10%</div>
-            <div style={{ flex: 5, background: cor.destaque, color: cor.grafite }}>5%</div>
+          <div className="proporcao" role="img" aria-label={d.proporcao.map((p) => `${p.rotulo} ${p.pct}%`).join(", ")}>
+            {d.proporcao.map((p) => (
+              <div key={p.id} style={{ flex: p.pct, background: cor[p.id], color: textoSobre(cor[p.id]) }}>{p.pct >= 10 ? `${p.rotulo} ${p.pct}%` : `${p.pct}%`}</div>
+            ))}
           </div>
-          <p className="muted" style={{ marginTop: 12 }}>Em uma peça típica, o branco domina, o grafite carrega o texto e o amarelo aparece pouco, onde precisa ser visto. Capas são a exceção: a faixa amarela é o centro delas.</p>
+          <p className="muted" style={{ marginTop: 12 }}>Em uma peça típica, o branco domina, o chumbo carrega o texto, o ouro aparece pouco e onde precisa ser visto, e o azulado marca as ações. Capas são a exceção: a faixa ouro é o centro delas.</p>
         </div>
 
         <div className="sub">
@@ -178,11 +179,11 @@ export default function Manual() {
             <table className="t">
               <thead><tr><th>Combinação</th><th>Contraste</th><th>Texto corrido</th><th>Título grande</th></tr></thead>
               <tbody>
-                {pares.map(([texto, fundo]) => {
+                {d.pares.map(([texto, fundo]) => {
                   const r = contraste(cor[texto], cor[fundo]);
                   return (
                     <tr key={texto + fundo}>
-                      <td><span className="par" style={{ background: cor[fundo], color: cor[texto] }}>{nomeCor[texto]} / {nomeCor[fundo].toLowerCase()}</span></td>
+                      <td><span className="par" style={{ background: cor[fundo], color: cor[texto] }}>{d.nomeDe(texto)} / {d.nomeDe(fundo)}</span></td>
                       <td>{razao(cor[texto], cor[fundo])}</td>
                       <td className={r >= 4.5 ? "ok" : "nao"}>{r >= 4.5 ? "Sim" : "Não"}</td>
                       <td className={r >= 3 ? "ok" : "nao"}>{r >= 3 ? "Sim" : "Não"}</td>
@@ -192,92 +193,189 @@ export default function Manual() {
               </tbody>
             </table>
           </div>
-          <p className="nota" style={{ marginTop: 12 }}>Texto corrido exige 4,5 : 1 e título grande exige 3 : 1. Por isso, sobre o amarelo, o texto é sempre grafite. Os valores são calculados a partir das cores oficiais.</p>
+          <p className="nota" style={{ marginTop: 12 }}>Texto corrido exige 4,5 : 1 e título grande exige 3 : 1. Por isso, sobre o ouro, o texto é sempre chumbo. Os valores são calculados a partir das cores oficiais.</p>
         </div>
       </Capitulo>
 
-      <Capitulo id="tipografia" numero="04" titulo="Tipografia" fundo="papel"
-        lead="DM Sans é a voz da marca: geométrica, direta e com pesos fortes para títulos e números. Em documentos Word, o texto corrido usa Aptos, a fonte padrão do Microsoft 365, pela leitura confortável em páginas longas.">
+      <Capitulo id="paleta" numero="04" titulo="Paleta estendida" fundo="intermedio" md={markdown.paleta}
+        lead="Tons e cores de apoio para gráficos, mapas, sinalização e interfaces. Eles saem das cores principais por regras de teoria das cores e nunca tomam o lugar delas.">
+        <div className="grid g2 teoria">
+          {d.teoria.map(([t, x]) => <div key={t}><h3>{t}</h3><p className="muted">{x}</p></div>)}
+        </div>
+
+        <div className="sub">
+          <Rotulo>Escalas</Rotulo>
+          {Object.entries(tokens.escalas).map(([id, e]) => (
+            <div className="escala" key={id}>
+              <b>{e.nome}</b>
+              <div className="tons" style={{ "--n": Object.keys(e.tons).length } as React.CSSProperties}>
+                {Object.entries(e.tons).map(([t, hex]) => {
+                  const base = (id === "ouro" && t === "500") || (id === "cinza-azulado" && t === "700");
+                  return (
+                    <div key={t} className={base ? "tom base" : "tom"} style={{ background: hex, color: textoSobre(hex) }} title={`--cor-${id}-${t}`}>
+                      <span>{t}</span><code>{hex}</code>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+          <p className="nota">O tom marcado é a cor principal. Use os tons claros (50 a 200) como fundo e os escuros (700 a 900) para texto e linhas. Tokens: <code>--cor-ouro-700</code>, <code>--cor-neutro-600</code>; no Tailwind, <code>bg-ouro-50</code>.</p>
+        </div>
+
+        <div className="sub grid g2" style={{ alignItems: "start" }}>
+          <div>
+            <Rotulo>Cores de apoio</Rotulo>
+            <div className="chips">
+              {tokens.apoio.map((c) => (
+                <div className="chip" key={c.id}>
+                  <div className="chip-cor" style={{ background: c.hex }} />
+                  <div><b>{c.nome}</b> <code>{c.hex}</code><span>{c.relacao}. Com branco: {razao(c.hex, "#FFFFFF")}</span></div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <Rotulo>Cores de estado</Rotulo>
+            <div className="chips">
+              {tokens.semanticas.map((c) => (
+                <div className="chip" key={c.id}>
+                  <div className="chip-cor" style={{ background: c.hex }} />
+                  <div><b>{c.nome}</b> <code>{c.hex}</code><span>{c.uso}. Com branco: {razao(c.hex, "#FFFFFF")}</span></div>
+                </div>
+              ))}
+            </div>
+            <p className="nota" style={{ marginTop: 12 }}>A atenção não passa 4,5 : 1 com branco: use em ícones, barras e fundos, com o texto em chumbo.</p>
+          </div>
+        </div>
+
+        <div className="sub">
+          <Rotulo>Exemplo: gráfico</Rotulo>
+          <div className="grafico" role="img" aria-label="Gráfico de barras de exemplo nas cores da paleta estendida">
+            {([["ouro", 86], ["cinza-azulado-700", 64], ["cinza-azulado-400", 52], ["ambar", 38], ["petroleo", 30], ["neutro-300", 18]] as const).map(([id, v]) => (
+              <div key={id} className="barra"><div style={{ height: `${v}%`, background: cor[id] }} /><span>{d.nomeDe(id)}</span></div>
+            ))}
+          </div>
+          <p className="nota" style={{ marginTop: 12 }}>Ordem sugerida das séries: Ouro, Cinza azulado 700, Cinza azulado 400, Âmbar, Petróleo e Neutro 300 para “outros”. Valores ilustrativos.</p>
+        </div>
+      </Capitulo>
+
+      <Capitulo id="tipografia" numero="05" titulo="Tipografia" md={markdown.tipografia}
+        lead="DM Sans é a voz da marca: geométrica, direta e com pesos fortes. Em documentos Word, o texto corrido usa Aptos, a fonte padrão do Microsoft 365, pela leitura confortável em páginas longas.">
         <div className="grid g2" style={{ alignItems: "start" }}>
-          <div className="especime" style={{ background: "var(--branco)" }}>
+          <div className="especime">
             <Rotulo>Fonte principal</Rotulo>
             <div className="aa">Aa</div>
-            <h3 style={{ marginTop: 20, fontSize: 28, fontWeight: 900 }}>DM Sans</h3>
+            <h3 style={{ marginTop: 20, fontSize: 28 }}>DM Sans</h3>
             <div className="chars">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />abcdefghijklmnopqrstuvwxyz<br />0123456789 ÁÉÍÓÚ ÂÊÔ ÃÕ Ç à ç ã õ &amp; % R$</div>
           </div>
-          <div className="pesos">
-            {([[900, "Black", "Capas, títulos de slide, números"], [700, "Bold", "Títulos em documentos"], [400, "Regular", "Corpo em apresentações"]] as const).map(([peso, nome, uso]) => (
-              <div className="peso" key={peso}>
-                <div className="amostra-t" style={{ fontWeight: peso }}>Inspeção acreditada</div>
-                <div className="info">{nome}<br />{uso}</div>
-              </div>
+          <div>
+            <Rotulo>Escala do manual no Figma</Rotulo>
+            <div className="escala-tipo">
+              {d.tipos.map((t) => (
+                <div key={t.nivel} className="nivel">
+                  <div style={{ fontSize: t.exemplo, fontWeight: t.peso, lineHeight: 1.1 }}>{t.nivel}</div>
+                  <div className="info"><b>{t.fonte}</b> · {t.tamanho}<br />{t.regra}</div>
+                </div>
+              ))}
+            </div>
+            <p className="nota">O subtítulo tem 70% do título e o texto tem 50% do subtítulo. Com título de 48 px: subtítulo 34 px, texto 17 px. DM Sans Black fica para títulos de capa e números grandes.</p>
+          </div>
+        </div>
+
+        <div className="sub grid g2" style={{ alignItems: "start" }}>
+          <div>
+            <Rotulo>Documentos (A4)</Rotulo>
+            <div className="tabela-wrap">
+              <table className="t">
+                <thead><tr><th>Elemento</th><th>Fonte</th><th>Regras</th></tr></thead>
+                <tbody>
+                  <tr><td>Título da capa</td><td>DM Sans Black</td><td>Sobre a faixa ouro</td></tr>
+                  <tr><td>Títulos 1 a 4</td><td>DM Sans Bold</td><td>Numeração automática (1, 1.1, 1.1.1)</td></tr>
+                  <tr><td>Corpo</td><td>Aptos 12 pt</td><td>Justificado, entrelinha 1,5, recuo de 1,25 cm</td></tr>
+                  <tr><td>Tabelas</td><td>Aptos 9 pt</td><td>Cabeçalho em Intermédio</td></tr>
+                  <tr><td>Legendas</td><td>Aptos, menor</td><td>Neutro 600</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="aptos-amostra">A Encibra atua na engenharia consultiva com rigor técnico e clareza. Este parágrafo mostra o corpo dos documentos em Aptos, justificado e com recuo de primeira linha.</p>
+          </div>
+          <div>
+            <Rotulo>Apresentações (16:9)</Rotulo>
+            <div className="tabela-wrap">
+              <table className="t">
+                <thead><tr><th>Elemento</th><th>Fonte</th><th>Tamanho e cor</th></tr></thead>
+                <tbody>
+                  <tr><td>Título da capa</td><td>DM Sans Black</td><td>32 pt, chumbo</td></tr>
+                  <tr><td>Subtítulo da capa</td><td>DM Sans Regular</td><td>20 pt, chumbo a 60%</td></tr>
+                  <tr><td>Rodapé da capa</td><td>DM Sans Regular</td><td>16 pt, chumbo a 30%</td></tr>
+                  <tr><td>Número de seção</td><td>DM Sans Black</td><td>Ouro Encibra</td></tr>
+                  <tr><td>Corpo e tópicos</td><td>DM Sans Regular</td><td>Chumbo</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </Capitulo>
+
+      <Capitulo id="grafismo" numero="06" titulo="Grafismo" fundo="intermedio" md={markdown.grafismo}
+        lead="O grafismo é o bloco chanfrado que forma o ícone. Ele aparece sozinho, em padrões e como placa do logotipo, sempre com chanfros a 45° no canto superior esquerdo e no inferior direito.">
+        <div className="sub">
+          <Rotulo>Construção</Rotulo>
+          <ol className="etapas">
+            {d.grafismo.construcao.map(([t, x], i) => (
+              <li key={t}>
+                <svg viewBox={G.vb} aria-hidden="true">{etapas[i]}</svg>
+                <b>{i + 1}. {t}</b>
+                <span>{x}</span>
+              </li>
             ))}
-            <div className="peso" style={{ borderBottom: 0 }}>
-              <div style={{ minWidth: 0 }}>
-                <span className="rotulo" style={{ marginBottom: 6 }}>Aptos · corpo de documentos</span>
-                <p className="aptos-amostra">A Encibra atua na engenharia consultiva com rigor técnico e clareza. Este parágrafo mostra o corpo dos documentos: Aptos 12 pt, justificado, com entrelinha 1,5 e recuo de primeira linha de 1,25 cm.</p>
-              </div>
-              <div />
-            </div>
+          </ol>
+        </div>
+
+        <div className="sub">
+          <Rotulo>Variações</Rotulo>
+          <p className="muted">Dois tamanhos, três estilos e dois preenchimentos. O estilo expandido só existe no tamanho grande.</p>
+          <div className="grid g5 grafismos">
+            {d.variantesGrafismo.map((v) => (
+              <figure key={v.arquivo}>
+                <div className="palco-g p-basico"><img src={svgGrafismo(v.arquivo)} alt={`Grafismo ${v.titulo}`} /></div>
+                <figcaption>{v.titulo}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
 
         <div className="sub">
-          <Rotulo>Hierarquia em documentos (A4)</Rotulo>
-          <div className="tabela-wrap">
-            <table className="t" style={{ background: "var(--branco)" }}>
-              <thead><tr><th>Elemento</th><th>Fonte</th><th>Regras</th></tr></thead>
-              <tbody>
-                <tr><td>Título da capa</td><td>DM Sans Black</td><td>Sobre a faixa amarela, centralizado na vertical</td></tr>
-                <tr><td>Título 1</td><td>DM Sans Bold</td><td>Caixa alta aplicada pelo estilo, numeração automática (1, 2, 3)</td></tr>
-                <tr><td>Títulos 2 a 4</td><td>DM Sans Bold</td><td>Numeração automática (1.1, 1.1.1, 1.1.1.1), nunca digitada</td></tr>
-                <tr><td>Corpo</td><td>Aptos 12 pt</td><td>Justificado, entrelinha 1,5, recuo de 1,25 cm, margens de 2,5 cm</td></tr>
-                <tr><td>Tabelas</td><td>Aptos 9 pt</td><td>Cabeçalho em fundo papel {cor.papel}</td></tr>
-                <tr><td>Legendas e fontes</td><td>Aptos, menor</td><td>Cinza {cor.cinza}</td></tr>
-              </tbody>
-            </table>
+          <Rotulo>Cores</Rotulo>
+          <div className="grid g3">
+            {d.grafismo.cores.map(([id, nome, fundo]) => (
+              <figure key={id} className="cores-g">
+                <div className={`palco-g ${fundo}`}>
+                  <img src={svgGrafismo("grafismo-padrao-simples-cheio", id)} alt="" />
+                  <img src={svgGrafismo("grafismo-padrao-duplo-vazado", id)} alt="" />
+                  <img src={svgGrafismo("grafismo-grande-duplo-cheio", id)} alt="" />
+                </div>
+                <figcaption>{nome}{id === "branco" ? ", sobre fundos escuros e fotos" : id === "chumbo" ? ", em peças de uma cor e fundos claros" : ", a cor principal do grafismo"}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
 
         <div className="sub">
-          <Rotulo>Hierarquia em apresentações (16:9)</Rotulo>
-          <div className="tabela-wrap">
-            <table className="t" style={{ background: "var(--branco)" }}>
-              <thead><tr><th>Elemento</th><th>Fonte</th><th>Tamanho e cor</th></tr></thead>
-              <tbody>
-                <tr><td>Título da capa</td><td>DM Sans Black</td><td>32 pt, grafite</td></tr>
-                <tr><td>Subtítulo da capa</td><td>DM Sans Regular</td><td>20 pt, grafite a 60%</td></tr>
-                <tr><td>Rodapé da capa (cliente, data)</td><td>DM Sans Regular</td><td>16 pt, grafite a 30%</td></tr>
-                <tr><td>Número de seção e indicadores</td><td>DM Sans Black</td><td>Amarelo {cor.amarelo}</td></tr>
-                <tr><td>Corpo e tópicos</td><td>DM Sans Regular</td><td>Grafite</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <Rotulo>Aplicação: escritório de Brasília</Rotulo>
+          <img className="brasilia" src="/downloads/artes/aplicacao-escritorio-brasilia.png" alt="Arte final das paredes do escritório de Brasília: grafismos em adesivo branco e ouro, em três fileiras, com o logotipo sobre uma placa branca no formato do grafismo" />
+          <p className="muted" style={{ marginTop: 12 }}>A arte usa quase todas as variações: cheios, vazados, duplos e expandidos, em branco e ouro, alinhados em três fileiras com espaço regular. O logotipo fica sobre uma placa branca no formato do grafismo grande, com a área de proteção respeitada.</p>
+        </div>
+
+        <div className="sub">
+          <Rotulo>Regras</Rotulo>
+          <ul className="regras">{d.grafismo.regras.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
       </Capitulo>
 
-      <Capitulo id="elementos" numero="05" titulo="Elementos gráficos"
-        lead="Tudo nasce da mesma forma: o bloco chanfrado do ícone, um retângulo com dois cantos opostos cortados a 45° e os outros dois arredondados.">
-        <div className="grid g3">
-          <div>
-            <div className="forma-demo p-papel">
-              <svg viewBox="0 0 200 130" aria-label="Bloco chanfrado"><path d="M34.64,0 H177.65 A22.35,22.35 0 0 1 200,22.35 V95.36 A11.19,11.19 0 0 1 196.72,103.28 L173.28,126.72 A11.19,11.19 0 0 1 165.36,130 H22.35 A22.35,22.35 0 0 1 0,107.65 V34.64 A11.19,11.19 0 0 1 3.28,26.72 L26.72,3.28 A11.19,11.19 0 0 1 34.64,0 Z" fill="var(--amarelo)" /></svg>
-            </div>
-            <Legenda titulo="Bloco chanfrado">Chanfro no canto superior esquerdo e no inferior direito, cantos arredondados nos outros dois. Todas as quinas levam filete, inclusive as do chanfro: o grafismo nunca tem quina viva.</Legenda>
-          </div>
-          <div>
-            <div className="forma-demo p-branco" style={{ background: "url('/downloads/artes/capa-slide.jpg') center / cover" }} />
-            <Legenda titulo="Faixa amarela">A faixa das capas recebe o título. Ela é arte oficial e não deve ser redesenhada.</Legenda>
-          </div>
-          <div>
-            <div className="forma-demo" style={{ background: "url('/downloads/artes/fundo-escuro.jpg') center / cover" }} />
-            <Legenda titulo="Padrão de blocos">Blocos em contorno fino, como textura de fundo, em slides escuros e capas.</Legenda>
-          </div>
-        </div>
-      </Capitulo>
-
-      <Capitulo id="aplicacoes" numero="06" titulo="Aplicações" fundo="papel"
-        lead="Exemplos de como as regras se combinam nas peças mais comuns. Os modelos de Word e PowerPoint já aplicam tudo isso automaticamente.">
+      <Capitulo id="aplicacoes" numero="07" titulo="Aplicações" md={markdown.aplicacoes}
+        lead="Como as regras se combinam nas peças mais comuns. Os modelos de Word e PowerPoint já aplicam tudo isso automaticamente.">
         <div className="sub">
           <Rotulo>Documentos (A4)</Rotulo>
           <div className="grid g3" style={{ alignItems: "start" }}>
@@ -292,23 +390,23 @@ export default function Manual() {
                 <p>Este relatório apresenta os resultados da inspeção realizada no trecho concedido, conforme o escopo contratado e os critérios aplicáveis.</p>
                 <h5>1.1 Objetivo</h5>
                 <p>Verificar o atendimento aos parâmetros de desempenho previstos no contrato de concessão.</p>
-                <div className="dest">Caixa de destaque em fundo {cor.destaque} para conclusões e alertas.</div>
-                <div className="rod"><span>Encibra S.A. — Relatório de Inspeção</span><span>3</span></div>
+                <div className="dest">Caixa de destaque em Ouro 50 para conclusões e alertas.</div>
+                <div className="rod"><span>Encibra S.A. · Relatório de Inspeção</span><span>3</span></div>
               </div>
-              <Legenda titulo="Página interna">Logo à direita no cabeçalho, rodapé sem filete e numeração automática.</Legenda>
+              <Legenda titulo="Página interna">Logotipo à direita no cabeçalho, rodapé sem filete e numeração automática.</Legenda>
             </div>
             <div>
               <Rotulo>Indicadores</Rotulo>
               <div className="kpis" style={{ gridTemplateColumns: "minmax(0,1fr)" }}>
-                <div className="kpi on"><b>98,4%</b><span>Indicador principal, em fundo destaque</span></div>
-                <div className="kpi"><b>212 km</b><span>Indicador secundário, em fundo papel</span></div>
+                <div className="kpi on"><b>98,4%</b><span>Indicador principal, em Ouro 50</span></div>
+                <div className="kpi"><b>212 km</b><span>Indicador secundário, em Intermédio</span></div>
               </div>
               <div className="tabela-wrap" style={{ marginTop: 20 }}>
-                <table className="t" style={{ background: "var(--branco)", fontSize: 13, fontFamily: "var(--aptos)" }}>
+                <table className="t" style={{ fontSize: 13, fontFamily: "var(--aptos)" }}>
                   <thead><tr><th>Trecho</th><th>Extensão</th><th>Situação</th></tr></thead>
                   <tbody>
-                    <tr><td>km 0 – 48</td><td>48 km</td><td>Conforme</td></tr>
-                    <tr><td>km 48 – 112</td><td>64 km</td><td>Conforme</td></tr>
+                    <tr><td>km 0 – 48</td><td>48 km</td><td style={{ color: cor.sucesso, fontWeight: 700 }}>Conforme</td></tr>
+                    <tr><td>km 48 – 112</td><td>64 km</td><td style={{ color: cor.erro, fontWeight: 700 }}>Não conforme</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -330,67 +428,114 @@ export default function Manual() {
               <div className="app-slide" style={{ backgroundImage: "url('/downloads/artes/fundo-escuro.jpg')" }}>
                 <div className="sep"><b>02</b><span>Metodologia</span></div>
               </div>
-              <Legenda titulo="Separador de seção">Fundo grafite, número grande em amarelo e título em branco.</Legenda>
+              <Legenda titulo="Separador de seção">Fundo chumbo, número grande em ouro e título em branco.</Legenda>
             </div>
           </div>
         </div>
       </Capitulo>
 
-      <Capitulo id="incorretos" numero="07" titulo="Usos incorretos"
-        lead="O logotipo e as cores só funcionam se forem usados sempre do mesmo jeito. Estes são os erros mais comuns.">
+      <Capitulo id="incorretos" numero="08" titulo="Usos incorretos" fundo="intermedio" md={markdown.incorretos}
+        lead="O logotipo, as cores e o grafismo só funcionam se forem usados sempre do mesmo jeito. Estes são os erros mais comuns.">
         <div className="grid g4 errado">
-          {errados.map((e) => (
+          {d.errados.map((e) => (
             <div key={e.titulo}>
               <div className={`palco ${e.fundo}`}><Logo altura={60} style={{ width: "100%", height: "auto", ...e.estilo }} /></div>
               <Legenda titulo={e.titulo}>{e.texto}</Legenda>
             </div>
           ))}
           <div>
-            <div className="palco texto-erro p-branco" style={{ color: cor.amarelo }}>Texto amarelo sobre fundo branco</div>
-            <Legenda titulo="Texto amarelo">Contraste de {razao(cor.amarelo, cor.branco)}. Ilegível.</Legenda>
+            <div className="palco texto-erro p-basico" style={{ color: cor.ouro }}>Texto ouro sobre fundo branco</div>
+            <Legenda titulo="Texto ouro">Contraste de {razao(cor.ouro, cor.basico)}. Ilegível.</Legenda>
           </div>
           <div>
-            <div className="palco texto-erro p-branco" style={{ color: "#000000", fontFamily: "'Times New Roman', serif", fontWeight: 400 }}>Texto em preto puro e outra fonte</div>
-            <Legenda titulo="Preto puro e fonte alheia">Texto é grafite {cor.grafite}, em DM Sans ou Aptos.</Legenda>
+            <div className="palco texto-erro p-basico" style={{ color: "#000000", fontFamily: "'Times New Roman', serif", fontWeight: 400 }}>Texto em preto puro e outra fonte</div>
+            <Legenda titulo="Preto puro e fonte alheia">Texto é chumbo {cor.chumbo}, em DM Sans ou Aptos.</Legenda>
+          </div>
+          <div>
+            <div className="palco p-basico">
+              <svg viewBox="0 0 200 130" style={{ width: "70%" }} aria-hidden="true"><path d="M30,0 H200 V100 L170,130 H0 V30 Z" fill={cor.ouro} /></svg>
+            </div>
+            <Legenda titulo="Grafismo com quina viva">Toda quina leva filete, inclusive as do chanfro.</Legenda>
+          </div>
+          <div>
+            <div className="palco p-basico">
+              <img src={svgGrafismo("grafismo-padrao-simples-cheio")} alt="" style={{ width: "46%", transform: "scaleX(-1)" }} />
+            </div>
+            <Legenda titulo="Grafismo espelhado">Os chanfros ficam no canto superior esquerdo e no inferior direito.</Legenda>
           </div>
         </div>
       </Capitulo>
 
-      <Capitulo id="arquivos" numero="08" titulo="Arquivos e modelos" fundo="escuro"
+      <Capitulo id="arquivos" numero="09" titulo="Arquivos e modelos" fundo="escuro" md={markdown.arquivos}
         lead="Baixe sempre os arquivos oficiais desta página e nunca recrie o logotipo a partir de uma captura de tela.">
-        <div className="grid g2" style={{ gap: "0 48px" }}>
-          {arquivos.map((a) => (
+        <div className="sub">
+          <Rotulo>Logotipos</Rotulo>
+          <div className="formatos">
+            {d.formatos.map(([f, , x]) => <p key={f}><b>{f}</b> {x}</p>)}
+          </div>
+          <div className="grid g4 logos-dl">
+            {d.arquivosLogos.map((a) => (
+              <div key={a.nome} className="logo-dl">
+                <div className={`mini ${a.escuro ? "p-chumbo" : "p-basico"}`}>
+                  <img src={svgLogo(a.base)} alt="" />
+                </div>
+                <b>{a.nome}</b>
+                <p className="downloads">{a.links.map(([f, href]) => <a key={href} href={href} download>{f}</a>)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="sub">
+          <Rotulo>Grafismo</Rotulo>
+          <p className="claro">{d.variantesGrafismo.length} formas em três cores, cada uma em SVG, PDF e PNG.</p>
+          <div className="tabela-wrap">
+            <table className="t escura">
+              <thead><tr><th>Forma</th><th>Ouro</th><th>Chumbo</th><th>Branco</th></tr></thead>
+              <tbody>
+                {d.variantesGrafismo.map((v) => (
+                  <tr key={v.arquivo}>
+                    <td>{v.titulo}</td>
+                    {["ouro", "chumbo", "branco"].map((c) => (
+                      <td key={c} className="downloads">
+                        {d.formatos.map(([f, ext]) => <a key={ext} href={`/downloads/grafismo/${ext}/${v.arquivo}-${c}.${ext}`} download>{f}</a>)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="sub grid g2" style={{ gap: "0 48px" }}>
+          {d.arquivosExtras.map((a) => (
             <div className="arquivo" key={a.titulo}>
               <div className="ico">{a.tipo}</div>
               <div>
                 <b>{a.titulo}</b>
                 <p>{a.texto}</p>
-                <p className="downloads">
-                  {a.links.map(([nome, href]) => (
-                    <a key={href} href={href} download>{nome}</a>
-                  ))}
-                </p>
+                <p className="downloads">{a.links.map(([nome, href]) => <a key={href} href={href} download>{nome}</a>)}</p>
               </div>
             </div>
           ))}
         </div>
 
         <div className="sub">
+          <Rotulo>Para LLMs</Rotulo>
+          <p className="claro">O manual inteiro em Markdown está em <a href="/llms-full.txt">/llms-full.txt</a>, com índice em <a href="/llms.txt">/llms.txt</a>. Cada capítulo também tem o botão “Copiar para LLM”, que copia só aquele trecho.</p>
+        </div>
+
+        <div className="sub">
           <Rotulo>Pontos em aberto</Rotulo>
-          <ul className="aberto">
-            <li>O amarelo oficial é <b>{cor.amarelo}</b>. Os modelos de Word e PowerPoint e as artes de capa e de slide ainda usam <b>#FFBF00</b> e precisam ser ajustados.</li>
-            <li>O fundo escuro dos slides é <b>#292929</b>, enquanto a cor de fundo escuro documentada é <b>{cor.grafite}</b>.</li>
-            <li>O nome no logotipo colorido é preto puro, enquanto a regra de texto pede grafite. Para o logotipo isso é aceitável, mas convém registrar como exceção.</li>
-            <li>Área de proteção, tamanho mínimo e proporção de cores são propostas deste manual e precisam de validação.</li>
-            <li>Faltam equivalentes CMYK e Pantone para impressão gráfica e as regras de fotografia.</li>
-          </ul>
+          <ul className="aberto">{d.pontosAbertos.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
       </Capitulo>
 
       <footer className="fim">
         <div className="wrap">
           <Logo altura={20} />
-          <span>Manual de Marca · versão 1.0 (rascunho) · outubro de 2026</span>
+          <span>Manual de Marca · versão {d.versao} (rascunho) · {d.data}</span>
         </div>
       </footer>
       </main>
