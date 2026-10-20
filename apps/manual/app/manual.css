@@ -23,16 +23,34 @@ a { color: inherit; }
 
 /* Navegação */
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--branco); }
-nav.topo { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--branco); border-bottom: 1px solid var(--linha); }
-nav.topo .wrap { display: flex; align-items: center; gap: 24px; height: 56px; }
-nav.topo img { height: 22px; width: auto; flex: none; }
-nav.topo ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; min-width: 0; }
-nav.topo ul::-webkit-scrollbar { display: none; }
-nav.topo a { display: block; padding: 6px 10px; text-decoration: none; font-size: 13px; font-weight: 500; color: var(--cinza); white-space: nowrap; border-radius: 6px; }
-nav.topo a:hover, nav.topo a:focus-visible { color: var(--grafite); background: var(--destaque); outline: none; }
+/* Layout com menu lateral: coluna fixa à esquerda, conteúdo à direita */
+.layout { display: grid; grid-template-columns: 248px minmax(0, 1fr); }
+.lateral { position: sticky; top: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; gap: 40px; padding: max(32px, env(safe-area-inset-top, 0px)) 20px 28px max(24px, env(safe-area-inset-left, 0px)); background: var(--branco); border-right: 1px solid var(--linha); overflow-y: auto; z-index: 9; }
+.lateral-logo { display: inline-flex; padding-left: 12px; }
+.lateral-logo img { height: 26px; width: auto; }
+.lateral ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.lateral a:not(.lateral-logo) { display: flex; align-items: baseline; gap: 12px; padding: 9px 12px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500; color: var(--cinza); white-space: nowrap; }
+.lateral-num { font-family: var(--display); font-weight: 900; font-size: 12px; color: var(--cinza); opacity: .55; font-variant-numeric: tabular-nums; }
+.lateral a:hover, .lateral a:focus-visible { color: var(--grafite); background: var(--papel); outline: none; }
+.lateral a:focus-visible { box-shadow: inset 0 0 0 2px var(--amarelo); }
+.lateral a[aria-current] { color: var(--grafite); font-weight: 700; background: var(--destaque); }
+.lateral a[aria-current] .lateral-num { color: var(--grafite); opacity: 1; }
+.lateral-rodape { margin: auto 0 0; padding-left: 12px; font-size: 12px; line-height: 1.5; color: var(--cinza); }
+.conteudo { min-width: 0; }
+@media (max-width: 960px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .lateral { top: env(safe-area-inset-top, 0px); height: auto; flex-direction: row; align-items: center; gap: 20px; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); border-right: 0; border-bottom: 1px solid var(--linha); overflow: visible; }
+  .lateral-logo { padding-left: 0; flex: none; }
+  .lateral-logo img { height: 22px; }
+  .lateral nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .lateral nav::-webkit-scrollbar { display: none; }
+  .lateral ol { display: flex; height: 56px; align-items: center; }
+  .lateral a:not(.lateral-logo) { padding: 6px 10px; font-size: 13px; }
+  .lateral-num, .lateral-rodape { display: none; }
+}
 
 /* Capa */
-.capa { padding-block: 32px 8px; }
+.capa { padding-block: 40px 8px; }
 .capa-arte { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: url("/downloads/artes/capa-slide.jpg") center / cover no-repeat; border-radius: 4px; container-type: inline-size; overflow: hidden; outline: 1px solid var(--linha); }
 .capa-texto { position: absolute; left: 17%; right: 10%; top: 29%; bottom: 29%; display: flex; flex-direction: column; justify-content: center; gap: 1.2cqw; }
 .capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 7.4cqw; line-height: .95; letter-spacing: -.02em; color: var(--grafite); }
@@ -41,7 +59,8 @@ nav.topo a:hover, nav.topo a:focus-visible { color: var(--grafite); background: 
 .capa-meta b { color: var(--grafite); font-weight: 700; }
 
 /* Seções */
-section.cap { padding-block: 88px; scroll-margin-top: 64px; }
+section.cap { padding-block: 88px; scroll-margin-top: 0; }
+@media (max-width: 960px) { section.cap { scroll-margin-top: 56px; } }
 .cap-head { display: grid; grid-template-columns: 120px 1fr; gap: 8px 32px; margin-bottom: 48px; }
 .cap-num { font-family: var(--display); font-weight: 900; font-size: 64px; line-height: .9; color: var(--amarelo); font-variant-numeric: tabular-nums; }
 .cap-head h2 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(32px, 5vw, 48px); line-height: 1; letter-spacing: -.02em; text-wrap: balance; }
@@ -188,3 +207,6 @@ footer.fim img { height: 20px; width: auto; }
 .arquivo .downloads { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; }
 .arquivo .downloads a { color: var(--amarelo); font-weight: 700; font-size: 13px; text-underline-offset: 3px; }
 .arquivo .downloads a:hover, .arquivo .downloads a:focus-visible { color: var(--branco); }
+@media (min-width: 961px) {
+  .conteudo .wrap { padding-left: 48px; padding-right: max(48px, env(safe-area-inset-right, 0px)); }
+}

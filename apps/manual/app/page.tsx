@@ -1,5 +1,6 @@
 import { contraste, cor, logos, tokens, Logo, type VarianteLogo } from "@encibra/marca";
 import { Capitulo, Legenda, Rotulo } from "./componentes";
+import { MenuLateral } from "./MenuLateral";
 
 const secoes = [
   ["principios", "Princípios"],
@@ -65,17 +66,9 @@ const arquivos = [
 
 export default function Manual() {
   return (
-    <>
-      <nav className="topo" aria-label="Seções do manual">
-        <div className="wrap">
-          <Logo altura={22} />
-          <ul>
-            {secoes.map(([id, nome]) => (
-              <li key={id}><a href={`#${id}`}>{nome}</a></li>
-            ))}
-          </ul>
-        </div>
-      </nav>
+    <div className="layout">
+      <MenuLateral secoes={secoes} />
+      <main className="conteudo" id="topo">
 
       <header className="capa">
         <div className="wrap">
@@ -400,6 +393,7 @@ export default function Manual() {
           <span>Manual de Marca · versão 1.0 (rascunho) · outubro de 2026</span>
         </div>
       </footer>
-    </>
+      </main>
+    </div>
   );
 }
