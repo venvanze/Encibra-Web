@@ -1,0 +1,12 @@
+/* Gerado por scripts/gera-tokens.mjs. Edite src/tokens.json. */
+:root {
+  --cor-amarelo: #F2BC1B;
+  --cor-grafite: #333333;
+  --cor-cinza: #5F5F5F;
+  --cor-papel: #F7F7F5;
+  --cor-destaque: #FFF7D7;
+  --cor-branco: #FFFFFF;
+  --fonte-display: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --fonte-corpo: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --fonte-documento: Aptos, "Segoe UI", Calibri, system-ui, sans-serif;
+}
