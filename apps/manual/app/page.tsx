@@ -268,9 +268,9 @@ export default function Manual() {
         <div className="grid g3">
           <div>
             <div className="forma-demo p-papel">
-              <svg viewBox="0 0 200 130" aria-label="Bloco chanfrado"><path d="M30,0 H176 Q200,0 200,24 V100 L170,130 H24 Q0,130 0,106 V30 Z" fill="var(--amarelo)" /></svg>
+              <svg viewBox="0 0 200 130" aria-label="Bloco chanfrado"><path d="M34.64,0 H177.65 A22.35,22.35 0 0 1 200,22.35 V95.36 A11.19,11.19 0 0 1 196.72,103.28 L173.28,126.72 A11.19,11.19 0 0 1 165.36,130 H22.35 A22.35,22.35 0 0 1 0,107.65 V34.64 A11.19,11.19 0 0 1 3.28,26.72 L26.72,3.28 A11.19,11.19 0 0 1 34.64,0 Z" fill="var(--amarelo)" /></svg>
             </div>
-            <Legenda titulo="Bloco chanfrado">Chanfro no canto superior esquerdo e no inferior direito. É a assinatura visual da marca.</Legenda>
+            <Legenda titulo="Bloco chanfrado">Chanfro no canto superior esquerdo e no inferior direito, cantos arredondados nos outros dois. Todas as quinas levam filete, inclusive as do chanfro: o grafismo nunca tem quina viva.</Legenda>
           </div>
           <div>
             <div className="forma-demo p-branco" style={{ background: "url('/downloads/artes/capa-slide.jpg') center / cover" }} />
