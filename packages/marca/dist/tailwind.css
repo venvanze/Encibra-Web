@@ -1,0 +1,12 @@
+/* Gerado por scripts/gera-tokens.mjs. Edite src/tokens.json. */
+@theme {
+  --color-amarelo: #F2BC1B;
+  --color-grafite: #333333;
+  --color-cinza: #5F5F5F;
+  --color-papel: #F7F7F5;
+  --color-destaque: #FFF7D7;
+  --color-branco: #FFFFFF;
+  --font-display: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --font-corpo: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --font-documento: Aptos, "Segoe UI", Calibri, system-ui, sans-serif;
+}

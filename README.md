@@ -23,7 +23,9 @@ pnpm build          # build de produção (o manual sai em apps/manual/out)
 ## Mudar uma cor da marca
 
 As cores e fontes têm uma fonte única: `packages/marca/src/tokens.json`.
-O build gera `tokens.css` a partir dela, e todos os apps leem as variáveis `--cor-*` e `--fonte-*`.
+O build gera `tokens.css` (variáveis `--cor-*` e `--fonte-*`) e `tailwind.css` (tema do Tailwind v4,
+com classes como `bg-amarelo` e `font-display`). Apps em CSS puro importam o primeiro; apps em Tailwind,
+o segundo, com `@import "@encibra/marca/tailwind.css";`.
 A tabela de contraste do manual é recalculada sozinha.
 
 ## Fontes
