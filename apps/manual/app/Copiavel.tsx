@@ -29,7 +29,7 @@ export function Copiavel({
       <span className="copiavel-rotulo">
         <span className="r-normal">{rotulo}</span>
         <span className="r-hover" aria-hidden="true">Copiar <IconeCopiar /></span>
-        <span className="r-ok" aria-hidden="true">{copiado ? "Copiado" : ""}</span>
+        <span className="r-ok" aria-hidden="true">Copiado</span>
       </span>
       {children}
     </button>
