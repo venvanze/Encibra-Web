@@ -72,7 +72,7 @@ export default function Manual() {
           <div className="capa-arte" role="img" aria-label="Capa do manual sobre a faixa ouro da Encibra">
             <div className="capa-texto">
               <h1>Manual de Marca</h1>
-              <p>Guia de identidade visual da Encibra S.A.</p>
+              <p>Guia de identidade visual da Encibra</p>
             </div>
           </div>
           <div className="capa-meta">
@@ -482,7 +482,7 @@ export default function Manual() {
                 <h5>1.1 Objetivo</h5>
                 <p>Verificar o atendimento aos parâmetros de desempenho previstos no contrato de concessão.</p>
                 <div className="dest">Caixa de destaque em Ouro 50 para conclusões e alertas.</div>
-                <div className="rod"><span>Encibra S.A. · Relatório de Inspeção</span><span>3</span></div>
+                <div className="rod"><span>Encibra · Relatório de Inspeção</span><span>3</span></div>
               </div>
               <Legenda titulo="Página interna">Logotipo à direita no cabeçalho, rodapé sem filete e numeração automática.</Legenda>
             </div>

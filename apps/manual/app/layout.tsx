@@ -7,7 +7,7 @@ import { Clarity } from "./Clarity";
 
 export const metadata: Metadata = {
   title: "Manual de Marca Encibra",
-  description: "Guia de identidade visual da Encibra S.A.: logotipo, cores com CMYK e Pantone, paleta estendida, tipografia, grafismo e aplicações.",
+  description: "Guia de identidade visual da Encibra: logotipo, cores com CMYK e Pantone, paleta estendida, tipografia, grafismo e aplicações.",
   // Aponta a versão em Markdown para LLMs e ferramentas que leem a página.
   alternates: { types: { "text/markdown": "/llms-full.txt", "text/plain": "/llms.txt" } },
 };

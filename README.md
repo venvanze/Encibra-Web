@@ -1,6 +1,6 @@
 # encibra-web
 
-Monorepo dos sites da Encibra S.A. Um só stack (TypeScript, React, Next.js) para o manual de marca,
+Monorepo dos sites da Encibra Um só stack (TypeScript, React, Next.js) para o manual de marca,
 a intranet, o site institucional e o portfólio, todos usando o mesmo pacote da marca.
 
 ```
