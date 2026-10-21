@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <title>Encibra (desenho para 16 px)</title>
+  <!-- Ícone redesenhado na grade de 16 px: hastes de 3 px e chanfros a 45° em pixel inteiro.
+       O traço arredondado de 0,6 px arredonda as quinas, inclusive as do chanfro. -->
+  <g fill="#F2BC1B" stroke="#F2BC1B" stroke-width="0.6" stroke-linejoin="round">
+    <path d="M6.3 1.3H13.7V3.7H7.9L5.3 6.3V12.3H13.7V14.7H5.3Q2.3 14.7 2.3 11.7V5.3Z"/>
+    <path d="M10.3 6.8H13.7V9.2H7.9Z"/>
+  </g>
+</svg>
