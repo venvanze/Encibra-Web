@@ -1,6 +1,7 @@
 import { contraste, cor, tokens, Logo } from "@encibra/marca";
 import { Capitulo, Legenda, Rotulo } from "./componentes";
 import { MenuLateral } from "./MenuLateral";
+import { Copiavel } from "./Copiavel";
 import * as d from "./dados";
 import { markdown } from "./llm";
 
@@ -158,7 +159,7 @@ export default function Manual() {
               const grande = l === 0;
               return (
                   <div key={c.id} className={grande ? "cor grande" : "cor"}>
-                    <div className="amostra" style={{ background: c.hex, color: cor[c.texto] }}>{c.nome}</div>
+                    <Copiavel valor={c.hex} rotulo={c.nome} className="amostra" style={{ background: c.hex, color: cor[c.texto] }} />
                     <dl className="dados">
                       <dt>Papel</dt><dd><b>{c.papel}</b></dd>
                       <dt>HEX</dt><dd><code>{c.hex}</code></dd>
@@ -179,9 +180,9 @@ export default function Manual() {
 
         <div className="sub">
           <Rotulo proposta>Proporção de uso </Rotulo>
-          <div className="proporcao" role="img" aria-label={d.proporcao.map((p) => `${p.rotulo} ${p.pct}%`).join(", ")}>
+          <div className="proporcao">
             {d.proporcao.map((p) => (
-              <div key={p.id} style={{ flex: p.pct, background: cor[p.id], color: textoSobre(cor[p.id]) }}>{p.pct >= 10 ? `${p.rotulo} ${p.pct}%` : `${p.pct}%`}</div>
+              <Copiavel key={p.id} valor={cor[p.id]} rotulo={p.pct >= 10 ? `${p.rotulo} ${p.pct}%` : `${p.pct}%`} style={{ flex: p.pct, background: cor[p.id], color: textoSobre(cor[p.id]) }} />
             ))}
           </div>
           <p className="muted" style={{ marginTop: 12 }}>Em uma peça típica, o branco domina, o chumbo carrega o texto, o ouro aparece pouco e onde precisa ser visto, e o azulado marca as ações. Capas são a exceção: a faixa ouro é o centro delas.</p>
@@ -226,9 +227,9 @@ export default function Manual() {
                 {Object.entries(e.tons).map(([t, hex]) => {
                   const base = (id === "ouro" && t === "500") || (id === "cinza-azulado" && t === "700");
                   return (
-                    <div key={t} className={base ? "tom base" : "tom"} style={{ background: hex, color: textoSobre(hex) }} title={`--cor-${id}-${t}`}>
-                      <span>{t}</span><code>{hex}</code>
-                    </div>
+                    <Copiavel key={t} valor={hex} rotulo={t} className={base ? "tom base" : "tom"} style={{ background: hex, color: textoSobre(hex) }} title={`--cor-${id}-${t}`}>
+                      <code>{hex}</code>
+                    </Copiavel>
                   );
                 })}
               </div>
@@ -243,7 +244,7 @@ export default function Manual() {
             <div className="chips">
               {tokens.apoio.map((c) => (
                 <div className="chip" key={c.id}>
-                  <div className="chip-cor" style={{ background: c.hex }} />
+                  <Copiavel valor={c.hex} rotulo="" className="chip-cor" style={{ background: c.hex, color: textoSobre(c.hex) }} />
                   <div><b>{c.nome}</b> <code>{c.hex}</code><span>{c.relacao}. Com branco: {razao(c.hex, "#FFFFFF")}</span></div>
                 </div>
               ))}
@@ -254,7 +255,7 @@ export default function Manual() {
             <div className="chips">
               {tokens.semanticas.map((c) => (
                 <div className="chip" key={c.id}>
-                  <div className="chip-cor" style={{ background: c.hex }} />
+                  <Copiavel valor={c.hex} rotulo="" className="chip-cor" style={{ background: c.hex, color: textoSobre(c.hex) }} />
                   <div><b>{c.nome}</b> <code>{c.hex}</code><span>{c.uso}. Com branco: {razao(c.hex, "#FFFFFF")}</span></div>
                 </div>
               ))}
@@ -436,7 +437,7 @@ export default function Manual() {
             <div className="grid g3">
               {tokens.efeitos.mesh.map((m) => (
                 <figure key={m.id} className="mesh-amostra">
-                  <div style={{ background: mesh(m.id) }}><span className="fx-ruido" /></div>
+                  <Copiavel valor={[m.base, ...m.pontos].map((p) => cor[p]).join(", ")} rotulo="" className="mesh-copiar" style={{ background: mesh(m.id), color: cor.basico }}><span className="fx-ruido" /></Copiavel>
                   <figcaption><b>{m.nome}</b> {[m.base, ...m.pontos].map((p) => d.nomeDe(p)).join(" · ")}</figcaption>
                 </figure>
               ))}

@@ -350,3 +350,25 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 .nivel-fx.n1 i:nth-child(-n+1), .nivel-fx.n2 i:nth-child(-n+2), .nivel-fx.n3 i { background: var(--ouro); }
 .nivel-fx.n0 + .nivel-nome { color: var(--texto-2); }
 .nivel-nome { font-size: 13px; }
+
+/* Cores copiáveis: o rótulo vira "Copiar" no hover e no foco, e "Copiado" depois do clique */
+/* :where() deixa o reset sem especificidade, para não apagar o tamanho e o peso de cada amostra */
+:where(.copiavel) { appearance: none; border: 0; margin: 0; font: inherit; color: inherit; text-align: left; cursor: copy; position: relative; }
+.copiavel:focus-visible { outline: 2px solid var(--azulado); outline-offset: 2px; z-index: 1; }
+.copiavel-rotulo { display: inline-flex; align-items: center; }
+.copiavel .r-hover, .copiavel .r-ok:empty { display: none; }
+.copiavel .r-hover { align-items: center; gap: 6px; }
+.copiavel:hover .r-normal, .copiavel:focus-visible .r-normal { display: none; }
+.copiavel:hover .r-hover, .copiavel:focus-visible .r-hover { display: inline-flex; }
+.copiavel[data-copiado] .r-normal, .copiavel[data-copiado] .r-hover { display: none; }
+.icone-copiar { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.copiar-llm .icone-copiar { width: 14px; height: 14px; }
+.cor .amostra.copiavel { width: 100%; }
+.tom.copiavel { min-width: 0; }
+.chip-cor.copiavel { display: flex; align-items: center; justify-content: center; padding: 0; }
+.chip-cor .r-hover { font-size: 0; }
+.chip-cor .r-hover .icone-copiar, .chip-cor .r-ok { font-size: 16px; }
+.chip-cor .r-ok { font-size: 11px; font-weight: 700; }
+.mesh-copiar { display: flex; align-items: flex-start; width: 100%; height: 100%; padding: var(--e3); font-size: 13px; font-weight: 700; }
+.mesh-amostra > .copiavel { aspect-ratio: 1.618 / 1; border-radius: 4px; overflow: hidden; }
+.proporcao .copiavel { display: flex; align-items: flex-end; padding: 8px 10px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 0; }
