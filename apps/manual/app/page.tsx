@@ -1,6 +1,7 @@
 import { contraste, cor, tokens, Logo } from "@encibra/marca";
 import { Capitulo, Legenda, Rotulo } from "./componentes";
 import { MenuLateral } from "./MenuLateral";
+import { clarityAtivo } from "./Clarity";
 import { Copiavel } from "./Copiavel";
 import * as d from "./dados";
 import { markdown } from "./llm";
@@ -632,6 +633,7 @@ export default function Manual() {
         <div className="wrap">
           <Logo altura={20} />
           <span>Manual de Marca · versão {d.versao} · {d.data}</span>
+          {clarityAtivo && <span className="fim-privacidade">Este site usa o Microsoft Clarity para entender como o manual é usado.</span>}
         </div>
       </footer>
       </main>

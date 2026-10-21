@@ -196,6 +196,7 @@ table.t td { padding: 10px 14px; border-bottom: 1px solid var(--linha); vertical
 footer.fim { padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
 footer.fim .wrap { display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; align-items: center; }
 footer.fim img { height: 20px; width: auto; }
+footer.fim .fim-privacidade { flex-basis: 100%; }
 
 @media (max-width: 860px) {
   .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }

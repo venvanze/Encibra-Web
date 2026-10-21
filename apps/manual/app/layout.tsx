@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "@encibra/marca/tokens.css";
 import "@encibra/marca/fontes.css";
 import "./manual.css";
+import { Clarity } from "./Clarity";
 
 export const metadata: Metadata = {
   title: "Manual de Marca Encibra",
@@ -14,7 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Clarity />
+      </body>
     </html>
   );
 }
