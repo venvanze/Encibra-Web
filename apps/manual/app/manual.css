@@ -321,3 +321,32 @@ table.t.escura td { border-bottom-color: rgba(255,255,255,.12); }
 td.downloads { display: table-cell; }
 td.downloads a + a { margin-left: 12px; }
 @media (max-width: 860px) { .formatos { grid-template-columns: minmax(0, 1fr); } }
+
+/* Efeitos do grafismo: vidro, gradiente mesh e ruído */
+.efeitos-demo figure, .mesh-amostra { margin: 0; }
+.palco-fx { position: relative; aspect-ratio: 1.618 / 1; border-radius: 4px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.fx-ruido { position: absolute; inset: 0; background: url("/downloads/texturas/ruido-512.png") 0 0 / 256px; mix-blend-mode: overlay; opacity: .16; pointer-events: none; }
+.fx-ruido.metade { left: 50%; }
+.fx-atras { position: absolute; width: 30%; left: 22%; top: 18%; }
+/* A máscara com o grafismo oficial recorta o preenchimento, o desfoque e o ruído: os filetes ficam iguais aos do arquivo */
+.fx-forma { position: relative; width: 62%; aspect-ratio: 247 / 135; -webkit-mask: url("/downloads/grafismo/svg/grafismo-grande-simples-cheio-branco.svg") center / 100% 100% no-repeat; mask: url("/downloads/grafismo/svg/grafismo-grande-simples-cheio-branco.svg") center / 100% 100% no-repeat; }
+.fx-vidro { margin-left: 18%; margin-top: 12%; }
+.fx-vidro img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .55; }
+.fx-comparar::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px solid rgba(255,255,255,.5); }
+.fx-rotulo { position: absolute; bottom: var(--e2); font-size: 12px; font-weight: 700; color: var(--basico); }
+.fx-rotulo.esq { left: var(--e3); }
+.fx-rotulo.dir { right: var(--e3); }
+.efeitos-demo figcaption, .mesh-amostra figcaption { margin-top: var(--e2); font-size: 14px; color: var(--texto-2); }
+.efeitos-demo figcaption b, .mesh-amostra figcaption b { display: block; color: var(--chumbo); }
+.efeitos-texto { margin-top: var(--e5); align-items: start; }
+.fx-dl { margin: 0; display: grid; gap: var(--e1); font-size: 14px; }
+.fx-dl dt { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-2); margin-top: var(--e2); }
+.fx-dl dd { margin: 0; }
+.mesh-amostra > div { position: relative; aspect-ratio: 1.618 / 1; border-radius: 4px; overflow: hidden; }
+table.intensidade td { white-space: nowrap; }
+table.intensidade td.muted { white-space: normal; min-width: 240px; }
+.nivel-fx { display: inline-flex; gap: 3px; vertical-align: middle; margin-right: var(--e2); }
+.nivel-fx i { width: 8px; height: 8px; border-radius: 50%; background: var(--linha); }
+.nivel-fx.n1 i:nth-child(-n+1), .nivel-fx.n2 i:nth-child(-n+2), .nivel-fx.n3 i { background: var(--ouro); }
+.nivel-fx.n0 + .nivel-nome { color: var(--texto-2); }
+.nivel-nome { font-size: 13px; }

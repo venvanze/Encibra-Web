@@ -129,7 +129,24 @@ ${d.grafismo.preenchimentos.map(([t, , x]) => `- **${t}:** ${x}`).join("\n")}
 Escritório de Brasília (arte final, modelo 3): adesivo branco e Ouro Encibra sobre a parede, com cheios, vazados, duplos e expandidos em três fileiras. O logotipo fica sobre uma placa branca no formato do grafismo grande.
 
 ### Regras
-${d.grafismo.regras.map((x) => `- ${x}`).join("\n")}`,
+${d.grafismo.regras.map((x) => `- ${x}`).join("\n")}
+
+### Efeitos: vidro, gradiente mesh e ruído
+${d.efeitos.intro}
+
+${d.efeitos.lista.map((e) => `#### ${e.nome}\n- O que é: ${e.oque}\n- Como: ${e.como}\n- Quando: ${e.quando}\n- Meios: ${e.meios}`).join("\n\n")}
+
+Valores técnicos: vidro com desfoque ${tokens.efeitos.vidro.desfoque}, saturação ${tokens.efeitos.vidro.saturacao}, preenchimento ${tokens.efeitos.vidro.preenchimento} e borda ${tokens.efeitos.vidro.borda}. Textura de ruído: [ruido-512.png](${URL_BASE}/downloads/texturas/ruido-512.png).
+
+Gradientes oficiais:
+${tokens.efeitos.mesh.map((m) => `- **${m.nome}:** base ${d.nomeDe(m.base)} ${cor[m.base]}; pontos ${m.pontos.map((p) => `${d.nomeDe(p)} ${cor[p]}`).join(", ")}`).join("\n")}
+
+Intensidade por tipo de peça:
+
+${tabela(["Peça", "Vidro", "Mesh", "Ruído", "Observação"], d.efeitos.intensidade.map(([p, v, m, r, o]) => [p, d.efeitos.niveis[v], d.efeitos.niveis[m], d.efeitos.niveis[r], o]))}
+
+Regras dos efeitos:
+${d.efeitos.regras.map((x) => `- ${x}`).join("\n")}`,
 
   aplicacoes: `## 07 Aplicações
 

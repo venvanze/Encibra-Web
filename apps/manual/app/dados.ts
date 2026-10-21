@@ -19,7 +19,7 @@ export const secoes = [
 export type IdSecao = (typeof secoes)[number][0];
 
 export const principios = [
-  ["Plano e limpo", "Nada de sombra, brilho, contorno ou degradê. A identidade é plana, como um bom desenho técnico."],
+  ["Plano por padrão", "A base é plana, como um bom desenho técnico: sem sombra e sem contorno decorativo. Vidro, gradiente mesh e ruído são recursos para enriquecer o grafismo, com regras próprias, e nunca tocam o logotipo."],
   ["Hierarquia por peso e cor", "O que importa fica mais pesado ou muda de cor. Não usamos caixas, sublinhados ou ícones para chamar atenção."],
   ["Ouro com intenção", "O Ouro Encibra marca o que importa: o ícone, o grafismo, a faixa da capa, números. Texto corrido nunca é ouro, e nunca é preto puro."],
 ] as const;
@@ -138,6 +138,56 @@ export const grafismo = {
   ],
 };
 
+// Efeitos de enriquecimento do grafismo. Valores técnicos em tokens.json (efeitos).
+export const efeitos = {
+  intro: "O grafismo sólido pode ganhar três efeitos: vidro, gradiente mesh e ruído. Eles dão profundidade e materialidade a peças digitais, ambientes e campanhas. Nos documentos a regra é a sobriedade: o grafismo fica sólido e os efeitos aparecem só onde a peça pede.",
+  lista: [
+    {
+      id: "vidro",
+      nome: "Vidro",
+      oque: "O grafismo vira uma placa translúcida: desfoca e clareia o que está atrás, com um filete claro na borda.",
+      como: "Preenchimento branco a 16%, desfoque de 24 px, saturação de 150% e borda de 1 px em branco a 55%. Sem sombra projetada.",
+      quando: "Sobre foto, vídeo ou gradiente mesh. Sobre fundo liso o vidro não aparece e vira só uma forma pálida.",
+      meios: "Digital (site, apps, redes, slides de capa) e ambientes, onde o vidro é vinil jateado ou acrílico fosco. No impresso, só como imagem já achatada.",
+    },
+    {
+      id: "mesh",
+      nome: "Gradiente mesh",
+      oque: "Preenchimento com vários pontos de cor que se misturam suavemente dentro do grafismo ou no fundo.",
+      como: "Use os três gradientes oficiais. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
+      quando: "Grafismos grandes, fundos de capa e campanhas. Em formas pequenas o gradiente não se lê: use a cor sólida.",
+      meios: "Digital e impresso. No impresso, aplique ruído junto para evitar faixas visíveis na transição.",
+    },
+    {
+      id: "ruido",
+      nome: "Ruído",
+      oque: "Granulação fina e monocromática por cima do grafismo, que tira o aspecto plástico do digital.",
+      como: "Textura oficial em modo sobreposição, a 8% no digital e a 4% no impresso. Nunca colorida.",
+      quando: "Sempre junto de gradiente mesh e de vidro. Sozinho, só em fundos grandes de cor sólida.",
+      meios: "Digital e impresso. Em tela pequena, reduza à metade.",
+    },
+  ],
+  niveis: ["Não usar", "Sutil", "Moderado", "Livre"],
+  // [tipo de peça, vidro, mesh, ruído, observação] com índice do nível em `niveis`
+  intensidade: [
+    ["Documentos Word e relatórios", 0, 0, 0, "Grafismo sólido. A capa usa a arte oficial."],
+    ["Propostas e apresentações: conteúdo", 0, 1, 0, "Slides de conteúdo ficam sólidos; mesh só em fundos de destaque."],
+    ["Apresentações: capa e separadores", 2, 2, 1, "Um efeito protagonista por slide."],
+    ["Site e interfaces", 2, 2, 1, "Vidro em destaques sobre imagem. Botões e textos ficam sólidos."],
+    ["Redes sociais e campanhas", 3, 3, 2, "Onde os efeitos têm mais espaço."],
+    ["Ambientes e sinalização", 2, 1, 0, "Vidro como vinil jateado ou acrílico fosco; mesh só em impressão digital de grande formato."],
+    ["Impressos gráficos (folder, cartaz)", 0, 2, 2, "Vidro só como imagem achatada; ruído obrigatório com mesh."],
+  ] as [string, number, number, number, string][],
+  regras: [
+    "Efeitos só no grafismo cheio. O vazado é linha fina e perde leitura com qualquer efeito.",
+    "O efeito nunca muda a forma: chanfros a 45°, cantos arredondados e filetes continuam iguais.",
+    "Nunca aplique efeito no logotipo.",
+    "Um efeito protagonista por peça. Ruído pode acompanhar qualquer um.",
+    "Texto sobre efeito continua exigindo contraste de 4,5 : 1 no ponto mais claro do fundo.",
+    "Nada de sombra projetada, brilho externo ou reflexo. O vidro se resolve com desfoque e filete.",
+  ],
+};
+
 export const variantesGrafismo = (["padrao", "grande"] as const).flatMap((tamanho) =>
   grafismo.estilos
     .filter(([, id]) => !(tamanho === "padrao" && id === "expandido"))
@@ -186,6 +236,8 @@ export const arquivosExtras = [
     links: ["Regular", "Bold", "Black"].map((p) => [`DM Sans ${p}`, `/downloads/fonts/DMSans-${p}.ttf`] as const) },
   { tipo: "JPG", titulo: "Artes de fundo", texto: "Capa A4, capa de slide e fundo escuro com o padrão de blocos.",
     links: [["Capa A4", "/downloads/artes/capa-a4.jpg"], ["Capa de slide", "/downloads/artes/capa-slide.jpg"], ["Fundo escuro", "/downloads/artes/fundo-escuro.jpg"]] as const },
+  { tipo: "PNG", titulo: "Textura de ruído", texto: "512 px, monocromática e repetível. Use em modo sobreposição, a 8% no digital e 4% no impresso.",
+    links: [["Ruído 512 px", "/downloads/texturas/ruido-512.png"]] as const },
 ];
 
 export const pontosAbertos = [

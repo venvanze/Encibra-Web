@@ -48,6 +48,14 @@ const etapas = [
   <path d={G.contorno} className="g-cheio" />,
 ];
 
+// Gradiente mesh aproximado em CSS: quatro pontos de cor radiais sobre a cor base.
+function mesh(id: string) {
+  const m = tokens.efeitos.mesh.find((x) => x.id === id)!;
+  const [a, b, c, e] = m.pontos.map((p) => cor[p]);
+  return `radial-gradient(at 12% 18%, ${a} 0, transparent 55%), radial-gradient(at 88% 12%, ${b} 0, transparent 50%), radial-gradient(at 85% 88%, ${c} 0, transparent 55%), radial-gradient(at 15% 90%, ${e} 0, transparent 50%), ${cor[m.base]}`;
+}
+const vidro = tokens.efeitos.vidro;
+
 const svgLogo = (base: string) => `/downloads/logos/svg/${base}.svg`;
 const svgGrafismo = (arquivo: string, corG = "ouro") => `/downloads/grafismo/svg/${arquivo}-${corG}.svg`;
 
@@ -377,6 +385,88 @@ export default function Manual() {
         <div className="sub">
           <Rotulo>Regras</Rotulo>
           <ul className="regras">{d.grafismo.regras.map((x) => <li key={x}>{x}</li>)}</ul>
+        </div>
+
+        <div className="sub efeitos" id="efeitos">
+          <Rotulo>Efeitos: vidro, gradiente mesh e ruído</Rotulo>
+          <p className="muted">{d.efeitos.intro}</p>
+
+          <div className="grid g3 efeitos-demo">
+            <figure>
+              <div className="palco-fx" style={{ background: mesh("noite") }}>
+                <span className="fx-ruido" />
+                <img className="fx-atras" src={svgGrafismo("grafismo-padrao-simples-cheio")} alt="" />
+                <div className="fx-forma fx-vidro" style={{ background: vidro.preenchimento, backdropFilter: `blur(${vidro.desfoque}) saturate(${vidro.saturacao})`, WebkitBackdropFilter: `blur(${vidro.desfoque}) saturate(${vidro.saturacao})` }}>
+                  <img src={svgGrafismo("grafismo-grande-simples-vazado", "branco")} alt="" />
+                </div>
+              </div>
+              <figcaption><b>Vidro</b> Placa translúcida sobre o grafismo ouro e o gradiente.</figcaption>
+            </figure>
+            <figure>
+              <div className="palco-fx p-basico">
+                <div className="fx-forma" style={{ background: mesh("ouro") }}><span className="fx-ruido" /></div>
+              </div>
+              <figcaption><b>Gradiente mesh</b> Ouro quente dentro do grafismo grande, com ruído.</figcaption>
+            </figure>
+            <figure>
+              <div className="palco-fx fx-comparar" style={{ background: mesh("encontro") }}>
+                <span className="fx-ruido metade" />
+                <span className="fx-rotulo esq">Sem ruído</span><span className="fx-rotulo dir">Com ruído</span>
+              </div>
+              <figcaption><b>Ruído</b> A granulação tira o aspecto plástico e evita faixas na impressão.</figcaption>
+            </figure>
+          </div>
+
+          <div className="grid g3 efeitos-texto">
+            {d.efeitos.lista.map((e) => (
+              <div key={e.id}>
+                <h3>{e.nome}</h3>
+                <dl className="fx-dl">
+                  <dt>O que é</dt><dd>{e.oque}</dd>
+                  <dt>Como</dt><dd>{e.como}</dd>
+                  <dt>Quando</dt><dd>{e.quando}</dd>
+                  <dt>Meios</dt><dd>{e.meios}</dd>
+                </dl>
+              </div>
+            ))}
+          </div>
+
+          <div className="sub">
+            <Rotulo>Gradientes oficiais</Rotulo>
+            <div className="grid g3">
+              {tokens.efeitos.mesh.map((m) => (
+                <figure key={m.id} className="mesh-amostra">
+                  <div style={{ background: mesh(m.id) }}><span className="fx-ruido" /></div>
+                  <figcaption><b>{m.nome}</b> {[m.base, ...m.pontos].map((p) => d.nomeDe(p)).join(" · ")}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+
+          <div className="sub">
+            <Rotulo>Intensidade por tipo de peça</Rotulo>
+            <div className="tabela-wrap">
+              <table className="t intensidade">
+                <thead><tr><th>Peça</th><th>Vidro</th><th>Mesh</th><th>Ruído</th><th>Observação</th></tr></thead>
+                <tbody>
+                  {d.efeitos.intensidade.map(([peca, ...resto]) => (
+                    <tr key={peca}>
+                      <td>{peca}</td>
+                      {(resto.slice(0, 3) as number[]).map((n, i) => (
+                        <td key={i}><span className={`nivel-fx n${n}`} aria-hidden="true"><i /><i /><i /></span><span className="nivel-nome">{d.efeitos.niveis[n]}</span></td>
+                      ))}
+                      <td className="muted">{resto[3]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="sub">
+            <Rotulo>Regras dos efeitos</Rotulo>
+            <ul className="regras">{d.efeitos.regras.map((x) => <li key={x}>{x}</li>)}</ul>
+          </div>
         </div>
       </Capitulo>
 

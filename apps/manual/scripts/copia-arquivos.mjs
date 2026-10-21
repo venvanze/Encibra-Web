@@ -10,7 +10,7 @@ const assets = join(marca, "..", "assets");
 const destino = new URL("../public/downloads/", import.meta.url).pathname;
 
 rmSync(destino, { recursive: true, force: true });
-for (const pasta of ["logos", "grafismo", "fonts", "artes"]) {
+for (const pasta of ["logos", "grafismo", "texturas", "fonts", "artes"]) {
   mkdirSync(join(destino, pasta), { recursive: true });
   cpSync(join(assets, pasta), join(destino, pasta), { recursive: true });
 }
