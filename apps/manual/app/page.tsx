@@ -77,7 +77,6 @@ export default function Manual() {
           <div className="capa-meta">
             <span><b>Versão</b> {d.versao}</span>
             <span><b>Data</b> {d.data}</span>
-            <span><b>Base</b> manual no Figma, modelos oficiais de Word e PowerPoint</span>
             <span><b>Para LLMs</b> <a href="/llms-full.txt">manual em Markdown</a> · <a href="/llms.txt">llms.txt</a></span>
           </div>
         </div>
