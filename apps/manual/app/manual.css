@@ -352,7 +352,7 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 
 /* Cores copiáveis: o rótulo vira "Copiar" no hover e no foco, e "Copiado" depois do clique */
 /* :where() deixa o reset sem especificidade, para não apagar o tamanho e o peso de cada amostra */
-:where(.copiavel) { appearance: none; border: 0; margin: 0; font: inherit; color: inherit; text-align: left; cursor: copy; position: relative; }
+:where(.copiavel) { appearance: none; border: 0; margin: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; position: relative; }
 .copiavel:focus-visible { outline: 2px solid var(--azulado); outline-offset: 2px; z-index: 1; }
 .copiavel-rotulo { display: inline-flex; align-items: center; }
 .copiavel .r-hover, .copiavel .r-ok:empty { display: none; }
