@@ -139,7 +139,7 @@ ${d.efeitos.lista.map((e) => `#### ${e.nome}\n- O que é: ${e.oque}\n- Como: ${e
 Valores técnicos: vidro com desfoque ${tokens.efeitos.vidro.desfoque}, saturação ${tokens.efeitos.vidro.saturacao}, preenchimento ${tokens.efeitos.vidro.preenchimento} e borda ${tokens.efeitos.vidro.borda}. Textura de ruído: [ruido-512.png](${URL_BASE}/downloads/texturas/ruido-512.png).
 
 Gradientes oficiais:
-${tokens.efeitos.mesh.map((m) => `- **${m.nome}:** base ${d.nomeDe(m.base)} ${cor[m.base]}; pontos ${m.pontos.map((p) => `${d.nomeDe(p)} ${cor[p]}`).join(", ")}`).join("\n")}
+${tokens.efeitos.mesh.map((m) => `- **${m.nome}:** base ${d.nomeDe(m.base)} ${cor[m.base]}; pontos ${[...new Set(m.pontos)].map((p) => `${d.nomeDe(p)} ${cor[p]}`).join(", ")}`).join("\n")}
 
 Intensidade por tipo de peça:
 

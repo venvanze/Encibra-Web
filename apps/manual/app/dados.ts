@@ -76,7 +76,7 @@ export const pares: [texto: string, fundo: string][] = [
 export const nomeDe = (id: string) => {
   const principal = tokens.cores.find((c) => c.id === id);
   if (principal) return principal.nome;
-  const extra = [...tokens.apoio, ...tokens.semanticas].find((c) => c.id === id);
+  const extra = [...tokens.apoio, ...tokens.auxiliares, ...tokens.semanticas].find((c) => c.id === id);
   if (extra) return extra.nome;
   const [escala, tom] = [id.replace(/-\d+$/, ""), id.match(/\d+$/)?.[0]];
   const e = (tokens.escalas as Record<string, { nome: string }>)[escala];
@@ -154,7 +154,7 @@ export const efeitos = {
       id: "mesh",
       nome: "Gradiente mesh",
       oque: "Preenchimento com vários pontos de cor que se misturam suavemente dentro do grafismo ou no fundo.",
-      como: "Use os três gradientes oficiais. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
+      como: "Use os quatro gradientes oficiais. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
       quando: "Grafismos grandes, fundos de capa e campanhas. Em formas pequenas o gradiente não se lê: use a cor sólida.",
       meios: "Digital e impresso. No impresso, aplique ruído junto para evitar faixas visíveis na transição.",
     },

@@ -434,11 +434,11 @@ export default function Manual() {
 
           <div className="sub">
             <Rotulo>Gradientes oficiais</Rotulo>
-            <div className="grid g3">
+            <div className="grid g4">
               {tokens.efeitos.mesh.map((m) => (
                 <figure key={m.id} className="mesh-amostra">
-                  <Copiavel valor={[m.base, ...m.pontos].map((p) => cor[p]).join(", ")} rotulo="" className="mesh-copiar" style={{ background: mesh(m.id), color: cor.basico }}><span className="fx-ruido" /></Copiavel>
-                  <figcaption><b>{m.nome}</b> {[m.base, ...m.pontos].map((p) => d.nomeDe(p)).join(" · ")}</figcaption>
+                  <Copiavel valor={[...new Set([m.base, ...m.pontos])].map((p) => cor[p]).join(", ")} rotulo="" className="mesh-copiar" style={{ background: mesh(m.id), color: cor.basico }}><span className="fx-ruido" /></Copiavel>
+                  <figcaption><b>{m.nome}</b> {[...new Set([m.base, ...m.pontos])].map((p) => d.nomeDe(p)).join(" · ")}</figcaption>
                 </figure>
               ))}
             </div>
