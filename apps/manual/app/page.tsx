@@ -75,7 +75,7 @@ export default function Manual() {
             </div>
           </div>
           <div className="capa-meta">
-            <span><b>Versão</b> {d.versao} (rascunho)</span>
+            <span><b>Versão</b> {d.versao}</span>
             <span><b>Data</b> {d.data}</span>
             <span><b>Base</b> manual no Figma, modelos oficiais de Word e PowerPoint</span>
             <span><b>Para LLMs</b> <a href="/llms-full.txt">manual em Markdown</a> · <a href="/llms.txt">llms.txt</a></span>
@@ -84,7 +84,7 @@ export default function Manual() {
       </header>
 
       <Capitulo id="principios" numero="01" titulo="Princípios" md={markdown.principios}
-        lead="Este manual reúne as regras visuais da Encibra: logotipo, cores, tipografia, grafismo e aplicações. Ele consolida o padrão dos modelos oficiais e do manual em construção no Figma, para que toda peça da empresa saia reconhecível.">
+        lead="Este manual reúne as regras visuais da Encibra: logotipo, cores, tipografia, grafismo e aplicações. Ele consolida o padrão dos modelos oficiais e do manual no Figma, para que toda peça da empresa saia reconhecível.">
         <div className="grid g3">
           {d.principios.map(([t, x]) => (
             <div className="principio" key={t}><h3>{t}</h3><p>{x}</p></div>
@@ -127,7 +127,7 @@ export default function Manual() {
 
         <div className="sub grid aureo" style={{ alignItems: "start" }}>
           <div>
-            <Rotulo proposta>Área de proteção </Rotulo>
+            <Rotulo>Área de proteção </Rotulo>
             <div className="protecao" role="img" aria-label="Logotipo com margem x em volta; x é metade da altura do ícone">
               <span className="x t">x</span><span className="x l">x</span><span className="x r">x</span><span className="x b">x</span>
               <div className="miolo"><Logo altura={70} /></div>
@@ -136,7 +136,7 @@ export default function Manual() {
             <p className="muted">{d.protecao.porque}</p>
           </div>
           <div>
-            <Rotulo proposta>Tamanho mínimo </Rotulo>
+            <Rotulo>Tamanho mínimo </Rotulo>
             <div className="minimos">
               <figure><Logo altura={22} /><figcaption>Horizontal: 100 px · 25 mm</figcaption></figure>
               <figure><Logo variante="icone-amarelo" altura={20} /><figcaption>Ícone: 20 px · 6 mm</figcaption></figure>
@@ -179,7 +179,7 @@ export default function Manual() {
         </div>
 
         <div className="sub">
-          <Rotulo proposta>Proporção de uso </Rotulo>
+          <Rotulo>Proporção de uso </Rotulo>
           <div className="proporcao">
             {d.proporcao.map((p) => (
               <Copiavel key={p.id} valor={cor[p.id]} rotulo={p.pct >= 10 ? `${p.rotulo} ${p.pct}%` : `${p.pct}%`} style={{ flex: p.pct, background: cor[p.id], color: textoSobre(cor[p.id]) }} />
@@ -624,15 +624,15 @@ export default function Manual() {
         </div>
 
         <div className="sub">
-          <Rotulo>Pontos em aberto</Rotulo>
-          <ul className="aberto">{d.pontosAbertos.map((x) => <li key={x}>{x}</li>)}</ul>
+          <Rotulo>Histórico de versões</Rotulo>
+          <ul className="aberto">{d.historico.map(([v, x]) => <li key={v}><b>{v}</b> · {x}</li>)}</ul>
         </div>
       </Capitulo>
 
       <footer className="fim">
         <div className="wrap">
           <Logo altura={20} />
-          <span>Manual de Marca · versão {d.versao} (rascunho) · {d.data}</span>
+          <span>Manual de Marca · versão {d.versao} · {d.data}</span>
         </div>
       </footer>
       </main>

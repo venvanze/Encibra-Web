@@ -23,13 +23,8 @@ export function Capitulo({
   );
 }
 
-export function Rotulo({ children, proposta }: { children: ReactNode; proposta?: boolean }) {
-  return (
-    <span className="rotulo">
-      {children}
-      {proposta && <span className="proposta">proposta</span>}
-    </span>
-  );
+export function Rotulo({ children }: { children: ReactNode }) {
+  return <span className="rotulo">{children}</span>;
 }
 
 export function Legenda({ titulo, children }: { titulo: string; children: ReactNode }) {

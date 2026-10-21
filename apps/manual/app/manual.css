@@ -82,7 +82,6 @@ h3 { font-family: var(--display); font-weight: 700; font-size: var(--t-h3); line
 p { margin: 0 0 12px; max-width: 68ch; }
 .muted { color: var(--texto-2); }
 .nota { font-size: var(--t-nota); color: var(--texto-2); }
-.proposta { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; background: var(--ouro-claro); color: #7A5B00; vertical-align: middle; margin-left: 6px; }
 
 .grid { display: grid; gap: var(--e4); }
 /* Divisões áureas: 1,618 : 1 e 1 : 1,618 */

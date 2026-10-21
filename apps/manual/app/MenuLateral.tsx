@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Logo } from "@encibra/marca";
+import { versao } from "./dados";
 
 type Secao = readonly [id: string, nome: string];
 
@@ -40,7 +41,7 @@ export function MenuLateral({ secoes }: { secoes: readonly Secao[] }) {
           ))}
         </ol>
       </nav>
-      <p className="lateral-rodape">Manual de Marca<br />versão 1.1 (rascunho)<br /><a href="/llms-full.txt">Versão para LLMs</a></p>
+      <p className="lateral-rodape">Manual de Marca<br />versão {versao}<br /><a href="/llms-full.txt">Versão para LLMs</a></p>
     </aside>
   );
 }

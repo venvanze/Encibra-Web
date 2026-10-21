@@ -12,7 +12,7 @@ const tabela = (cab: string[], linhas: string[][]) =>
 export const markdown: Record<d.IdSecao, string> = {
   principios: `## 01 Princípios
 
-Este manual reúne as regras visuais da Encibra S.A.: logotipo, cores, tipografia, grafismo e aplicações. Ele consolida o padrão dos modelos oficiais de documentos e apresentações e do manual em construção no Figma.
+Este manual reúne as regras visuais da Encibra S.A.: logotipo, cores, tipografia, grafismo e aplicações. Ele consolida o padrão dos modelos oficiais de documentos e apresentações e do manual no Figma.
 
 ${d.principios.map(([t, x]) => `- **${t}.** ${x}`).join("\n")}`,
 
@@ -179,8 +179,8 @@ Pasta \`/downloads/grafismo/{svg,pdf,png}/\`, arquivos \`grafismo-{padrao|grande
 ### Outros
 ${d.arquivosExtras.map((a) => `- ${a.titulo}: ${a.texto} ${a.links.map(([n, u]) => `[${n}](${URL_BASE}${u})`).join(" · ")}`).join("\n")}
 
-### Pontos em aberto
-${d.pontosAbertos.map((x) => `- ${x}`).join("\n")}`,
+### Histórico de versões
+${d.historico.map(([v, x]) => `- **${v}:** ${x}`).join("\n")}`,
 };
 
 export const cabecalho = `# Manual de Marca Encibra

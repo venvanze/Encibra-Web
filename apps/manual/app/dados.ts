@@ -2,7 +2,7 @@
 // Cores vêm de @encibra/marca/tokens.json; aqui ficam só os textos e as listas.
 import { cor, tokens, type VarianteLogo } from "@encibra/marca";
 
-export const versao = "1.1";
+export const versao = "2.0";
 export const data = "outubro de 2026";
 
 export const secoes = [
@@ -240,11 +240,8 @@ export const arquivosExtras = [
     links: [["Ruído 512 px", "/downloads/texturas/ruido-512.png"]] as const },
 ];
 
-export const pontosAbertos = [
-  `Os modelos de Word e PowerPoint e as artes de capa e de slide ainda usam #FFBF00. O Ouro Encibra oficial é ${cor.ouro} e eles precisam ser ajustados.`,
-  "Os modelos de apresentação usam DM Sans Black nos títulos de capa, e o manual no Figma define DM Sans Bold ou Medium. Black fica reservado a capas e números grandes até haver decisão.",
-  "O nome no logotipo colorido é preto puro, enquanto a regra de texto pede chumbo. No logotipo isso é aceito como exceção.",
-  "Os Pantone foram escolhidos por cálculo (ΔE 2000 sobre os valores publicados pela Pantone). Confirme na escala física Formula Guide, sob luz D50 e no papel da peça, antes da primeira impressão.",
-  "Área de proteção e tamanhos mínimos seguem a prática de mercado e ainda precisam ser aprovados pela Encibra.",
-  "Faltam regras de fotografia e de iconografia.",
+export const historico: [string, string][] = [
+  ["2.0", "Efeitos do grafismo (vidro, gradiente mesh e ruído) com intensidade por tipo de peça; quatro gradientes oficiais, entre eles o Carvão, do preto ao chumbo; Preto como cor auxiliar; todas as cores copiáveis com um clique; escalas de 50 a 900 alinhadas; grafismos padrão e grande com a mesma altura; grid em proporção áurea; favicon e ícones de app."],
+  ["1.1", "Cores com os nomes do Figma, CMYK e Pantone; paleta estendida; área de proteção e tamanho mínimo; capítulo do grafismo com 30 arquivos; downloads em SVG, PDF e PNG; versão para LLMs."],
+  ["1.0", "Primeira versão no site: logotipo, cores, tipografia, aplicações e usos incorretos."],
 ];
