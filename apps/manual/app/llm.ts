@@ -125,9 +125,6 @@ ${d.grafismo.preenchimentos.map(([t, , x]) => `- **${t}:** ${x}`).join("\n")}
 - Cores: Ouro Encibra, Chumbo e Branco.
 - Total: ${d.variantesGrafismo.length} formas × 3 cores = ${d.variantesGrafismo.length * 3} arquivos, em SVG, PDF e PNG.
 
-### Aplicação de referência
-Escritório de Brasília (arte final, modelo 3): adesivo branco e Ouro Encibra sobre a parede, com cheios, vazados, duplos e expandidos em três fileiras. O logotipo fica sobre uma placa branca no formato do grafismo grande.
-
 ### Regras
 ${d.grafismo.regras.map((x) => `- ${x}`).join("\n")}
 
@@ -155,7 +152,7 @@ ${d.efeitos.regras.map((x) => `- ${x}`).join("\n")}`,
 - **Indicadores:** número em DM Sans Black; o principal em fundo Ouro 50, os demais em Intermédio.
 - **Capa de slide:** título, subtítulo e rodapé, cada um no seu campo e na sua opacidade.
 - **Separador de seção:** fundo chumbo, número grande em ouro e título em branco.
-- **Ambientes:** grafismos em adesivo branco e ouro, como no escritório de Brasília.`,
+- **Ambientes:** grafismos em adesivo branco e ouro, em ritmo de cheios e vazados.`,
 
   incorretos: `## 08 Usos incorretos
 

@@ -378,12 +378,6 @@ export default function Manual() {
         </div>
 
         <div className="sub">
-          <Rotulo>Aplicação: escritório de Brasília</Rotulo>
-          <img className="brasilia" src="/downloads/artes/aplicacao-escritorio-brasilia.png" alt="Arte final das paredes do escritório de Brasília: grafismos em adesivo branco e ouro, em três fileiras, com o logotipo sobre uma placa branca no formato do grafismo" />
-          <p className="muted" style={{ marginTop: 12 }}>A arte usa quase todas as variações: cheios, vazados, duplos e expandidos, em branco e ouro, alinhados em três fileiras com espaço regular. O logotipo fica sobre uma placa branca no formato do grafismo grande, com a área de proteção respeitada.</p>
-        </div>
-
-        <div className="sub">
           <Rotulo>Regras</Rotulo>
           <ul className="regras">{d.grafismo.regras.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>

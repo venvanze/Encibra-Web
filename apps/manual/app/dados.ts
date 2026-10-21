@@ -133,7 +133,7 @@ export const grafismo = {
     "Use só os arquivos oficiais desta página; não redesenhe a forma.",
     "Mantenha a proporção. Para mudar o tamanho, escale a forma inteira.",
     "Os chanfros ficam sempre no canto superior esquerdo e no inferior direito.",
-    "Combine cheios e vazados em ritmo, como na arte de Brasília, com espaço regular entre as formas.",
+    "Combine cheios e vazados em ritmo, com espaço regular entre as formas.",
     "Use no máximo duas cores de grafismo por peça, além do fundo.",
   ],
 };
