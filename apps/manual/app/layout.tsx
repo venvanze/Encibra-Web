@@ -4,6 +4,7 @@ import "@encibra/marca/tokens.css";
 import "@encibra/marca/fontes.css";
 import "./manual.css";
 import { Clarity } from "./Clarity";
+import { Toast } from "./Toast";
 
 export const metadata: Metadata = {
   title: "Manual de Marca Encibra",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <body>
         {children}
+        <Toast />
         <Clarity />
       </body>
     </html>
