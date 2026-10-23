@@ -4,7 +4,7 @@ import { criarForma, verticesAzulejo } from "./formaChanfrada";
 
 /*
  * Grafismo oficial (packages/marca/assets/grafismo), na altura de 134,923 dos arquivos.
- * Vazado padrão e grande: os mesmos contornos dos SVGs, traço de 1 na escala do arquivo.
+ * Vazado padrão e grande: os mesmos contornos dos SVGs, com traço fino de 1,5 px na tela.
  */
 const ALTURA = 134.923;
 const PADRAO = { largura: 154.819, d: "M43.4189 0.5H122.819C140.216 0.500058 154.319 14.6031 154.319 32V92.4453C154.319 96.5534 152.689 100.494 149.785 103.4L123.334 129.878C120.427 132.788 116.482 134.423 112.368 134.423H32C14.603 134.423 0.5 120.32 0.5 102.923V43.4463C0.5 39.3381 2.13067 35.3976 5.03418 32.4912L32.4541 5.04492C35.3612 2.1351 39.3057 0.500098 43.4189 0.5Z" };
@@ -13,6 +13,10 @@ const GRANDE = { largura: 246.336, d: "M43.4189 0.5H214.336C231.733 0.5 245.836 
 const CANTO = 32 / ALTURA, FILETE = 16 / ALTURA, CHANFRO = 36.3 / ALTURA;
 // Vão regular entre as formas, em fração da altura (o do frame 5851:721 do Figma)
 const VAO = 0.1445;
+// Folga entre a faixa ouro e as fileiras logo acima e abaixo dela: o fundo abre espaço para a faixa
+const FOLGA = 0.4;
+// Grafismos do fundo com metade da altura da faixa, para aparecerem em maior quantidade
+const ESCALA_FUNDO = 0.5;
 // Ritmo das fileiras (P = padrão, G = grande), alternando A e B como no Figma
 const FILEIRAS = [
   { formas: "PGPPPGPP", inicio: -0.6 },
@@ -21,14 +25,16 @@ const FILEIRAS = [
 
 type Azulejo = { x: number; y: number; d: string };
 
-function montarFundo(largura: number, altura: number, topoFaixa: number, h: number): Azulejo[] {
+function montarFundo(largura: number, altura: number, topoFaixa: number, hFaixa: number): Azulejo[] {
+  const h = hFaixa * ESCALA_FUNDO;
   const s = h / ALTURA, vao = VAO * h, passo = h + vao;
   const ys: number[] = [];
-  for (let y = topoFaixa - passo; y + h > 0; y -= passo) ys.unshift(y);
-  for (let y = topoFaixa + passo; y < altura; y += passo) ys.push(y);
-  return ys.flatMap((y, i) => {
-    // A fileira logo acima da faixa é a B; daí para cima e para baixo alternam
-    const linha = Math.round((y - topoFaixa) / passo);
+  const folga = FOLGA * hFaixa;
+  for (let y = topoFaixa - folga - h; y + h > 0; y -= passo) ys.unshift(y);
+  for (let y = topoFaixa + hFaixa + folga; y < altura; y += passo) ys.push(y);
+  return ys.flatMap((y) => {
+    // As fileiras vizinhas da faixa são B; daí para cima e para baixo alternam com A
+    const linha = Math.round((y < topoFaixa ? topoFaixa - folga - h - y : y - topoFaixa - hFaixa - folga) / passo) + 1;
     const { formas, inicio } = FILEIRAS[(linha % 2 + 2) % 2];
     const out: Azulejo[] = [];
     let x = inicio * h, k = 0;
@@ -45,7 +51,7 @@ function montarFundo(largura: number, altura: number, topoFaixa: number, h: numb
 /**
  * Capa em tela cheia: grafismo vazado branco sobre o gradiente Carvão claro, que ocupa a largura
  * da tela (passa por baixo do menu) e esmaece com a rolagem, e uma faixa ouro sólida com ruído
- * e o título no grid. Faixa e grafismos do fundo têm a mesma altura e os cantos dos arquivos oficiais.
+ * e o título no grid. Os grafismos do fundo têm metade da altura da faixa; todos com os cantos dos arquivos oficiais.
  */
 export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor: string; children: ReactNode; rodape: ReactNode }) {
   const capa = useRef<HTMLElement>(null);
@@ -61,7 +67,7 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
       const h = rb.height;
       const medidas = { largura: rb.width, altura: h, raioCanto: CANTO * h, raioFilete: FILETE * h, corteChanfro: CHANFRO * h };
       setGeo({
-        w: rf.width, h: rf.height, s: h / ALTURA,
+        w: rf.width, h: rf.height, s: (h * ESCALA_FUNDO) / ALTURA,
         azulejos: montarFundo(rf.width, rf.height, rb.top - rf.top, h),
         recorte: `path("${criarForma(verticesAzulejo(rb.width, h, medidas)).caminho()}")`,
       });
@@ -101,8 +107,8 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
               </radialGradient>
               <mask id="capa-mascara"><rect width="100%" height="100%" fill="url(#capa-luz)" /></mask>
             </defs>
-            <g mask="url(#capa-mascara)" fill="none" stroke="#fff">
-              {geo.azulejos.map((a, i) => <path key={i} d={a.d} transform={`translate(${a.x} ${a.y}) scale(${geo.s})`} />)}
+            <g mask="url(#capa-mascara)" fill="none" stroke="#fff" strokeWidth={1.5} vectorEffect="non-scaling-stroke">
+              {geo.azulejos.map((a, i) => <path key={i} d={a.d} transform={`translate(${a.x} ${a.y}) scale(${geo.s})`} vectorEffect="non-scaling-stroke" />)}
             </g>
           </svg>
         )}
