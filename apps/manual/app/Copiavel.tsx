@@ -8,27 +8,31 @@ import { avisar } from "./Toast";
  * ou focar pelo teclado, e para "Copiado" depois do clique, com um aviso (toast) na tela.
  */
 export function Copiavel({
-  valor, rotulo, className = "", style, title, children,
+  valor, rotulo, className = "", style, title, children, textoHover = "Copiar", aviso, cores: coresAviso,
 }: {
   valor: string; rotulo: ReactNode; className?: string; style?: CSSProperties; title?: string; children?: ReactNode;
+  /** Texto do hover; o padrão é "Copiar". */
+  textoHover?: string;
+  /** Texto e cores do aviso (toast); por padrão saem do próprio valor. */
+  aviso?: string; cores?: string[];
 }) {
   const [copiado, setCopiado] = useState(false);
 
   async function copiar() {
     if (await copiarTexto(valor)) {
       setCopiado(true);
-      const cores = valor.match(/#[0-9a-f]{6}/gi) ?? [];
-      avisar(cores.length > 1 ? "Cores copiadas para a área de transferência" : `${valor} copiado para a área de transferência`, cores);
+      const cores = coresAviso ?? valor.match(/#[0-9a-f]{6}/gi) ?? [];
+      avisar(aviso ?? (cores.length > 1 ? "Cores copiadas para a área de transferência" : `${valor} copiado para a área de transferência`), cores);
       setTimeout(() => setCopiado(false), 1600);
     }
   }
 
   return (
     <button type="button" className={`copiavel ${className}`} style={style} title={title} onClick={copiar}
-      aria-label={`Copiar ${valor}`} data-copiado={copiado || undefined}>
+      aria-label={aviso ? `${textoHover}: ${title ?? ""}` : `Copiar ${valor}`} data-copiado={copiado || undefined}>
       <span className="copiavel-rotulo">
         <span className="r-normal">{rotulo}</span>
-        <span className="r-hover" aria-hidden="true">Copiar <IconeCopiar /></span>
+        <span className="r-hover" aria-hidden="true">{textoHover} <IconeCopiar /></span>
         <span className="r-ok" aria-hidden="true">Copiado</span>
       </span>
       {children}

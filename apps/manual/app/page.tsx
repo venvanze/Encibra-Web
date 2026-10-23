@@ -56,7 +56,38 @@ type ModoMesh = "claro" | "escuro";
 function mesh(id: string, modo: ModoMesh = "escuro") {
   const m = tokens.efeitos.mesh.find((x) => x.id === id)![modo];
   const [a, b, c, e] = m.pontos.map((p) => cor[p]);
-  return `radial-gradient(at 12% 18%, ${a} 0, transparent 55%), radial-gradient(at 88% 12%, ${b} 0, transparent 50%), radial-gradient(at 85% 88%, ${c} 0, transparent 55%), radial-gradient(at 15% 90%, ${e} 0, transparent 50%), ${cor[m.base]}`;
+  return [a, b, c, e].map((x, i) => `radial-gradient(at ${PONTOS_MESH[i][0]}% ${PONTOS_MESH[i][1]}%, ${x} 0, transparent ${PONTOS_MESH[i][2]}%)`).join(", ") + `, ${cor[m.base]}`;
+}
+// Pontos do mesh: posição (x, y) e até onde a cor se espalha antes de sumir.
+const PONTOS_MESH = [[12, 18, 55], [88, 12, 50], [85, 88, 55], [15, 90, 50]] as const;
+
+// Prompt para colar numa IA com as medidas exatas de um gradiente oficial.
+function promptMesh(id: string, modo: ModoMesh) {
+  const g = tokens.efeitos.mesh.find((x) => x.id === id)!;
+  const m = g[modo];
+  const texto = textoSobre(cor[m.base]) === cor.basico ? "branco #FFFFFF" : "chumbo #333333";
+  const pontos = m.pontos.map((p, i) => {
+    const [x, y, r] = PONTOS_MESH[i];
+    return `${i + 1}. ${d.nomeDe(p)} ${cor[p]}, centro em x ${x}% e y ${y}%, sumindo para transparente em ${r}% da distância até o canto mais distante`;
+  });
+  return `Aplique o gradiente mesh oficial "${g.nome}" (modo ${modo}) do Manual de Marca Encibra, exatamente com estas medidas:
+
+Cor de base (fundo sólido por baixo de tudo): ${d.nomeDe(m.base)} ${cor[m.base]}
+
+Quatro pontos de cor radiais sobre a base, nesta ordem de camada:
+${pontos.join("\n")}
+
+CSS de referência:
+background: ${mesh(id, modo)};
+
+Textura de ruído por cima: granulação monocromática em modo de mesclagem overlay (sobreposição), 8% de opacidade no digital e 4% no impresso. Arquivo oficial: https://encibra-manual.vercel.app/downloads/texturas/ruido-512.png
+
+Regras:
+- Texto sobre este gradiente em ${texto}, com contraste mínimo de 4,5 : 1 no ponto mais claro do fundo.
+- Se aplicar dentro do grafismo da Encibra (bloco com chanfros a 45° no canto superior esquerdo e no inferior direito), mantenha a forma intacta: cantos arredondados e filete nas quinas dos chanfros, nunca quina viva.
+- Nunca aplique o gradiente no logotipo.
+- Não adicione sombra, brilho ou reflexo.
+- Não troque, não adicione e não reordene cores.`;
 }
 const vidro = tokens.efeitos.vidro;
 
@@ -438,8 +469,9 @@ export default function Manual() {
                     {(["claro", "escuro"] as const).map((modo) => {
                       const ids = [...new Set([m[modo].base, ...m[modo].pontos])];
                       return (
-                        <Copiavel key={modo} valor={ids.map((p) => cor[p]).join(", ")} rotulo={modo === "claro" ? "Claro" : "Escuro"} className="mesh-copiar"
-                          title={ids.map((p) => d.nomeDe(p)).join(" · ")} style={{ background: mesh(m.id, modo), color: textoSobre(cor[m[modo].base]) }}><span className="fx-ruido" /></Copiavel>
+                        <Copiavel key={modo} valor={promptMesh(m.id, modo)} rotulo={modo === "claro" ? "Claro" : "Escuro"} className="mesh-copiar" textoHover="Copiar para IA"
+                          aviso={`Prompt do ${m.nome} (${modo}) copiado. Cole na sua IA.`} cores={ids.map((p) => cor[p])}
+                          title={`${m.nome}, modo ${modo}: ${ids.map((p) => d.nomeDe(p)).join(" · ")}`} style={{ background: mesh(m.id, modo), color: textoSobre(cor[m[modo].base]) }}><span className="fx-ruido" /></Copiavel>
                       );
                     })}
                   </div>
