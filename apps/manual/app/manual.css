@@ -54,7 +54,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .lateral a:not(.lateral-logo):hover, .lateral a:not(.lateral-logo):focus-visible { color: var(--chumbo); background: var(--intermedio); outline: none; }
 .lateral a:focus-visible { box-shadow: inset 0 0 0 2px var(--ouro); }
 /* Item ativo: só borda chumbo e negrito, sem preenchimento */
-.lateral a:not(.lateral-logo)[aria-current], .lateral a:not(.lateral-logo)[aria-current]:hover { color: var(--chumbo); font-weight: 700; background: transparent; box-shadow: inset 0 0 0 1.5px var(--chumbo); }
+.lateral a:not(.lateral-logo)[aria-current], .lateral a:not(.lateral-logo)[aria-current]:hover { color: var(--chumbo); font-weight: 700; background: transparent; box-shadow: inset 0 0 0 1px var(--borda); }
 .lateral a[aria-current] .lateral-num { color: var(--chumbo); opacity: 1; }
 /* Logo no topo, capítulos centrados na altura livre e assinatura com a versão no pé */
 .lateral nav { margin-block: auto; }
