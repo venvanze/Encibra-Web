@@ -185,8 +185,8 @@ export default function Manual() {
         <p className="nota fontes">Referências: {d.fontesProtecao.map(([n, u], i) => <span key={u}>{i > 0 && " · "}<a href={u}>{n}</a></span>)}</p>
       </Capitulo>
 
-      <Capitulo id="cores" numero="03" titulo="Cores" md={markdown.cores}
-        lead="Cinco cores, com os nomes do manual no Figma. O Ouro Encibra é a cor da marca, o Cinza azulado é a cor de ação, e Chumbo, Intermédio e Básico fazem o texto e os fundos.">
+      <Capitulo id="cores" numero="03" titulo="Cores e gradientes" md={markdown.cores}
+        lead="Cinco cores, com os nomes do manual no Figma, e três gradientes oficiais. O Ouro Encibra é a cor da marca, o Cinza azulado é a cor de ação, e Chumbo, Intermédio e Básico fazem o texto e os fundos.">
         {/* Divisão áurea na primeira linha: marca e ação; a segunda linha leva as três cores de base */}
         {[tokens.cores.slice(0, 2), tokens.cores.slice(2)].map((linha, l) => (
           <div key={l} className={`cores-grid ${l === 0 ? "aureo" : "g3"}`}>
@@ -244,6 +244,33 @@ export default function Manual() {
             </table>
           </div>
           <p className="nota" style={{ marginTop: 12 }}>Texto corrido exige 4,5 : 1 e título grande exige 3 : 1. Por isso, sobre o ouro, o texto é sempre chumbo. Os valores são calculados a partir das cores oficiais.</p>
+        </div>
+
+        <div className="sub" id="gradientes">
+          <Rotulo>Gradientes oficiais</Rotulo>
+          <p className="muted" style={{ marginBottom: "var(--e4)" }}>{d.gradientes.intro}</p>
+          <div className="grid g3">
+            {tokens.efeitos.mesh.map((m) => (
+              <figure key={m.id} className="mesh-amostra">
+                <div className="mesh-par">
+                  {(["claro", "escuro"] as const).map((modo) => {
+                    const ids = [...new Set([m[modo].base, ...m[modo].pontos])];
+                    return (
+                      <Copiavel key={modo} valor={promptMesh(m.id, modo)} rotulo={modo === "claro" ? "Claro" : "Escuro"} className="mesh-copiar" textoHover="Copiar para IA"
+                        aviso={`Prompt do ${m.nome} (${modo}) copiado. Cole na sua IA.`} cores={ids.map((p) => cor[p])}
+                        title={`${m.nome}, modo ${modo}: ${ids.map((p) => d.nomeDe(p)).join(" · ")}`} style={{ background: mesh(m.id, modo), color: textoSobre(cor[m[modo].base]) }}><span className="fx-ruido" /></Copiavel>
+                    );
+                  })}
+                </div>
+                <figcaption><b>{m.nome}</b></figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        <div className="sub">
+          <Rotulo>Regras dos gradientes</Rotulo>
+          <ul className="regras">{d.gradientes.regras.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
       </Capitulo>
 
@@ -459,28 +486,6 @@ export default function Manual() {
                 </dl>
               </div>
             ))}
-          </div>
-
-          <div className="sub">
-            <Rotulo>Gradientes oficiais</Rotulo>
-            <p className="muted" style={{ marginBottom: "var(--e4)" }}>Cada gradiente tem um modo claro, para peças e telas de fundo claro com texto chumbo, e um modo escuro, para fundos escuros com texto branco.</p>
-            <div className="grid g3">
-              {tokens.efeitos.mesh.map((m) => (
-                <figure key={m.id} className="mesh-amostra">
-                  <div className="mesh-par">
-                    {(["claro", "escuro"] as const).map((modo) => {
-                      const ids = [...new Set([m[modo].base, ...m[modo].pontos])];
-                      return (
-                        <Copiavel key={modo} valor={promptMesh(m.id, modo)} rotulo={modo === "claro" ? "Claro" : "Escuro"} className="mesh-copiar" textoHover="Copiar para IA"
-                          aviso={`Prompt do ${m.nome} (${modo}) copiado. Cole na sua IA.`} cores={ids.map((p) => cor[p])}
-                          title={`${m.nome}, modo ${modo}: ${ids.map((p) => d.nomeDe(p)).join(" · ")}`} style={{ background: mesh(m.id, modo), color: textoSobre(cor[m[modo].base]) }}><span className="fx-ruido" /></Copiavel>
-                      );
-                    })}
-                  </div>
-                  <figcaption><b>{m.nome}</b></figcaption>
-                </figure>
-              ))}
-            </div>
           </div>
 
           <div className="sub">

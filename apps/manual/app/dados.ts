@@ -8,7 +8,7 @@ export const data = "outubro de 2026";
 export const secoes = [
   ["principios", "Princípios"],
   ["logotipo", "Logotipo"],
-  ["cores", "Cores"],
+  ["cores", "Cores e gradientes"],
   ["paleta", "Paleta estendida"],
   ["tipografia", "Tipografia"],
   ["grafismo", "Grafismo"],
@@ -154,7 +154,7 @@ export const efeitos = {
       id: "mesh",
       nome: "Gradiente mesh",
       oque: "Preenchimento com vários pontos de cor que se misturam suavemente dentro do grafismo ou no fundo.",
-      como: "Use os três gradientes oficiais, no modo claro ou no escuro conforme o fundo da peça. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
+      como: "Use só os gradientes oficiais do capítulo Cores e gradientes, no modo claro ou no escuro conforme o fundo da peça. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
       quando: "Grafismos grandes, fundos de capa e campanhas. Em formas pequenas o gradiente não se lê: use a cor sólida.",
       meios: "Digital e impresso. No impresso, aplique ruído junto para evitar faixas visíveis na transição.",
     },
@@ -240,8 +240,22 @@ export const arquivosExtras = [
     links: [["Ruído 512 px", "/downloads/texturas/ruido-512.png"]] as const },
 ];
 
+// Regras de uso dos gradientes oficiais (capítulo Cores e gradientes). Valores em tokens.json (efeitos.mesh).
+export const gradientes = {
+  intro: "Três gradientes oficiais, cada um feito de tons de uma só família de cor. Cada gradiente tem um modo claro, para peças de fundo claro com texto chumbo, e um modo escuro, para fundos escuros com texto branco. Clique numa amostra para copiar um prompt com as medidas exatas.",
+  regras: [
+    "Use só os gradientes oficiais, com a base e os pontos de cor exatos. Não crie variações nem troque cores.",
+    "Cada gradiente fica dentro de uma família: ouro com ouro e âmbar, azulado com azulado, neutros com neutros. Nunca misture ouro e azulado no mesmo gradiente: a transição fica esverdeada e suja.",
+    "Um gradiente por peça. Para contrastar, ponha um gradiente ao lado de uma cor sólida, não de outro gradiente.",
+    "Modo claro com texto Chumbo, modo escuro com texto Básico (branco). O texto fica na área mais calma do gradiente e precisa de 4,5 : 1 no ponto mais claro do fundo.",
+    "Use no grafismo cheio e em fundos de destaque: capas, separadores, banners, redes sociais e campanhas. Nunca no logotipo, em texto, ícones, botões, tabelas ou no fundo de páginas de documento.",
+    "Sempre com ruído por cima (8% no digital, 4% no impresso), para tirar o aspecto plástico e evitar faixas na transição.",
+    "No impresso, exporte o gradiente como imagem em alta resolução já convertida para CMYK. Em impressão de uma ou duas cores, use a cor sólida.",
+  ],
+};
+
 export const historico: [string, string][] = [
-  ["2.1", "Saiu o gradiente Ouro sobre azulado, que misturava as duas cores; ficam três gradientes oficiais: Ouro quente, Noite azulada e Carvão."],
+  ["2.1", "Capítulo 03 passa a se chamar Cores e gradientes, com os gradientes oficiais e as regras de uso deles. Saiu o gradiente Ouro sobre azulado, que misturava as duas cores; ficam três: Ouro quente, Noite azulada e Carvão."],
   ["2.0", "Efeitos do grafismo (vidro, gradiente mesh e ruído) com intensidade por tipo de peça; quatro gradientes oficiais em modo claro e escuro, entre eles o Carvão, do preto ao chumbo; Preto como cor auxiliar; todas as cores copiáveis com um clique; escalas de 50 a 900 alinhadas; grafismos padrão e grande com a mesma altura; grid em proporção áurea; favicon e ícones de app."],
   ["1.1", "Cores com os nomes do Figma, CMYK e Pantone; paleta estendida; área de proteção e tamanho mínimo; capítulo do grafismo com 30 arquivos; downloads em SVG, PDF e PNG; versão para LLMs."],
   ["1.0", "Primeira versão no site: logotipo, cores, tipografia, aplicações e usos incorretos."],

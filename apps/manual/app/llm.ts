@@ -38,7 +38,7 @@ ${d.protecao.minimos.map(([a, b]) => `- ${a}: ${b}`).join("\n")}
 
 Referências: ${d.fontesProtecao.map(([n, u]) => `[${n}](${u})`).join(", ")}.`,
 
-  cores: `## 03 Cores
+  cores: `## 03 Cores e gradientes
 
 Cinco cores principais, com os nomes do manual no Figma. O Ouro Encibra é a cor da marca e o Cinza azulado é a cor de ação.
 
@@ -62,7 +62,15 @@ ${tabela(
     const c = contraste(cor[t], cor[f]);
     return [`${d.nomeDe(t)} sobre ${d.nomeDe(f)}`, `${r(cor[t], cor[f])} : 1`, c >= 4.5 ? "Sim" : "Não", c >= 3 ? "Sim" : "Não"];
   }),
-)}`,
+)}
+
+### Gradientes oficiais
+${d.gradientes.intro}
+
+${tokens.efeitos.mesh.map((m) => `- **${m.nome}**\n${(["claro", "escuro"] as const).map((modo) => `  - ${modo === "claro" ? "Modo claro" : "Modo escuro"}: base ${d.nomeDe(m[modo].base)} ${cor[m[modo].base]}; pontos ${[...new Set(m[modo].pontos)].map((p) => `${d.nomeDe(p)} ${cor[p]}`).join(", ")}`).join("\n")}`).join("\n")}
+
+### Regras dos gradientes
+${d.gradientes.regras.map((x) => `- ${x}`).join("\n")}`,
 
   paleta: `## 04 Paleta estendida
 
@@ -135,8 +143,7 @@ ${d.efeitos.lista.map((e) => `#### ${e.nome}\n- O que é: ${e.oque}\n- Como: ${e
 
 Valores técnicos: vidro com desfoque ${tokens.efeitos.vidro.desfoque}, saturação ${tokens.efeitos.vidro.saturacao}, preenchimento ${tokens.efeitos.vidro.preenchimento} e borda ${tokens.efeitos.vidro.borda}. Textura de ruído: [ruido-512.png](${URL_BASE}/downloads/texturas/ruido-512.png).
 
-Gradientes oficiais (cada um em modo claro, para fundo claro com texto chumbo, e modo escuro, para fundo escuro com texto branco):
-${tokens.efeitos.mesh.map((m) => `- **${m.nome}**\n${(["claro", "escuro"] as const).map((modo) => `  - ${modo === "claro" ? "Modo claro" : "Modo escuro"}: base ${d.nomeDe(m[modo].base)} ${cor[m[modo].base]}; pontos ${[...new Set(m[modo].pontos)].map((p) => `${d.nomeDe(p)} ${cor[p]}`).join(", ")}`).join("\n")}`).join("\n")}
+Gradientes oficiais e regras de uso: veja o capítulo 03 Cores e gradientes.
 
 Intensidade por tipo de peça:
 
