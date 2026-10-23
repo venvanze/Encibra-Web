@@ -59,6 +59,13 @@ function mesh(id: string, modo: ModoMesh = "escuro") {
   const [a, b, c, e] = m.pontos.map((p) => cor[p]);
   return [a, b, c, e].map((x, i) => `radial-gradient(at ${PONTOS_MESH[i][0]}% ${PONTOS_MESH[i][1]}%, ${x} 0, transparent ${PONTOS_MESH[i][2]}%)`).join(", ") + `, ${cor[m.base]}`;
 }
+// Faixa ouro da capa: o mesmo mesh do fundo Carvão claro com os tons de ouro invertidos em luminosidade,
+// para a faixa clarear onde o fundo escurece e aprofundar onde ele clareia (contraste nas bordas).
+const OURO_INVERSO: Record<string, string> = { basico: "ouro-600", intermedio: "ouro-500", "neutro-100": "ouro-500", "neutro-200": "ouro-400", "neutro-300": "ouro-300" };
+function meshComplementar(id: string, modo: ModoMesh) {
+  const m = tokens.efeitos.mesh.find((x) => x.id === id)![modo];
+  return m.pontos.map((p, i) => `radial-gradient(at ${PONTOS_MESH[i][0]}% ${PONTOS_MESH[i][1]}%, ${cor[OURO_INVERSO[p]]} 0, transparent ${PONTOS_MESH[i][2]}%)`).join(", ") + `, ${cor[OURO_INVERSO[m.base]]}`;
+}
 // Pontos do mesh: posição (x, y) e até onde a cor se espalha antes de sumir.
 const PONTOS_MESH = [[12, 18, 55], [88, 12, 50], [85, 88, 55], [15, 90, 50]] as const;
 
@@ -101,7 +108,7 @@ export default function Manual() {
       <MenuLateral secoes={d.secoes} />
       <main className="conteudo" id="topo">
 
-      <CapaHero fundo={mesh("carvao", "claro")} cor={cor.ouro}
+      <CapaHero fundo={mesh("carvao", "claro")} cor={meshComplementar("carvao", "claro")}
         rodape={<>
           <span>Versão {d.versao} · atualizada em {d.atualizado}</span>
           <a className="baixar-md" href="/manual-encibra.md" download="manual-de-marca-encibra.md">

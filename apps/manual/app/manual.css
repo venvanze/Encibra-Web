@@ -37,19 +37,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Layout com menu lateral: coluna fixa à esquerda, conteúdo à direita */
 .layout { display: grid; grid-template-columns: 248px minmax(0, 1fr); }
 .lateral { position: sticky; top: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; gap: var(--e5); padding: max(var(--e5), env(safe-area-inset-top, 0px)) var(--e3) var(--e4) max(var(--e4), env(safe-area-inset-left, 0px)); background: var(--basico); border-right: 1px solid var(--linha); overflow-y: auto; z-index: 9; }
-.lateral-logo { position: relative; display: inline-flex; align-self: flex-start; padding-left: 12px; outline: none; }
+.lateral-logo { position: relative; display: flex; padding-inline: 12px; outline: none; }
 .lateral-logo img { height: 26px; width: auto; }
-/* Hover e foco no logo: ícone de casa ao lado direito, indicando a volta ao início */
-.lateral-logo { align-items: center; gap: var(--e2); }
-.lateral-casa { width: 18px; height: 18px; fill: none; stroke: var(--chumbo); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translateX(-6px); filter: blur(4px); transition: opacity .2s ease, filter .3s ease, transform .5s var(--mola); }
+/* Hover e foco no logo: ícone de casa na ponta oposta da barra, indicando a volta ao início */
+.lateral-logo { align-items: center; justify-content: space-between; gap: var(--e2); }
+.lateral-casa { width: 18px; height: 18px; fill: none; stroke: var(--chumbo); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translateX(-10px); filter: blur(4px); transition: opacity .2s ease, filter .3s ease, transform .5s var(--mola); }
 .lateral-logo:hover .lateral-casa, .lateral-logo:focus-visible .lateral-casa { opacity: 1; transform: none; filter: none; }
 .lateral ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
 .lateral a:not(.lateral-logo) { display: flex; align-items: baseline; gap: 12px; padding: 9px 12px; border-radius: var(--raio-p); text-decoration: none; font-size: 14px; font-weight: 500; color: var(--texto-2); white-space: nowrap; }
 .lateral-num { font-family: var(--display); font-weight: 900; font-size: 12px; color: var(--texto-2); opacity: .55; font-variant-numeric: tabular-nums; }
-.lateral a:hover, .lateral a:focus-visible { color: var(--chumbo); background: var(--intermedio); outline: none; }
+.lateral a:not(.lateral-logo):hover, .lateral a:not(.lateral-logo):focus-visible { color: var(--chumbo); background: var(--intermedio); outline: none; }
 .lateral a:focus-visible { box-shadow: inset 0 0 0 2px var(--ouro); }
-.lateral a[aria-current] { color: var(--chumbo); font-weight: 700; background: var(--ouro-claro); }
-.lateral a[aria-current] .lateral-num { color: var(--chumbo); opacity: 1; }
+/* Item ativo: chumbo com texto branco e número em ouro, contraste forte sobre o menu claro ou translúcido */
+.lateral a[aria-current], .lateral a[aria-current]:hover { color: var(--basico); font-weight: 700; background: var(--chumbo); }
+.lateral a[aria-current] .lateral-num { color: var(--ouro); opacity: 1; }
 .lateral-rodape { margin: auto 0 0; padding-left: 12px; font-size: 12px; line-height: 1.5; color: var(--texto-2); }
 .conteudo { min-width: 0; }
 @media (max-width: 960px) {
@@ -78,8 +79,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .capa-mesh, .capa-linhas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .capa-faixa { grid-row: 2; position: relative; margin-inline: var(--e4); padding-block: var(--e6); }
 .capa-texto { position: relative; display: flex; flex-direction: column; gap: var(--e2); }
-.capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(34px, 5.2cqw); line-height: .95; letter-spacing: -.02em; color: var(--chumbo); }
-.capa-texto p { margin: 0; font-size: max(14px, 1.5cqw); font-weight: 500; color: rgba(51,51,51,.72); }
+.capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(34px, 5.2cqw); line-height: .95; letter-spacing: -.02em; color: var(--cor-preto, #000); }
+.capa-texto p { margin: 0; font-size: max(14px, 1.5cqw); font-weight: 500; color: rgb(0 0 0 / .75); }
 .capa-meta { grid-row: 3; align-self: end; position: relative; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2) var(--e5); padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
 @media (min-width: 961px) {
   .lateral { background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); transition: background-color .4s ease; }

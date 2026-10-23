@@ -13,8 +13,6 @@ const GRANDE = { largura: 246.336, d: "M43.4189 0.5H214.336C231.733 0.5 245.836 
 const CANTO = 32 / ALTURA, FILETE = 16 / ALTURA, CHANFRO = 36.3 / ALTURA;
 // Vão regular entre as formas, em fração da altura (o do frame 5851:721 do Figma)
 const VAO = 0.1445;
-// Folga entre a faixa ouro e as fileiras logo acima e abaixo dela: o fundo abre espaço para a faixa
-const FOLGA = 0.4;
 // Grafismos do fundo com metade da altura da faixa, para aparecerem em maior quantidade
 const ESCALA_FUNDO = 0.5;
 // Ritmo das fileiras (P = padrão, G = grande), alternando A e B como no Figma
@@ -29,7 +27,8 @@ function montarFundo(largura: number, altura: number, topoFaixa: number, hFaixa:
   const h = hFaixa * ESCALA_FUNDO;
   const s = h / ALTURA, vao = VAO * h, passo = h + vao;
   const ys: number[] = [];
-  const folga = FOLGA * hFaixa;
+  // A faixa ouro fica afastada das fileiras pelo mesmo vão que separa os grafismos entre si
+  const folga = vao;
   for (let y = topoFaixa - folga - h; y + h > 0; y -= passo) ys.unshift(y);
   for (let y = topoFaixa + hFaixa + folga; y < altura; y += passo) ys.push(y);
   return ys.flatMap((y) => {
@@ -50,14 +49,14 @@ function montarFundo(largura: number, altura: number, topoFaixa: number, hFaixa:
 
 /**
  * Capa em tela cheia: grafismo vazado branco sobre o gradiente Carvão claro, que ocupa a largura
- * da tela (passa por baixo do menu) e esmaece com a rolagem, e uma faixa ouro sólida com ruído
- * e o título no grid. Os grafismos do fundo têm metade da altura da faixa; todos com os cantos dos arquivos oficiais.
+ * da tela (passa por baixo do menu) e esmaece com a rolagem, e uma faixa ouro com ruído, em
+ * gradiente complementar ao do fundo, com o título em preto no grid. Os grafismos do fundo têm metade da altura da faixa; todos com os cantos dos arquivos oficiais.
  */
 export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor: string; children: ReactNode; rodape: ReactNode }) {
   const capa = useRef<HTMLElement>(null);
   const caixaFundo = useRef<HTMLDivElement>(null);
   const faixa = useRef<HTMLDivElement>(null);
-  const [geo, setGeo] = useState<{ w: number; h: number; s: number; azulejos: Azulejo[]; recorte: string }>();
+  const [geo, setGeo] = useState<{ w: number; h: number; s: number; dx: number; dy: number; azulejos: Azulejo[]; recorte: string }>();
 
   useEffect(() => {
     const f = caixaFundo.current, b = faixa.current;
@@ -67,7 +66,7 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
       const h = rb.height;
       const medidas = { largura: rb.width, altura: h, raioCanto: CANTO * h, raioFilete: FILETE * h, corteChanfro: CHANFRO * h };
       setGeo({
-        w: rf.width, h: rf.height, s: (h * ESCALA_FUNDO) / ALTURA,
+        w: rf.width, h: rf.height, s: (h * ESCALA_FUNDO) / ALTURA, dx: rb.left - rf.left, dy: rb.top - rf.top,
         azulejos: montarFundo(rf.width, rf.height, rb.top - rf.top, h),
         recorte: `path("${criarForma(verticesAzulejo(rb.width, h, medidas)).caminho()}")`,
       });
@@ -116,7 +115,11 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
         )}
         <div className="capa-difuso" />
       </div>
-      <div className="capa-faixa" ref={faixa} style={{ background: cor, clipPath: geo?.recorte, visibility: geo ? undefined : "hidden" }}>
+      {/* O gradiente da faixa é desenhado na caixa do fundo inteiro, para cada ponto ficar sobre o ponto inverso do Carvão */}
+      <div className="capa-faixa" ref={faixa} style={{
+        background: cor, clipPath: geo?.recorte, visibility: geo ? undefined : "hidden",
+        backgroundSize: geo && `${geo.w}px ${geo.h}px`, backgroundPosition: geo && `${-geo.dx}px ${-geo.dy}px`,
+      }}>
         <span className="fx-ruido" />
         <div className="wrap capa-texto">{children}</div>
       </div>
