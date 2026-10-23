@@ -1,0 +1,6 @@
+# Manual de Marca Encibra
+# Este site é preparado para leitura por IA e LLMs.
+# Índice para LLMs: https://encibra-manual.vercel.app/llms.txt
+# Manual completo em Markdown: https://encibra-manual.vercel.app/llms-full.txt
+User-agent: *
+Allow: /

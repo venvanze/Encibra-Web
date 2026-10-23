@@ -109,9 +109,11 @@ export default function Manual() {
             </div>
           </div>
           <div className="capa-meta">
-            <span><b>Versão</b> {d.versao}</span>
-            <span><b>Data</b> {d.data}</span>
-            <span><b>Para LLMs</b> <a href="/llms-full.txt">manual em Markdown</a> · <a href="/llms.txt">llms.txt</a></span>
+            <a className="baixar-md" href="/manual-encibra.md" download="manual-de-marca-encibra.md">
+              {/* Ícone download do Lucide (licença ISC) */}
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg>
+              Baixar manual em markdown (.md)
+            </a>
           </div>
         </div>
       </header>

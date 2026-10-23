@@ -41,7 +41,7 @@ export function MenuLateral({ secoes }: { secoes: readonly Secao[] }) {
           ))}
         </ol>
       </nav>
-      <p className="lateral-rodape">Manual de Marca<br />versão {versao}<br /><a href="/llms-full.txt">Versão para LLMs</a></p>
+      <p className="lateral-rodape">Manual de Marca<br />versão {versao}</p>
     </aside>
   );
 }
