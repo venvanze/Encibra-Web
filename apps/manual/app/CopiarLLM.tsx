@@ -17,7 +17,11 @@ export function CopiarLLM({ texto, titulo }: { texto: string; titulo: string }) 
   return (
     <button type="button" className="copiar-llm" onClick={copiar} aria-label={`Copiar a seção ${titulo} em Markdown para IA`}>
       <IconeCopiar />
-      <span>{estado === "ok" ? "Copiado" : estado === "erro" ? "Não foi possível copiar" : "Copiar para IA"}</span>
+      {/* Os dois rótulos ficam empilhados e trocam com crossblur, como nas cores; o erro aparece só no aviso */}
+      <span className="llm-rotulos" data-estado={estado === "ok" ? "ok" : undefined}>
+        <span className="llm-normal">Copiar para IA</span>
+        <span className="llm-ok" aria-hidden="true">Copiado</span>
+      </span>
     </button>
   );
 }

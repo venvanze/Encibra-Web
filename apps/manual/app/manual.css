@@ -234,9 +234,9 @@ footer.fim .fim-privacidade { flex-basis: 100%; }
 .lateral .lateral-rodape a { display: inline; padding: 0; font-size: 12px; color: var(--azulado); font-weight: 700; white-space: normal; }
 .lateral .lateral-rodape a:hover { background: none; text-decoration: underline; }
 .capa-meta a { color: var(--azulado); font-weight: 700; }
-.baixar-md { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 999px; background: var(--chumbo); color: var(--basico) !important; font-size: 14px; text-decoration: none; transition: transform .4s var(--mola); }
-.baixar-md:hover { transform: translateY(-2px); }
-.baixar-md svg { width: 16px; height: 16px; fill: none; stroke: var(--cor-ouro); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.baixar-md { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500 !important; color: var(--texto-2) !important; text-decoration: none; }
+.baixar-md:hover { color: var(--chumbo) !important; text-decoration: underline; text-underline-offset: 3px; }
+.baixar-md svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .so-leitores { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 /* Área de proteção com x nos quatro lados */
@@ -362,14 +362,21 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 .copiavel:focus-visible { outline: 2px solid var(--azulado); outline-offset: 2px; z-index: 1; }
 /* Os três rótulos ficam empilhados na mesma célula e trocam com uma mola suave */
 .copiavel-rotulo { display: inline-grid; align-items: center; }
-.copiavel-rotulo > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 6px; transition: opacity .18s ease, transform .5s var(--mola); }
+.copiavel-rotulo > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 6px; transition: opacity .18s ease, filter .3s ease, transform .5s var(--mola); }
 .copiavel .r-hover, .copiavel .r-ok { opacity: 0; transform: translateY(6px); }
+/* Crossblur do rótulo para "Copiado": o que sai desfoca, o que entra foca */
+.copiavel .r-ok { transform: scale(.96); filter: blur(6px); }
 .copiavel:hover .r-normal, .copiavel:focus-visible .r-normal, .copiavel[data-copiado] .r-normal { opacity: 0; transform: translateY(-6px); }
 .copiavel:hover .r-hover, .copiavel:focus-visible .r-hover { opacity: 1; transform: none; }
-.copiavel[data-copiado] .r-hover { opacity: 0; transform: translateY(-6px); }
-.copiavel[data-copiado] .r-ok { opacity: 1; transform: none; }
+.copiavel[data-copiado] .r-normal, .copiavel[data-copiado] .r-hover { opacity: 0; transform: scale(.96); filter: blur(6px); }
+.copiavel[data-copiado] .r-ok { opacity: 1; transform: none; filter: none; }
 .icone-copiar { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .copiar-llm .icone-copiar { width: 14px; height: 14px; }
+.llm-rotulos { display: inline-grid; justify-items: start; }
+.llm-rotulos > span { grid-area: 1 / 1; transition: opacity .2s ease, filter .3s ease, transform .5s var(--mola); }
+.llm-ok { opacity: 0; filter: blur(6px); transform: scale(.96); }
+.llm-rotulos[data-estado] .llm-normal { opacity: 0; filter: blur(6px); transform: scale(.96); }
+.llm-rotulos[data-estado="ok"] .llm-ok { opacity: 1; filter: none; transform: none; }
 .cor .amostra.copiavel { width: 100%; }
 .tom.copiavel { min-width: 0; }
 .chip-cor.copiavel { display: flex; align-items: center; justify-content: center; padding: 0; }
@@ -384,14 +391,14 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 .proporcao .copiavel { display: flex; align-items: flex-end; padding: 8px 10px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 0; }
 
 /* Aviso de cópia */
-.toast { position: fixed; left: 50%; bottom: var(--e5); z-index: 50; display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 12px 18px; border-radius: 10px; background: var(--chumbo); color: var(--basico); font: 500 14px/1.3 var(--corpo); box-shadow: 0 8px 24px rgb(0 0 0 / .18); opacity: 0; transform: translate(-50%, 16px) scale(.96); pointer-events: none; transition: opacity .2s ease, transform .6s var(--mola); }
+.toast { position: fixed; left: 50%; bottom: var(--e5); z-index: 50; display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 12px 18px; border-radius: 12px; background: rgb(255 255 255 / .72); -webkit-backdrop-filter: blur(20px) saturate(160%); backdrop-filter: blur(20px) saturate(160%); border: 1px solid rgb(0 0 0 / .08); color: var(--chumbo); font: 500 14px/1.3 var(--corpo); box-shadow: 0 8px 32px rgb(0 0 0 / .10); opacity: 0; transform: translate(-50%, 16px) scale(.96); pointer-events: none; transition: opacity .2s ease, transform .6s var(--mola); }
 .toast[data-visivel] { opacity: 1; transform: translate(-50%, 0); }
 .toast-cores { display: flex; flex: none; }
-.toast-icone { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--ouro); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.toast-icone.erro { stroke: var(--basico); }
-.toast-cor { width: 22px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .35); }
+.toast-icone { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--cor-ouro-700); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.toast-icone.erro { stroke: var(--cor-erro); }
+.toast-cor { width: 22px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12); }
 .toast-cor + .toast-cor { margin-left: -6px; }
 @supports (transition-timing-function: linear(0, 1)) {
   :root { --mola: linear(0, 0.0637, 0.2088, 0.3833, 0.5542, 0.7031, 0.8222, 0.9106, 0.9712, 1.0089, 1.0293, 1.0375, 1.0378, 1.0336, 1.0272, 1.0205, 1.0143, 1.0091, 1.0051, 1.0022, 1.0003, 0.9992, 0.9987, 0.9985, 0.9986, 0.9988, 0.9991, 0.9993, 1); }
 }
-@media (prefers-reduced-motion: reduce) { .toast, .copiavel-rotulo > span, .baixar-md { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .toast, .copiavel-rotulo > span, .llm-rotulos > span, .baixar-md { transition: none; } }
