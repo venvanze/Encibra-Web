@@ -51,8 +51,10 @@ const etapas = [
 ];
 
 // Gradiente mesh aproximado em CSS: quatro pontos de cor radiais sobre a cor base.
-function mesh(id: string) {
-  const m = tokens.efeitos.mesh.find((x) => x.id === id)!;
+// Cada gradiente oficial tem um modo claro e um escuro.
+type ModoMesh = "claro" | "escuro";
+function mesh(id: string, modo: ModoMesh = "escuro") {
+  const m = tokens.efeitos.mesh.find((x) => x.id === id)![modo];
   const [a, b, c, e] = m.pontos.map((p) => cor[p]);
   return `radial-gradient(at 12% 18%, ${a} 0, transparent 55%), radial-gradient(at 88% 12%, ${b} 0, transparent 50%), radial-gradient(at 85% 88%, ${c} 0, transparent 55%), radial-gradient(at 15% 90%, ${e} 0, transparent 50%), ${cor[m.base]}`;
 }
@@ -399,7 +401,7 @@ export default function Manual() {
             </figure>
             <figure>
               <div className="palco-fx p-basico">
-                <div className="fx-forma" style={{ background: mesh("ouro") }}><span className="fx-ruido" /></div>
+                <div className="fx-forma" style={{ background: mesh("ouro", "claro") }}><span className="fx-ruido" /></div>
               </div>
               <figcaption><b>Gradiente mesh</b> Ouro quente dentro do grafismo grande, com ruído.</figcaption>
             </figure>
@@ -428,11 +430,20 @@ export default function Manual() {
 
           <div className="sub">
             <Rotulo>Gradientes oficiais</Rotulo>
+            <p className="muted" style={{ marginBottom: "var(--e4)" }}>Cada gradiente tem um modo claro, para peças e telas de fundo claro com texto chumbo, e um modo escuro, para fundos escuros com texto branco.</p>
             <div className="grid g4">
               {tokens.efeitos.mesh.map((m) => (
                 <figure key={m.id} className="mesh-amostra">
-                  <Copiavel valor={[...new Set([m.base, ...m.pontos])].map((p) => cor[p]).join(", ")} rotulo="" className="mesh-copiar" style={{ background: mesh(m.id), color: cor.basico }}><span className="fx-ruido" /></Copiavel>
-                  <figcaption><b>{m.nome}</b> {[...new Set([m.base, ...m.pontos])].map((p) => d.nomeDe(p)).join(" · ")}</figcaption>
+                  <div className="mesh-par">
+                    {(["claro", "escuro"] as const).map((modo) => {
+                      const ids = [...new Set([m[modo].base, ...m[modo].pontos])];
+                      return (
+                        <Copiavel key={modo} valor={ids.map((p) => cor[p]).join(", ")} rotulo={modo === "claro" ? "Claro" : "Escuro"} className="mesh-copiar"
+                          title={ids.map((p) => d.nomeDe(p)).join(" · ")} style={{ background: mesh(m.id, modo), color: textoSobre(cor[m[modo].base]) }}><span className="fx-ruido" /></Copiavel>
+                      );
+                    })}
+                  </div>
+                  <figcaption><b>{m.nome}</b></figcaption>
                 </figure>
               ))}
             </div>

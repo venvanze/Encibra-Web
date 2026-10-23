@@ -375,7 +375,8 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 .chip-cor .r-hover .icone-copiar { font-size: 20px; stroke-width: 2.25; }
 .chip-cor .r-ok { font-size: 11px; font-weight: 700; }
 .mesh-copiar { display: flex; align-items: flex-start; width: 100%; padding: var(--e3); font-size: 13px; font-weight: 700; }
-.mesh-amostra > .copiavel { aspect-ratio: 1.618 / 1; border-radius: 4px; overflow: hidden; }
+.mesh-amostra > .mesh-par { display: grid; gap: 6px; aspect-ratio: auto; overflow: visible; }
+.mesh-par > .copiavel { aspect-ratio: 1.618 / 1; border-radius: 4px; overflow: hidden; }
 .proporcao .copiavel { display: flex; align-items: flex-end; padding: 8px 10px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 0; }
 
 /* Aviso de cópia */

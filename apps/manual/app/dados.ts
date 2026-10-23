@@ -154,7 +154,7 @@ export const efeitos = {
       id: "mesh",
       nome: "Gradiente mesh",
       oque: "Preenchimento com vários pontos de cor que se misturam suavemente dentro do grafismo ou no fundo.",
-      como: "Use os quatro gradientes oficiais. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
+      como: "Use os quatro gradientes oficiais, no modo claro ou no escuro conforme o fundo da peça. Quatro pontos de cor no máximo, sempre vizinhos no círculo cromático, e o Ouro Encibra presente em pelo menos 40% da área quando ele for a cor da peça.",
       quando: "Grafismos grandes, fundos de capa e campanhas. Em formas pequenas o gradiente não se lê: use a cor sólida.",
       meios: "Digital e impresso. No impresso, aplique ruído junto para evitar faixas visíveis na transição.",
     },
@@ -241,7 +241,7 @@ export const arquivosExtras = [
 ];
 
 export const historico: [string, string][] = [
-  ["2.0", "Efeitos do grafismo (vidro, gradiente mesh e ruído) com intensidade por tipo de peça; quatro gradientes oficiais, entre eles o Carvão, do preto ao chumbo; Preto como cor auxiliar; todas as cores copiáveis com um clique; escalas de 50 a 900 alinhadas; grafismos padrão e grande com a mesma altura; grid em proporção áurea; favicon e ícones de app."],
+  ["2.0", "Efeitos do grafismo (vidro, gradiente mesh e ruído) com intensidade por tipo de peça; quatro gradientes oficiais em modo claro e escuro, entre eles o Carvão, do preto ao chumbo; Preto como cor auxiliar; todas as cores copiáveis com um clique; escalas de 50 a 900 alinhadas; grafismos padrão e grande com a mesma altura; grid em proporção áurea; favicon e ícones de app."],
   ["1.1", "Cores com os nomes do Figma, CMYK e Pantone; paleta estendida; área de proteção e tamanho mínimo; capítulo do grafismo com 30 arquivos; downloads em SVG, PDF e PNG; versão para LLMs."],
   ["1.0", "Primeira versão no site: logotipo, cores, tipografia, aplicações e usos incorretos."],
 ];
