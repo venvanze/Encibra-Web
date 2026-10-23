@@ -439,7 +439,7 @@ export default function Manual() {
               <figcaption><b>Gradiente mesh</b> Ouro quente dentro do grafismo grande, com ruído.</figcaption>
             </figure>
             <figure>
-              <div className="palco-fx fx-comparar" style={{ background: mesh("encontro") }}>
+              <div className="palco-fx fx-comparar" style={{ background: mesh("noite") }}>
                 <span className="fx-ruido metade" />
                 <span className="fx-rotulo esq">Sem ruído</span><span className="fx-rotulo dir">Com ruído</span>
               </div>
@@ -464,7 +464,7 @@ export default function Manual() {
           <div className="sub">
             <Rotulo>Gradientes oficiais</Rotulo>
             <p className="muted" style={{ marginBottom: "var(--e4)" }}>Cada gradiente tem um modo claro, para peças e telas de fundo claro com texto chumbo, e um modo escuro, para fundos escuros com texto branco.</p>
-            <div className="grid g4">
+            <div className="grid g3">
               {tokens.efeitos.mesh.map((m) => (
                 <figure key={m.id} className="mesh-amostra">
                   <div className="mesh-par">
