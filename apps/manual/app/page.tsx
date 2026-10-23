@@ -157,7 +157,7 @@ export default function Manual() {
               </div>
             ))}
           </div>
-          <p className="nota" style={{ marginTop: 16 }}>O ícone sozinho só aparece quando o nome Encibra já está visível por perto ou quando o espaço é pequeno demais para a versão horizontal.</p>
+          <p className="nota" style={{ marginTop: "var(--e3)" }}>O ícone sozinho só aparece quando o nome Encibra já está visível por perto ou quando o espaço é pequeno demais para a versão horizontal.</p>
         </div>
 
         <div className="sub grid aureo" style={{ alignItems: "start" }}>
@@ -167,7 +167,7 @@ export default function Manual() {
               <span className="x t">x</span><span className="x l">x</span><span className="x r">x</span><span className="x b">x</span>
               <div className="miolo"><Logo altura={70} /></div>
             </div>
-            <p style={{ marginTop: 16 }}><b>x = metade da altura do ícone.</b> {d.protecao.regra}</p>
+            <p style={{ marginTop: "var(--e3)" }}><b>x = metade da altura do ícone.</b> {d.protecao.regra}</p>
             <p className="muted">{d.protecao.porque}</p>
           </div>
           <div>
@@ -176,10 +176,10 @@ export default function Manual() {
               <figure><Logo altura={22} /><figcaption>Horizontal: 100 px · 25 mm</figcaption></figure>
               <figure><Logo variante="icone-amarelo" altura={20} /><figcaption>Ícone: 20 px · 6 mm</figcaption></figure>
             </div>
-            <table className="t compacta" style={{ marginTop: 20 }}>
+            <table className="t compacta" style={{ marginTop: "var(--e3)" }}>
               <tbody>{d.protecao.minimos.map(([a, b]) => <tr key={a}><td>{a}</td><td>{b}</td></tr>)}</tbody>
             </table>
-            <p className="muted" style={{ marginTop: 12 }}>{d.protecao.abaixo}</p>
+            <p className="muted" style={{ marginTop: "var(--e3)" }}>{d.protecao.abaixo}</p>
           </div>
         </div>
         <p className="nota fontes">Referências: {d.fontesProtecao.map(([n, u], i) => <span key={u}>{i > 0 && " · "}<a href={u}>{n}</a></span>)}</p>
@@ -220,7 +220,7 @@ export default function Manual() {
               <Copiavel key={p.id} valor={cor[p.id]} rotulo={p.pct >= 10 ? `${p.rotulo} ${p.pct}%` : `${p.pct}%`} style={{ flex: p.pct, background: cor[p.id], color: textoSobre(cor[p.id]) }} />
             ))}
           </div>
-          <p className="muted" style={{ marginTop: 12 }}>Em uma peça típica, o branco domina, o chumbo carrega o texto, o ouro aparece pouco e onde precisa ser visto, e o azulado marca as ações. Capas são a exceção: a faixa ouro é o centro delas.</p>
+          <p className="muted" style={{ marginTop: "var(--e3)" }}>Em uma peça típica, o branco domina, o chumbo carrega o texto, o ouro aparece pouco e onde precisa ser visto, e o azulado marca as ações. Capas são a exceção: a faixa ouro é o centro delas.</p>
         </div>
 
         <div className="sub">
@@ -243,7 +243,7 @@ export default function Manual() {
               </tbody>
             </table>
           </div>
-          <p className="nota" style={{ marginTop: 12 }}>Texto corrido exige 4,5 : 1 e título grande exige 3 : 1. Por isso, sobre o ouro, o texto é sempre chumbo. Os valores são calculados a partir das cores oficiais.</p>
+          <p className="nota" style={{ marginTop: "var(--e3)" }}>Texto corrido exige 4,5 : 1 e título grande exige 3 : 1. Por isso, sobre o ouro, o texto é sempre chumbo. Os valores são calculados a partir das cores oficiais.</p>
         </div>
 
         <div className="sub" id="gradientes">
@@ -322,7 +322,7 @@ export default function Manual() {
                 </div>
               ))}
             </div>
-            <p className="nota" style={{ marginTop: 12 }}>A atenção não passa 4,5 : 1 com branco: use em ícones, barras e fundos, com o texto em chumbo.</p>
+            <p className="nota" style={{ marginTop: "var(--e3)" }}>A atenção não passa 4,5 : 1 com branco: use em ícones, barras e fundos, com o texto em chumbo.</p>
           </div>
         </div>
 
@@ -333,7 +333,7 @@ export default function Manual() {
               <div key={id} className="barra"><div style={{ height: `${v}%`, background: cor[id] }} /><span>{d.nomeDe(id)}</span></div>
             ))}
           </div>
-          <p className="nota" style={{ marginTop: 12 }}>Ordem sugerida das séries: Ouro, Cinza azulado 700, Cinza azulado 400, Âmbar, Petróleo e Neutro 300 para “outros”. Valores ilustrativos.</p>
+          <p className="nota" style={{ marginTop: "var(--e3)" }}>Ordem sugerida das séries: Ouro, Cinza azulado 700, Cinza azulado 400, Âmbar, Petróleo e Neutro 300 para “outros”. Valores ilustrativos.</p>
         </div>
       </Capitulo>
 
@@ -343,7 +343,7 @@ export default function Manual() {
           <div className="especime">
             <Rotulo>Fonte principal</Rotulo>
             <div className="aa">Aa</div>
-            <h3 style={{ marginTop: 20, fontSize: 28 }}>DM Sans</h3>
+            <h3 style={{ marginTop: "var(--e3)", fontSize: 28 }}>DM Sans</h3>
             <div className="chars">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />abcdefghijklmnopqrstuvwxyz<br />0123456789 ÁÉÍÓÚ ÂÊÔ ÃÕ Ç à ç ã õ &amp; % R$</div>
           </div>
           <div>
@@ -542,7 +542,7 @@ export default function Manual() {
                 <div className="kpi on"><b>98,4%</b><span>Indicador principal, em Ouro 50</span></div>
                 <div className="kpi"><b>212 km</b><span>Indicador secundário, em Intermédio</span></div>
               </div>
-              <div className="tabela-wrap" style={{ marginTop: 20 }}>
+              <div className="tabela-wrap" style={{ marginTop: "var(--e3)" }}>
                 <table className="t" style={{ fontSize: 13, fontFamily: "var(--aptos)" }}>
                   <thead><tr><th>Trecho</th><th>Extensão</th><th>Situação</th></tr></thead>
                   <tbody>
@@ -551,7 +551,7 @@ export default function Manual() {
                   </tbody>
                 </table>
               </div>
-              <p className="nota" style={{ marginTop: 8 }}>Valores ilustrativos.</p>
+              <p className="nota" style={{ marginTop: "var(--e2)" }}>Valores ilustrativos.</p>
             </div>
           </div>
         </div>
@@ -649,7 +649,7 @@ export default function Manual() {
           </div>
         </div>
 
-        <div className="sub grid g2" style={{ columnGap: "var(--e5)" }}>
+        <div className="sub grid g2">
           {d.arquivosExtras.map((a) => (
             <div className="arquivo" key={a.titulo}>
               <div className="ico">{a.tipo}</div>
