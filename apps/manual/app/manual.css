@@ -37,8 +37,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Layout com menu lateral: coluna fixa à esquerda, conteúdo à direita */
 .layout { display: grid; grid-template-columns: 248px minmax(0, 1fr); }
 .lateral { position: sticky; top: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; gap: var(--e5); padding: max(var(--e5), env(safe-area-inset-top, 0px)) var(--e3) var(--e4) max(var(--e4), env(safe-area-inset-left, 0px)); background: var(--basico); border-right: 1px solid var(--linha); overflow-y: auto; z-index: 9; }
-.lateral-logo { display: inline-flex; padding-left: 12px; }
+.lateral-logo { position: relative; display: inline-flex; align-self: flex-start; padding-left: 12px; outline: none; }
 .lateral-logo img { height: 26px; width: auto; }
+/* Hover e foco no logo: ícone de casa ao lado direito, indicando a volta ao início */
+.lateral-logo { align-items: center; gap: var(--e2); }
+.lateral-casa { width: 18px; height: 18px; fill: none; stroke: var(--chumbo); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translateX(-6px); filter: blur(4px); transition: opacity .2s ease, filter .3s ease, transform .5s var(--mola); }
+.lateral-logo:hover .lateral-casa, .lateral-logo:focus-visible .lateral-casa { opacity: 1; transform: none; filter: none; }
 .lateral ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
 .lateral a:not(.lateral-logo) { display: flex; align-items: baseline; gap: 12px; padding: 9px 12px; border-radius: var(--raio-p); text-decoration: none; font-size: 14px; font-weight: 500; color: var(--texto-2); white-space: nowrap; }
 .lateral-num { font-family: var(--display); font-weight: 900; font-size: 12px; color: var(--texto-2); opacity: .55; font-variant-numeric: tabular-nums; }
@@ -51,7 +55,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 960px) {
   .layout { grid-template-columns: minmax(0, 1fr); }
   .lateral { top: env(safe-area-inset-top, 0px); height: auto; flex-direction: row; align-items: center; gap: 20px; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); border-right: 0; border-bottom: 1px solid var(--linha); overflow: visible; }
-  .lateral-logo { padding-left: 0; flex: none; }
+  .lateral-logo { padding-left: 0; flex: none; align-self: center; }
+  .lateral-casa { display: none; }
   .lateral-logo img { height: 22px; }
   .lateral nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .lateral nav::-webkit-scrollbar { display: none; }
@@ -77,7 +82,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .capa-texto p { margin: 0; font-size: max(14px, 1.5cqw); font-weight: 500; color: rgba(51,51,51,.72); }
 .capa-meta { grid-row: 3; align-self: end; position: relative; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2) var(--e5); padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
 @media (min-width: 961px) {
-  .lateral { background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); }
+  .lateral { background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); transition: background-color .4s ease; }
+  /* Sobre a capa o menu fica a 40%, deixando o grafismo aparecer; o atributo vem de CapaHero */
+  html[data-na-capa] .lateral { background: rgb(255 255 255 / .4); }
 }
 @media (max-width: 960px) {
   .capa-fundo { left: 0; }
@@ -426,4 +433,4 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 @supports (transition-timing-function: linear(0, 1)) {
   :root { --mola: linear(0, 0.0637, 0.2088, 0.3833, 0.5542, 0.7031, 0.8222, 0.9106, 0.9712, 1.0089, 1.0293, 1.0375, 1.0378, 1.0336, 1.0272, 1.0205, 1.0143, 1.0091, 1.0051, 1.0022, 1.0003, 0.9992, 0.9987, 0.9985, 0.9986, 0.9988, 0.9991, 0.9993, 1); }
 }
-@media (prefers-reduced-motion: reduce) { .toast, .copiavel-rotulo > span, .llm-rotulos > span, .baixar-md { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .toast, .copiavel-rotulo > span, .llm-rotulos > span, .baixar-md, .lateral-casa { transition: none; } }

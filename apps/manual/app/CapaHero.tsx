@@ -87,11 +87,13 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
       quadro = 0;
       const t = Math.min(1, Math.max(0, window.scrollY / (el.offsetHeight * 0.6)));
       el.style.setProperty("--esmaecer", String(1 - t));
+      // Enquanto a capa ocupa a maior parte da tela, o menu lateral fica mais transparente
+      document.documentElement.toggleAttribute("data-na-capa", window.scrollY < el.offsetHeight * 0.5);
     };
     const rolar = () => { if (!quadro) quadro = requestAnimationFrame(atualizar); };
     atualizar();
     window.addEventListener("scroll", rolar, { passive: true });
-    return () => { window.removeEventListener("scroll", rolar); cancelAnimationFrame(quadro); };
+    return () => { window.removeEventListener("scroll", rolar); cancelAnimationFrame(quadro); document.documentElement.removeAttribute("data-na-capa"); };
   }, []);
 
   return (
