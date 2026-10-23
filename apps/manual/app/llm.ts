@@ -51,7 +51,7 @@ ${tabela(
 - Pantone escolhido pela menor diferença ΔE 2000 entre a cor da marca e a biblioteca Pantone Solid Coated e Uncoated. O 7408 U fica alaranjado demais no papel não revestido; por isso o uncoated do ouro é 7406 U.
 
 ### Proporção de uso
-${d.proporcao.map((p) => `${p.rotulo} ${p.pct}%`).join(", ")}. Em capas a faixa ouro é o centro da peça.
+${d.proporcao.map((p) => `${p.rotulo} ${p.pct}%`).join(", ")}. A base de 60% é o fundo da peça: Básico (branco) nos trabalhos de tema claro e Preto nos de tema escuro. Em capas a faixa ouro é o centro da peça.
 
 ### Legibilidade (WCAG 2.1)
 Texto corrido exige 4,5 : 1 e título grande exige 3 : 1.

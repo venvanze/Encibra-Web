@@ -215,12 +215,22 @@ export default function Manual() {
 
         <div className="sub">
           <Rotulo>Proporção de uso </Rotulo>
-          <div className="proporcao">
-            {d.proporcao.map((p) => (
-              <Copiavel key={p.id} valor={cor[p.id]} rotulo={p.pct >= 10 ? `${p.rotulo} ${p.pct}%` : `${p.pct}%`} style={{ flex: p.pct, background: cor[p.id], color: textoSobre(cor[p.id]) }} />
+          {/* A base de 60% muda com o tema da peça: branco no claro, preto no escuro */}
+          <div className="proporcao-moldura">
+            {d.temasProporcao.map((t) => (
+              <div key={t.id} className="proporcao-tema">
+                <span className="proporcao-nome">{t.nome}</span>
+                <div className="proporcao">
+                  {d.proporcao.map((p, i) => {
+                    const id = i === 0 ? t.base : p.id;
+                    const rotulo = i === 0 ? t.rotulo : p.rotulo;
+                    return <Copiavel key={p.id} valor={cor[id]} rotulo={p.pct >= 10 ? `${rotulo} ${p.pct}%` : `${p.pct}%`} style={{ flex: p.pct, background: cor[id], color: textoSobre(cor[id]) }} />;
+                  })}
+                </div>
+              </div>
             ))}
           </div>
-          <p className="muted" style={{ marginTop: "var(--e3)" }}>Em uma peça típica, o branco domina, o chumbo carrega o texto, o ouro aparece pouco e onde precisa ser visto, e o azulado marca as ações. Capas são a exceção: a faixa ouro é o centro delas.</p>
+          <p className="muted" style={{ marginTop: "var(--e3)" }}>A base de 60% é o fundo da peça: Básico (branco) nos trabalhos de tema claro e Preto nos de tema escuro. Em uma peça típica, a base domina, o chumbo carrega o texto, o ouro aparece pouco e onde precisa ser visto, e o azulado marca as ações. Capas são a exceção: a faixa ouro é o centro delas.</p>
         </div>
 
         <div className="sub">

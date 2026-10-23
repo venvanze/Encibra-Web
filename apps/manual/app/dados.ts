@@ -90,6 +90,12 @@ export const proporcao = [
   { id: "cinza-azulado", rotulo: "Azulado", pct: 5 },
 ];
 
+// O primeiro passo da proporção (60%) é a base, que muda com o tema da peça
+export const temasProporcao = [
+  { id: "claro", nome: "Tema claro", base: "basico", rotulo: "Básico (branco)" },
+  { id: "escuro", nome: "Tema escuro", base: "preto", rotulo: "Preto" },
+];
+
 export const teoria = [
   ["Quase complementares", "O Ouro Encibra (matiz 87° em OKLCH) e o Cinza azulado (matiz 250°) ficam a 163° um do outro no círculo cromático. Cores opostas se reforçam: o azulado acalma e faz o ouro parecer mais luminoso."],
   ["Escalas em luminosidade percebida", "Cada escala vai de 50 (quase branco) a 900 (quase preto) em passos iguais de luminosidade OKLCH, o espaço de cor que acompanha o olho humano. O tom 500 do ouro é a cor da marca e o 700 do azulado é a cor de ação."],

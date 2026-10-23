@@ -134,7 +134,11 @@ p { margin: 0 0 12px; max-width: 68ch; }
 /* Mesma altura nas duas amostras grandes: a largura da maior dividida por φ² */
 .cor.grande .amostra { aspect-ratio: auto; height: clamp(160px, 16.5vw, 240px); font-size: 26px; }
 
-.proporcao { display: flex; height: 64px; border-radius: 4px; overflow: hidden; outline: 1px solid var(--linha); outline-offset: -1px; }
+/* Moldura com borda e fundo Intermédio: dá contraste ao segmento branco e separa os dois temas */
+.proporcao-moldura { display: grid; gap: var(--e3); padding: var(--e4); border: 1px solid var(--cor-neutro-200); border-radius: 8px; background: var(--intermedio); }
+.proporcao-tema { display: grid; gap: var(--e2); }
+.proporcao-nome { font-size: 13px; font-weight: 700; color: var(--chumbo); }
+.proporcao { display: flex; height: 64px; border-radius: 4px; overflow: hidden; outline: 1px solid var(--cor-neutro-200); outline-offset: -1px; }
 .proporcao div { display: flex; align-items: flex-end; padding: 8px 10px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
 
 .tabela-wrap { overflow-x: auto; max-width: 100%; }
