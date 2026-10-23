@@ -6,6 +6,8 @@ import { Copiavel } from "./Copiavel";
 import { CapaHero } from "./CapaHero";
 import * as d from "./dados";
 import { markdown } from "./llm";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 function rgb(hex: string) {
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(" · ");
@@ -100,6 +102,16 @@ Regras:
 const vidro = tokens.efeitos.vidro;
 
 const svgLogo = (base: string) => `/downloads/logos/svg/${base}.svg`;
+// Prévia na tabela de downloads: o SVG em linha, com o traço do vazado sem escalar (no tamanho da prévia o traço original some).
+// O expandido vazado vem do Figma como contorno interno (máscara); na prévia vira traço sobre o contorno da própria forma.
+const TRACO = 'stroke="#F2BC1B" stroke-width="1.5" vector-effect="non-scaling-stroke"';
+const previaGrafismo = (arquivo: string) => {
+  const svg = readFileSync(join(process.cwd(), "public/downloads/grafismo/svg", `${arquivo}-ouro.svg`), "utf8");
+  const abertura = svg.match(/<svg [^>]*>/)![0].replace("<svg ", '<svg aria-hidden="true" ');
+  const mascara = svg.match(/<mask[^>]*>\s*<path d="([^"]+)"/);
+  if (mascara) return `${abertura}<path d="${mascara[1]}" ${TRACO}/></svg>`;
+  return svg.replace(/<svg [^>]*>/, abertura).replace(/stroke="#F2BC1B"/g, TRACO);
+};
 const svgGrafismo = (arquivo: string, corG = "ouro") => `/downloads/grafismo/svg/${arquivo}-${corG}.svg`;
 
 export default function Manual() {
@@ -534,7 +546,7 @@ export default function Manual() {
           <Rotulo>Documentos (A4)</Rotulo>
           <div className="grid g3" style={{ alignItems: "start" }}>
             <div>
-              <div className="a4"><div className="tit">Relatório de Inspeção Rodoviária</div></div>
+              <div className="a4"><div className="tit">Relatório de<br />Inspeção Rodoviária</div></div>
               <Legenda titulo="Capa">Arte oficial com o título em DM Sans Black sobre a faixa.</Legenda>
             </div>
             <div>
@@ -645,10 +657,11 @@ export default function Manual() {
           <p className="claro">{d.variantesGrafismo.length} formas em três cores, cada uma em SVG, PDF e PNG.</p>
           <div className="tabela-wrap">
             <table className="t escura">
-              <thead><tr><th>Forma</th><th>Ouro</th><th>Chumbo</th><th>Branco</th></tr></thead>
+              <thead><tr><th>Prévia</th><th>Forma</th><th>Ouro</th><th>Chumbo</th><th>Branco</th></tr></thead>
               <tbody>
                 {d.variantesGrafismo.map((v) => (
                   <tr key={v.arquivo}>
+                    <td className="previa" dangerouslySetInnerHTML={{ __html: previaGrafismo(v.arquivo) }} />
                     <td>{v.titulo}</td>
                     {["ouro", "chumbo", "branco"].map((c) => (
                       <td key={c} className="downloads">

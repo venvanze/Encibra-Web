@@ -205,7 +205,7 @@ table.t td { padding: 10px 14px; border-bottom: 1px solid var(--linha); vertical
 .app-slide .sep b { display: block; font-family: var(--display); font-weight: 900; font-size: 16cqw; line-height: .8; color: var(--ouro); }
 .app-slide .sep span { display: block; font-family: var(--display); font-weight: 900; font-size: 4.6cqw; margin-top: 2cqw; }
 .a4 { position: relative; aspect-ratio: 210 / 297; max-width: 100%; background: url("/downloads/artes/capa-a4.jpg") center / cover; border-radius: var(--raio-p); outline: 1px solid var(--linha); outline-offset: -1px; container-type: inline-size; overflow: hidden; }
-.a4 .tit { position: absolute; left: 14%; right: 12%; top: 39%; height: 21.5%; display: flex; align-items: center; font-family: var(--display); font-weight: 900; font-size: 7.2cqw; line-height: 1.02; }
+.a4 .tit { position: absolute; left: 18%; right: 14%; top: 39%; height: 21.5%; display: flex; align-items: center; font-family: var(--display); font-weight: 900; font-size: 5.4cqw; line-height: 1.02; }
 .a4-pag { aspect-ratio: 210 / 297; max-width: 100%; background: var(--basico); border-radius: var(--raio-p); outline: 1px solid var(--linha); outline-offset: -1px; container-type: inline-size; padding: 10%; display: flex; flex-direction: column; overflow: hidden; }
 .a4-pag .cab { display: flex; justify-content: flex-end; margin-bottom: 8cqw; }
 .a4-pag .cab img { width: 26cqw; height: auto; }
@@ -443,3 +443,5 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
   :root { --mola: linear(0, 0.0637, 0.2088, 0.3833, 0.5542, 0.7031, 0.8222, 0.9106, 0.9712, 1.0089, 1.0293, 1.0375, 1.0378, 1.0336, 1.0272, 1.0205, 1.0143, 1.0091, 1.0051, 1.0022, 1.0003, 0.9992, 0.9987, 0.9985, 0.9986, 0.9988, 0.9991, 0.9993, 1); }
 }
 @media (prefers-reduced-motion: reduce) { .toast, .copiavel-rotulo > span, .llm-rotulos > span, .baixar-md, .lateral-casa { transition: none; } }
+.t td.previa { width: 1%; padding-block: var(--e2); }
+.t td.previa svg { display: block; height: 30px; width: auto; max-width: 120px; }
