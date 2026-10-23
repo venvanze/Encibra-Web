@@ -3,7 +3,7 @@ import { Capitulo, Legenda, Rotulo } from "./componentes";
 import { MenuLateral } from "./MenuLateral";
 import { clarityAtivo } from "./Clarity";
 import { Copiavel } from "./Copiavel";
-import { CAPA, azulejosCapa, faixaCapa } from "./capaGrafismo";
+import { CapaHero } from "./CapaHero";
 import * as d from "./dados";
 import { markdown } from "./llm";
 
@@ -101,39 +101,18 @@ export default function Manual() {
       <MenuLateral secoes={d.secoes} />
       <main className="conteudo" id="topo">
 
-      <header className="capa">
-        {/* Fundo: linhas de grafismo brancas sobre o Carvão claro; faixa Ouro quente claro de ponta a ponta no meio */}
-        <div className="capa-arte" role="img" aria-label="Capa do manual: linhas de grafismo e uma faixa ouro com o título">
-          <div className="capa-fundo" style={{ background: mesh("carvao", "claro") }}><span className="fx-ruido" /></div>
-          <svg className="capa-linhas" viewBox={`0 0 ${CAPA.largura} ${CAPA.altura}`} preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <radialGradient id="capa-luz" cx="62%" cy="48%" r="70%">
-                <stop offset="0" stopColor="#fff" />
-                <stop offset="1" stopColor="#fff" stopOpacity=".25" />
-              </radialGradient>
-              <mask id="capa-mascara"><rect width="100%" height="100%" fill="url(#capa-luz)" /></mask>
-              <clipPath id="capa-faixa" clipPathUnits="objectBoundingBox"><path d={faixaCapa.d} /></clipPath>
-            </defs>
-            <g mask="url(#capa-mascara)" fill="none" stroke={cor.basico} strokeWidth={CAPA.traco}>
-              {azulejosCapa.map((a, i) => <path key={i} d={a.d} transform={`translate(${a.x} ${a.y})`} />)}
-            </g>
-          </svg>
-          <div className="capa-faixa" style={{ top: `${faixaCapa.topo * 100}%`, height: `${faixaCapa.altura * 100}%`, background: mesh("ouro", "claro") }}><span className="fx-ruido" /></div>
-          <div className="wrap capa-texto" style={{ top: `${faixaCapa.topo * 100}%`, height: `${faixaCapa.altura * 100}%` }}>
-            <h1>Manual de Marca</h1>
-            <p>Guia de identidade visual da Encibra</p>
-          </div>
-        </div>
-        <div className="wrap">
-          <div className="capa-meta">
-            <a className="baixar-md" href="/manual-encibra.md" download="manual-de-marca-encibra.md">
-              {/* Ícone download do Lucide (licença ISC) */}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg>
-              Baixar manual em markdown (.md)
-            </a>
-          </div>
-        </div>
-      </header>
+      <CapaHero fundo={mesh("carvao", "claro")} cor={cor.ouro}
+        rodape={<>
+          <span>Versão {d.versao} · atualizada em {d.atualizado}</span>
+          <a className="baixar-md" href="/manual-encibra.md" download="manual-de-marca-encibra.md">
+            {/* Ícone download do Lucide (licença ISC) */}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg>
+            Baixar manual em markdown (.md)
+          </a>
+        </>}>
+        <h1>Manual de Marca</h1>
+        <p>Guia de identidade visual da Encibra</p>
+      </CapaHero>
 
       <Capitulo id="principios" numero="01" titulo="Princípios" md={markdown.principios}
         lead="Este manual reúne as regras visuais da Encibra: logotipo, cores, tipografia, grafismo e aplicações. Ele consolida o padrão dos modelos oficiais e do manual no Figma, para que toda peça da empresa saia reconhecível.">

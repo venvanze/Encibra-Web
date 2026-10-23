@@ -4,6 +4,7 @@ import { cor, tokens, type VarianteLogo } from "@encibra/marca";
 
 export const versao = "2.1";
 export const data = "outubro de 2026";
+export const atualizado = "23 de outubro de 2026";
 
 export const secoes = [
   ["principios", "Princípios"],

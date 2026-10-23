@@ -1,5 +1,5 @@
 // Capa do manual: as linhas de grafismo do frame 5851:721 do Figma ("Fundo de vídeo encibra"),
-// em quatro fileiras, com uma faixa cheia de ponta a ponta no lugar da fileira do meio.
+// em quatro fileiras, com um vão no meio para a faixa ouro da capa.
 import { AZULEJO_HERO, criarForma, verticesAzulejo } from "./formaChanfrada";
 
 const H = AZULEJO_HERO.altura;
@@ -12,7 +12,7 @@ const FILEIRA_B: [number, number][] = [[0, 381], [413, 254], [699, 381], [1111, 
 
 export const CAPA = { largura: 1920, altura: 1080, traco: 3 };
 
-// Cinco faixas de altura: A, B, a faixa cheia, A, B. O quadro de 1920 × 1080 fica centrado na faixa.
+// Cinco faixas de altura: A, B, o vão da faixa ouro, A, B. O quadro de 1920 × 1080 fica centrado no vão.
 const topoFaixa = 30 + 2 * PASSO;
 const y0 = topoFaixa + H / 2 - CAPA.altura / 2;
 const linhas = [
@@ -31,10 +31,3 @@ export const azulejosCapa = linhas.flatMap(([fileira, y]) =>
     .filter(([x, w]) => X0 + x < CAPA.largura && X0 + x + w > 0)
     .map(([x, w]) => ({ x: X0 + x, y: y - y0, d: formaDe(w).caminho() })),
 );
-
-// Faixa cheia: a mesma forma, esticada de uma borda à outra, em coordenadas de 0 a 1 para o clipPath.
-export const faixaCapa = {
-  topo: (topoFaixa - y0) / CAPA.altura,
-  altura: H / CAPA.altura,
-  d: criarForma(verticesAzulejo(CAPA.largura, H)).caminho(0, { x: 1 / CAPA.largura, y: 1 / H }, 5),
-};
