@@ -80,9 +80,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .capa-difuso { position: absolute; inset: auto 0 0; height: 30vh; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 60%); mask-image: linear-gradient(to bottom, transparent, #000 60%); }
 .capa-mesh, .capa-linhas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.capa-faixa { grid-row: 2; position: relative; margin-inline: var(--e4); padding-block: var(--e6); }
+/* Grid do texto no grafismo: --m (corte do chanfro) e --mv vêm do CapaHero; o texto fica a pelo menos m de cada borda */
+.capa-faixa { grid-row: 2; position: relative; margin-inline: var(--e4); padding-block: max(var(--e6), var(--mv, 0px)); padding-inline: max(0px, calc(var(--m, 0px) - 16px)); }
 .capa-texto { position: relative; display: flex; flex-direction: column; gap: var(--e2); }
-.capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(34px, 5.2cqw); line-height: .95; letter-spacing: -.02em; color: var(--cor-preto, #000); }
+.capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(34px, 5.2cqw); line-height: 1; letter-spacing: -.02em; color: var(--cor-preto, #000); }
 .capa-texto p { margin: 0; font-size: max(14px, 1.5cqw); font-weight: 500; color: rgb(0 0 0 / .75); }
 .capa-meta { grid-row: 3; align-self: end; position: relative; width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e2) var(--e5); padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
 @media (min-width: 961px) {
@@ -93,7 +94,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 960px) {
   .capa-fundo { left: 0; }
   .capa { min-height: calc(100vh - 56px); min-height: calc(100dvh - 56px); }
-  .capa-faixa { margin-inline: var(--e3); padding-block: var(--e5); }
+  .capa-faixa { margin-inline: var(--e3); padding-block: max(var(--e5), var(--mv, 0px)); }
 }
 .capa-meta b { color: var(--chumbo); font-weight: 700; }
 
@@ -205,7 +206,8 @@ table.t td { padding: 10px 14px; border-bottom: 1px solid var(--linha); vertical
 .app-slide .sep b { display: block; font-family: var(--display); font-weight: 900; font-size: 16cqw; line-height: .8; color: var(--ouro); }
 .app-slide .sep span { display: block; font-family: var(--display); font-weight: 900; font-size: 4.6cqw; margin-top: 2cqw; }
 .a4 { position: relative; aspect-ratio: 210 / 297; max-width: 100%; background: url("/downloads/artes/capa-a4.jpg") center / cover; border-radius: var(--raio-p); outline: 1px solid var(--linha); outline-offset: -1px; container-type: inline-size; overflow: hidden; }
-.a4 .tit { position: absolute; left: 18%; right: 14%; top: 39%; height: 21.5%; display: flex; align-items: center; font-family: var(--display); font-weight: 900; font-size: 5.4cqw; line-height: 1.02; }
+/* Grid do texto no grafismo, medido na arte: faixa de 39,2% a 60,75% da altura; m = 27% dela (8,2% da largura, 5,8% da altura). À esquerda, m conta a partir da borda do vidro (18,5%) */
+.a4 .tit { position: absolute; left: 26.7%; right: 16.2%; top: 45%; height: 9.95%; display: flex; align-items: center; font-family: var(--display); font-weight: 900; font-size: 5.2cqw; line-height: 1; }
 .a4-pag { aspect-ratio: 210 / 297; max-width: 100%; background: var(--basico); border-radius: var(--raio-p); outline: 1px solid var(--linha); outline-offset: -1px; container-type: inline-size; padding: 10%; display: flex; flex-direction: column; overflow: hidden; }
 .a4-pag .cab { display: flex; justify-content: flex-end; margin-bottom: 8cqw; }
 .a4-pag .cab img { width: 26cqw; height: auto; }
@@ -445,3 +447,15 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 @media (prefers-reduced-motion: reduce) { .toast, .copiavel-rotulo > span, .llm-rotulos > span, .baixar-md, .lateral-casa { transition: none; } }
 .t td.previa { width: 1%; padding-block: var(--e2); }
 .t td.previa svg { display: block; height: 30px; width: auto; max-width: 120px; }
+/* Texto dentro do grafismo: diagramas do grid */
+.grid-texto figure { margin: 0; display: grid; gap: var(--e2); }
+.grid-texto svg { width: 100%; height: auto; background: var(--basico); border-radius: var(--raio-m); padding: 4%; }
+.gt-forma { fill: var(--ouro); }
+.gt-cota { fill: none; stroke: var(--texto-2); stroke-width: 1; }
+.gt-rotulo { font-family: var(--display); font-weight: 700; font-size: 13px; fill: var(--chumbo); text-anchor: middle; }
+.gt-rotulo[text-anchor="end"] { text-anchor: end; }
+.gt-legenda { font-size: 10px; fill: var(--texto-2); }
+.gt-leve { opacity: .45; }
+.gt-titulo { font-family: var(--display); font-weight: 900; font-size: 24px; fill: var(--chumbo); letter-spacing: -.01em; }
+.grid-texto figcaption { font-size: 14px; color: var(--texto-2); }
+.grid-texto figcaption b { display: block; color: var(--chumbo); }

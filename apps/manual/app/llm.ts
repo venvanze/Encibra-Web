@@ -136,6 +136,11 @@ ${d.grafismo.preenchimentos.map(([t, , x]) => `- **${t}:** ${x}`).join("\n")}
 ### Regras
 ${d.grafismo.regras.map((x) => `- ${x}`).join("\n")}
 
+### Texto dentro do grafismo
+${d.grafismo.texto.intro}
+
+${d.grafismo.texto.regras.map((x) => `- ${x}`).join("\n")}
+
 ### Efeitos: vidro, gradiente mesh e ruído
 ${d.efeitos.intro}
 

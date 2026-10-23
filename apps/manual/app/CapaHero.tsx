@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { criarForma, verticesAzulejo } from "./formaChanfrada";
 
 /*
@@ -11,6 +11,8 @@ const PADRAO = { largura: 154.819, d: "M43.4189 0.5H122.819C140.216 0.500058 154
 const GRANDE = { largura: 246.336, d: "M43.4189 0.5H214.336C231.733 0.5 245.836 14.603 245.836 32V92.4453C245.836 96.5535 244.205 100.494 241.302 103.4L214.851 129.878C211.943 132.788 207.998 134.423 203.885 134.423H32C14.603 134.423 0.5 120.32 0.5 102.923V43.4463C0.5 39.3381 2.13067 35.3976 5.03418 32.4912L32.4541 5.04492C35.3612 2.1351 39.3057 0.500098 43.4189 0.5Z" };
 // Cantos do grafismo em fração da altura, medidos nos arquivos oficiais: canto 32, filete 16 (metade), chanfro 36,3
 const CANTO = 32 / ALTURA, FILETE = 16 / ALTURA, CHANFRO = 36.3 / ALTURA;
+// Grid do texto dentro do grafismo (capítulo Grafismo): margem m = corte do chanfro em todas as bordas, título até 22% da altura
+const TITULO_MAX = 0.22;
 // Vão regular entre as formas, em fração da altura (o do frame 5851:721 do Figma)
 const VAO = 0.1445;
 // Grafismos do fundo com metade da altura da faixa, para aparecerem em maior quantidade
@@ -56,11 +58,13 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
   const capa = useRef<HTMLElement>(null);
   const caixaFundo = useRef<HTMLDivElement>(null);
   const faixa = useRef<HTMLDivElement>(null);
+  const texto = useRef<HTMLDivElement>(null);
   const [geo, setGeo] = useState<{ w: number; h: number; s: number; dx: number; dy: number; azulejos: Azulejo[]; recorte: string }>();
+  const [grid, setGrid] = useState<{ m: number; mv: number }>();
 
   useEffect(() => {
-    const f = caixaFundo.current, b = faixa.current;
-    if (!f || !b) return;
+    const f = caixaFundo.current, b = faixa.current, t = texto.current;
+    if (!f || !b || !t) return;
     const medir = () => {
       const rf = f.getBoundingClientRect(), rb = b.getBoundingClientRect();
       const h = rb.height;
@@ -71,10 +75,21 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
         recorte: `path("${criarForma(verticesAzulejo(rb.width, h, medidas)).caminho()}")`,
       });
     };
+    // Margem vertical que cumpre o grid: o bloco de texto T fica a m = CHANFRO × H das bordas
+    // (H = T + 2·mv ⇒ mv = CHANFRO·T / (1 − 2·CHANFRO)) e o título não passa de TITULO_MAX × H.
+    const medirGrid = () => {
+      const T = t.getBoundingClientRect().height;
+      const F = parseFloat(getComputedStyle(t.querySelector("h1") ?? t).fontSize);
+      const mv = Math.ceil(Math.max((CHANFRO * T) / (1 - 2 * CHANFRO), (F / TITULO_MAX - T) / 2));
+      const m = Math.ceil(CHANFRO * b.getBoundingClientRect().height);
+      setGrid((g) => (g && g.m === m && g.mv === mv ? g : { m, mv }));
+    };
     medir();
+    medirGrid();
     const ro = new ResizeObserver(medir);
-    ro.observe(f); ro.observe(b);
-    return () => ro.disconnect();
+    const rg = new ResizeObserver(medirGrid);
+    ro.observe(f); ro.observe(b); rg.observe(t); rg.observe(b);
+    return () => { ro.disconnect(); rg.disconnect(); };
   }, []);
 
   useEffect(() => {
@@ -119,9 +134,10 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
       <div className="capa-faixa" ref={faixa} style={{
         background: cor, clipPath: geo?.recorte, visibility: geo ? undefined : "hidden",
         backgroundSize: geo && `${geo.w}px ${geo.h}px`, backgroundPosition: geo && `${-geo.dx}px ${-geo.dy}px`,
-      }}>
+        ...(grid && { "--m": `${grid.m}px`, "--mv": `${grid.mv}px` }),
+      } as CSSProperties}>
         <span className="fx-ruido" />
-        <div className="wrap capa-texto">{children}</div>
+        <div className="wrap capa-texto" ref={texto}>{children}</div>
       </div>
       <div className="wrap capa-meta">{rodape}</div>
     </header>

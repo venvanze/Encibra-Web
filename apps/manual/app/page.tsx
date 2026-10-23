@@ -46,6 +46,10 @@ const G = (() => {
   return { a: ret(0, dd), b: ret(dd, 0), contorno, vb: `-6 -6 ${w + dd + 12} ${h + dd + 12}` };
 })();
 
+// Grafismo grande oficial (grafismo-grande-simples-cheio.svg) e o grid do texto: m = corte do chanfro = 27% da altura
+const GRANDE_D = "M43.4189 0.5H214.336C231.733 0.5 245.836 14.603 245.836 32V92.4453C245.836 96.5535 244.205 100.494 241.302 103.4L214.851 129.878C211.943 132.788 207.998 134.423 203.885 134.423H32C14.603 134.423 0.5 120.32 0.5 102.923V43.4463C0.5 39.3381 2.13067 35.3976 5.03418 32.4912L32.4541 5.04492C35.3612 2.1351 39.3057 0.500098 43.4189 0.5Z";
+const GT = { w: 245.836, h: 134.423, m: 0.27 * 134.423 };
+
 const etapas = [
   <><path d={G.a} className="g-guia" /><path d={G.b} className="g-guia" /></>,
   <><path d={G.a} className="g-guia" /><path d={G.b} className="g-guia" /><circle cx={35.7} cy={30 + 100 - 35.7} r={35.7} className="g-raio" /><circle cx={30 + 17.86} cy={17.86} r={17.86} className="g-raio" /></>,
@@ -467,6 +471,39 @@ export default function Manual() {
         <div className="sub">
           <Rotulo>Regras</Rotulo>
           <ul className="regras">{d.grafismo.regras.map((x) => <li key={x}>{x}</li>)}</ul>
+        </div>
+
+        <div className="sub" id="texto-no-grafismo">
+          <Rotulo>Texto dentro do grafismo</Rotulo>
+          <p className="muted">{d.grafismo.texto.intro}</p>
+          <div className="grid g2 grid-texto">
+            <figure>
+              <svg viewBox="-34 -30 316 196" aria-hidden="true">
+                <path d={GRANDE_D} className="gt-forma" />
+                <rect x={0.5} y={0.5} width={GT.m} height={GT.m} rx={4} className="g-raio" />
+                <rect x={GT.w - GT.m} y={GT.h - GT.m} width={GT.m} height={GT.m} rx={4} className="g-raio" />
+                <rect x={GT.m} y={GT.m} width={GT.w - 2 * GT.m} height={GT.h - 2 * GT.m} rx={4} className="g-guia" />
+                <path d={`M0.5 -12V-20M0.5 -16H${GT.m}M${GT.m} -12V-20`} className="gt-cota" />
+                <text x={GT.m / 2} y={-22} className="gt-rotulo">m</text>
+                <path d={`M-12 0.5H-20M-16 0.5V${GT.h}M-12 ${GT.h}H-20`} className="gt-cota" />
+                <text x={-24} y={GT.h / 2 + 4} className="gt-rotulo" textAnchor="end">H</text>
+                <path d={`M${GT.w + 12} ${GT.h - GT.m}H${GT.w + 20}M${GT.w + 16} ${GT.h - GT.m}V${GT.h}M${GT.w + 12} ${GT.h}H${GT.w + 20}`} className="gt-cota" />
+                <text x={GT.w + 24} y={GT.h - GT.m / 2 + 4} className="gt-rotulo">m</text>
+                <text x={GT.w / 2} y={GT.h + 26} className="gt-legenda" textAnchor="middle">área de texto: recuo m das quatro bordas</text>
+              </svg>
+              <figcaption><b>Grid</b> m é o corte do chanfro, 27% de H. Os cantos com chanfro ficam fora da área de texto.</figcaption>
+            </figure>
+            <figure>
+              <svg viewBox="-34 -30 316 196" aria-hidden="true">
+                <path d={GRANDE_D} className="gt-forma" />
+                <rect x={GT.m} y={GT.m} width={GT.w - 2 * GT.m} height={GT.h - 2 * GT.m} rx={4} className="g-guia gt-leve" />
+                <text className="gt-titulo" x={GT.m} y={GT.h / 2 - 5}>Título do</text>
+                <text className="gt-titulo" x={GT.m} y={GT.h / 2 + 19}>documento</text>
+              </svg>
+              <figcaption><b>Aplicação</b> Título à esquerda, centrado na vertical, até duas linhas e no máximo 22% de H.</figcaption>
+            </figure>
+          </div>
+          <ul className="regras">{d.grafismo.texto.regras.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
 
         <div className="sub efeitos" id="efeitos">

@@ -143,6 +143,18 @@ export const grafismo = {
     "Combine cheios e vazados em ritmo, com espaço regular entre as formas.",
     "Use no máximo duas cores de grafismo por peça, além do fundo.",
   ],
+  texto: {
+    intro: "Quando um texto vai dentro do grafismo (capas, faixas, placas e banners), ele segue um grid tirado da própria forma. Tudo sai de um módulo, m, o corte do chanfro.",
+    regras: [
+      "Módulo m: o corte do chanfro, igual a 27% da altura (H) do grafismo.",
+      "Área de texto: recue m das quatro bordas. Os chanfros e os cantos ficam inteiros fora dela, e o texto nunca entra neles.",
+      "A margem m é mínima: pode crescer, nunca diminuir. Se o texto não couber, quebre a linha ou alongue o grafismo grande na largura.",
+      "Título em DM Sans Black, entrelinha 1, até duas linhas, com corpo de no máximo 22% de H.",
+      "Alinhe à esquerda, na margem m, e centralize o bloco na vertical. Numa faixa que atravessa a página, o texto pode seguir a coluna do grid da página, desde que fique a pelo menos m da borda.",
+      "Se outro elemento cobre a borda do grafismo (vidro, foto ou outro grafismo), a margem m conta a partir da borda desse elemento.",
+      "Texto só no grafismo cheio simples, padrão ou grande, e na faixa. Vazado, duplo e expandido não recebem texto.",
+    ],
+  },
 };
 
 // Efeitos de enriquecimento do grafismo. Valores técnicos em tokens.json (efeitos).
@@ -262,7 +274,7 @@ export const gradientes = {
 };
 
 export const historico: [string, string][] = [
-  ["2.1", "Capítulo 03 passa a se chamar Cores e gradientes, com os gradientes oficiais e as regras de uso deles. Saiu o gradiente Ouro sobre azulado, que misturava as duas cores; ficam três: Ouro quente, Noite azulada e Carvão."],
+  ["2.1", "Capítulo 03 passa a se chamar Cores e gradientes, com os gradientes oficiais e as regras de uso deles. Saiu o gradiente Ouro sobre azulado, que misturava as duas cores; ficam três: Ouro quente, Noite azulada e Carvão. Novo grid para texto dentro do grafismo, aplicado à capa A4 e à capa deste manual."],
   ["2.0", "Efeitos do grafismo (vidro, gradiente mesh e ruído) com intensidade por tipo de peça; quatro gradientes oficiais em modo claro e escuro, entre eles o Carvão, do preto ao chumbo; Preto como cor auxiliar; todas as cores copiáveis com um clique; escalas de 50 a 900 alinhadas; grafismos padrão e grande com a mesma altura; grid em proporção áurea; favicon e ícones de app."],
   ["1.1", "Cores com os nomes do Figma, CMYK e Pantone; paleta estendida; área de proteção e tamanho mínimo; capítulo do grafismo com 30 arquivos; downloads em SVG, PDF e PNG; versão para LLMs."],
   ["1.0", "Primeira versão no site: logotipo, cores, tipografia, aplicações e usos incorretos."],
