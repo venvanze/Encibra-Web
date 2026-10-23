@@ -96,10 +96,10 @@ export function CapaHero({ fundo, cor, children, rodape }: { fundo: string; cor:
     const el = capa.current;
     if (!el) return;
     let quadro = 0;
-    // O fundo vai de opaco a transparente na primeira parte da rolagem (some com 60% da capa rolada)
+    // O fundo vai de opaco a transparente com a rolagem, proporcional a ela: some com 80% da capa rolada
     const atualizar = () => {
       quadro = 0;
-      const t = Math.min(1, Math.max(0, window.scrollY / (el.offsetHeight * 0.6)));
+      const t = Math.min(1, Math.max(0, window.scrollY / (el.offsetHeight * 0.8)));
       el.style.setProperty("--esmaecer", String(1 - t));
       // Enquanto a capa ocupa a maior parte da tela, o menu lateral fica mais transparente
       document.documentElement.toggleAttribute("data-na-capa", window.scrollY < el.offsetHeight * 0.5);
