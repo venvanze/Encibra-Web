@@ -81,7 +81,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .capa-texto { position: relative; display: flex; flex-direction: column; gap: var(--e2); }
 .capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(34px, 5.2cqw); line-height: .95; letter-spacing: -.02em; color: var(--cor-preto, #000); }
 .capa-texto p { margin: 0; font-size: max(14px, 1.5cqw); font-weight: 500; color: rgb(0 0 0 / .75); }
-.capa-meta { grid-row: 3; align-self: end; position: relative; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2) var(--e5); padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
+.capa-meta { grid-row: 3; align-self: end; position: relative; width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e2) var(--e5); padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
 @media (min-width: 961px) {
   .lateral { background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); transition: background-color .4s ease; }
   /* Sobre a capa o menu fica a 40%, deixando o grafismo aparecer; o atributo vem de CapaHero */

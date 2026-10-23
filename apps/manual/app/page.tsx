@@ -110,12 +110,12 @@ export default function Manual() {
 
       <CapaHero fundo={mesh("carvao", "claro")} cor={meshComplementar("carvao", "claro")}
         rodape={<>
-          <span>Versão {d.versao} · atualizada em {d.atualizado}</span>
           <a className="baixar-md" href="/manual-encibra.md" download="manual-de-marca-encibra.md">
             {/* Ícone download do Lucide (licença ISC) */}
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg>
             Baixar manual em markdown (.md)
           </a>
+          <span>Versão {d.versao} · atualizada em {d.atualizado}</span>
         </>}>
         <h1>Manual de Marca</h1>
         <p>Guia de identidade visual da Encibra</p>
