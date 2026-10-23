@@ -264,8 +264,8 @@ export default function Manual() {
                     <tr key={texto + fundo}>
                       <td><span className="par" style={{ background: cor[fundo], color: cor[texto] }}>{d.nomeDe(texto)} / {d.nomeDe(fundo)}</span></td>
                       <td>{razao(cor[texto], cor[fundo])}</td>
-                      <td className={r >= 4.5 ? "ok" : "nao"}>{r >= 4.5 ? "Sim" : "Não"}</td>
-                      <td className={r >= 3 ? "ok" : "nao"}>{r >= 3 ? "Sim" : "Não"}</td>
+                      <td><span className={`selo ${r >= 4.5 ? "ok" : "nao"}`}>{r >= 4.5 ? "Sim" : "Não"}</span></td>
+                      <td><span className={`selo ${r >= 3 ? "ok" : "nao"}`}>{r >= 3 ? "Sim" : "Não"}</span></td>
                     </tr>
                   );
                 })}
@@ -277,8 +277,8 @@ export default function Manual() {
 
         <div className="sub" id="gradientes">
           <Rotulo>Gradientes oficiais</Rotulo>
-          <p className="muted" style={{ marginBottom: "var(--e4)" }}>{d.gradientes.intro}</p>
-          <div className="grid g3">
+          <p className="muted intro-sub">{d.gradientes.intro}</p>
+          <div className="grid g3 gradientes">
             {tokens.efeitos.mesh.map((m) => (
               <figure key={m.id} className="mesh-amostra">
                 <div className="mesh-par">
@@ -299,7 +299,7 @@ export default function Manual() {
 
         <div className="sub">
           <Rotulo>Regras dos gradientes</Rotulo>
-          <ul className="regras">{d.gradientes.regras.map((x) => <li key={x}>{x}</li>)}</ul>
+          <ul className="regras regras-g3">{d.gradientes.regras.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
       </Capitulo>
 

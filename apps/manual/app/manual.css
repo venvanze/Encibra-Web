@@ -345,7 +345,10 @@ table.t.compacta td { padding: 6px 10px; font-size: 13px; }
 /* Mesma altura para padrão e grande: só a largura muda */
 .cores-g .palco-g img { height: clamp(36px, 4.6vw, 64px); width: auto; }
 .grafismos figcaption, .cores-g figcaption { margin-top: var(--e2); font-size: 13px; color: var(--texto-2); }
-.regras li { margin-bottom: 8px; max-width: 70ch; }
+/* Listas de regras no grid: marcador alinhado à coluna, itens na escala de espaços */
+.regras { margin: 0; padding-left: 1.1em; }
+.regras li { margin-bottom: var(--e2); padding-left: 2px; max-width: 70ch; }
+.regras li:last-child { margin-bottom: 0; }
 @media (max-width: 860px) {
   .etapas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .g5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -429,7 +432,7 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 .chip-cor .r-hover .icone-copiar { font-size: 20px; stroke-width: 2.25; }
 .chip-cor .r-ok { font-size: 11px; font-weight: 700; }
 .mesh-copiar { display: flex; align-items: flex-start; width: 100%; padding: var(--e3); font-size: 13px; font-weight: 700; }
-.mesh-amostra > .mesh-par { display: grid; gap: 6px; aspect-ratio: auto; overflow: visible; }
+.mesh-amostra > .mesh-par { display: grid; gap: var(--e2); aspect-ratio: auto; overflow: visible; }
 .mesh-par > .copiavel { aspect-ratio: 1.618 / 1; border-radius: var(--raio-m); overflow: hidden; }
 .proporcao .copiavel { display: flex; align-items: flex-end; padding: 8px 10px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 0; }
 
@@ -459,3 +462,14 @@ table.intensidade td.muted { white-space: normal; min-width: 240px; }
 .gt-titulo { font-family: var(--display); font-weight: 900; font-size: 24px; fill: var(--chumbo); letter-spacing: -.01em; }
 .grid-texto figcaption { font-size: 14px; color: var(--texto-2); }
 .grid-texto figcaption b { display: block; color: var(--chumbo); }
+/* Gradientes no grid: introdução até a grade com o vão de bloco (e4), claro e escuro de um gradiente a e2, legenda a e2 */
+.intro-sub { margin: 0 0 var(--e4); }
+.gradientes .mesh-amostra figcaption { margin-top: var(--e2); }
+/* Combinações WCAG: aprovada em verde, reprovada em vermelho, em selo arredondado */
+.selo { display: inline-block; padding: 3px var(--e2); border-radius: 999px; font-size: 13px; }
+.selo.ok { background: #E3F4E8; color: #1F6B3A; box-shadow: inset 0 0 0 1px #B9E2C6; }
+.selo.nao { background: color-mix(in srgb, var(--erro) 12%, #fff); color: var(--erro); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--erro) 30%, #fff); }
+/* Regras dos gradientes ocupam exatamente duas das três colunas da grade de amostras */
+.regras-g3 { max-width: calc((100% - 2 * var(--e4)) * 2 / 3 + var(--e4)); }
+.regras-g3 li { max-width: none; }
+@media (max-width: 860px) { .regras-g3 { max-width: none; } }
