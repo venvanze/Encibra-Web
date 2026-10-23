@@ -42,16 +42,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Hover e foco no logo: ícone de casa na ponta oposta da barra, indicando a volta ao início */
 .lateral-logo { align-items: center; justify-content: space-between; gap: var(--e2); }
 .lateral-casa { width: 18px; height: 18px; fill: none; stroke: var(--chumbo); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translateX(-10px); filter: blur(4px); transition: opacity .2s ease, filter .3s ease, transform .5s var(--mola); }
-.lateral-logo:hover .lateral-casa, .lateral-logo:focus-visible .lateral-casa { opacity: 1; transform: none; filter: none; }
+/* Com a capa na tela o logo é o item ativo: a casa fica visível; ao rolar, o seletor passa para o capítulo */
+.lateral-logo:hover .lateral-casa, .lateral-logo:focus-visible .lateral-casa, .lateral-logo[aria-current] .lateral-casa { opacity: 1; transform: none; filter: none; }
 .lateral ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
 .lateral a:not(.lateral-logo) { display: flex; align-items: baseline; gap: 12px; padding: 9px 12px; border-radius: var(--raio-p); text-decoration: none; font-size: 14px; font-weight: 500; color: var(--texto-2); white-space: nowrap; }
 .lateral-num { font-family: var(--display); font-weight: 900; font-size: 12px; color: var(--texto-2); opacity: .55; font-variant-numeric: tabular-nums; }
 .lateral a:not(.lateral-logo):hover, .lateral a:not(.lateral-logo):focus-visible { color: var(--chumbo); background: var(--intermedio); outline: none; }
 .lateral a:focus-visible { box-shadow: inset 0 0 0 2px var(--ouro); }
-/* Item ativo: chumbo com texto branco e número em ouro, contraste forte sobre o menu claro ou translúcido */
-.lateral a[aria-current], .lateral a[aria-current]:hover { color: var(--basico); font-weight: 700; background: var(--chumbo); }
-.lateral a[aria-current] .lateral-num { color: var(--ouro); opacity: 1; }
-.lateral-rodape { margin: auto 0 0; padding-left: 12px; font-size: 12px; line-height: 1.5; color: var(--texto-2); }
+/* Item ativo: só borda chumbo e negrito, sem preenchimento */
+.lateral a:not(.lateral-logo)[aria-current], .lateral a:not(.lateral-logo)[aria-current]:hover { color: var(--chumbo); font-weight: 700; background: transparent; box-shadow: inset 0 0 0 1.5px var(--chumbo); }
+.lateral a[aria-current] .lateral-num { color: var(--chumbo); opacity: 1; }
+/* Logo no topo, capítulos centrados na altura livre e assinatura com a versão no pé */
+.lateral nav { margin-block: auto; }
+.lateral-rodape { margin: 0; padding-left: 12px; font-size: 12px; line-height: 1.5; color: var(--texto-2); }
 .conteudo { min-width: 0; }
 @media (max-width: 960px) {
   .layout { grid-template-columns: minmax(0, 1fr); }
@@ -59,7 +62,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .lateral-logo { padding-left: 0; flex: none; align-self: center; }
   .lateral-casa { display: none; }
   .lateral-logo img { height: 22px; }
-  .lateral nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .lateral nav { min-width: 0; margin-block: 0; overflow-x: auto; scrollbar-width: none; }
   .lateral nav::-webkit-scrollbar { display: none; }
   .lateral ol { display: flex; height: 56px; align-items: center; }
   .lateral a:not(.lateral-logo) { padding: 6px 10px; font-size: 13px; }
