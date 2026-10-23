@@ -5,6 +5,7 @@ Gerados a partir de `../logos/svg/icone-amarelo.svg`. Cada app copia estes arqui
 | Arquivo | Uso |
 | --- | --- |
 | `favicon.ico` | 16, 32 e 48 px. O de 16 px vem de `icon-16.svg`, redesenhado na grade de pixel. |
+| `icon.png` | 48 px em PNG, o mesmo desenho do `.ico`. Garante o favicon nos navegadores que ignoram ou guardam mal o `.ico` (Safari). |
 | `icon.svg` | Ícone vetorial em quadrado. Não use como favicon de aba: o navegador prefere o SVG ao `.ico` e perde o desenho de 16 px. |
 | `icon-16.svg` | Desenho do ícone para 16 px, com hastes de 3 px. |
 | `apple-icon.png` | 180 px, ícone ouro sobre chumbo (o iOS pinta de preto o fundo transparente). |
