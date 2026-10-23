@@ -3,6 +3,7 @@ import { Capitulo, Legenda, Rotulo } from "./componentes";
 import { MenuLateral } from "./MenuLateral";
 import { clarityAtivo } from "./Clarity";
 import { Copiavel } from "./Copiavel";
+import { CAPA, azulejosCapa, faixaCapa } from "./capaGrafismo";
 import * as d from "./dados";
 import { markdown } from "./llm";
 
@@ -101,13 +102,29 @@ export default function Manual() {
       <main className="conteudo" id="topo">
 
       <header className="capa">
-        <div className="wrap">
-          <div className="capa-arte" role="img" aria-label="Capa do manual sobre a faixa ouro da Encibra">
-            <div className="capa-texto">
-              <h1>Manual de Marca</h1>
-              <p>Guia de identidade visual da Encibra</p>
-            </div>
+        {/* Fundo: linhas de grafismo brancas sobre o Carvão claro; faixa Ouro quente claro de ponta a ponta no meio */}
+        <div className="capa-arte" role="img" aria-label="Capa do manual: linhas de grafismo e uma faixa ouro com o título">
+          <div className="capa-fundo" style={{ background: mesh("carvao", "claro") }}><span className="fx-ruido" /></div>
+          <svg className="capa-linhas" viewBox={`0 0 ${CAPA.largura} ${CAPA.altura}`} preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <radialGradient id="capa-luz" cx="62%" cy="48%" r="70%">
+                <stop offset="0" stopColor="#fff" />
+                <stop offset="1" stopColor="#fff" stopOpacity=".25" />
+              </radialGradient>
+              <mask id="capa-mascara"><rect width="100%" height="100%" fill="url(#capa-luz)" /></mask>
+              <clipPath id="capa-faixa" clipPathUnits="objectBoundingBox"><path d={faixaCapa.d} /></clipPath>
+            </defs>
+            <g mask="url(#capa-mascara)" fill="none" stroke={cor.basico} strokeWidth={CAPA.traco}>
+              {azulejosCapa.map((a, i) => <path key={i} d={a.d} transform={`translate(${a.x} ${a.y})`} />)}
+            </g>
+          </svg>
+          <div className="capa-faixa" style={{ top: `${faixaCapa.topo * 100}%`, height: `${faixaCapa.altura * 100}%`, background: mesh("ouro", "claro") }}><span className="fx-ruido" /></div>
+          <div className="wrap capa-texto" style={{ top: `${faixaCapa.topo * 100}%`, height: `${faixaCapa.altura * 100}%` }}>
+            <h1>Manual de Marca</h1>
+            <p>Guia de identidade visual da Encibra</p>
           </div>
+        </div>
+        <div className="wrap">
           <div className="capa-meta">
             <a className="baixar-md" href="/manual-encibra.md" download="manual-de-marca-encibra.md">
               {/* Ícone download do Lucide (licença ISC) */}

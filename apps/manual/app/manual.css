@@ -58,14 +58,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .lateral-num, .lateral-rodape { display: none; }
 }
 
-/* Capa */
-.capa { padding-block: var(--e5) 0; }
-.capa-arte { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: url("/downloads/artes/capa-slide.jpg") center / cover no-repeat; border-radius: 4px; container-type: inline-size; overflow: hidden; outline: 1px solid var(--linha); }
-/* O vidro da arte termina em 15,5% da largura e a faixa ouro vai de 29% a 71% da altura.
-   O texto começa a 7cqw do vidro, o mesmo respiro entre a faixa e o topo das maiúsculas. */
-.capa-texto { position: absolute; left: 22.5%; right: 8%; top: 29%; bottom: 29%; display: flex; flex-direction: column; justify-content: center; gap: 1.2cqw; }
-.capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 7.4cqw; line-height: .95; letter-spacing: -.02em; color: var(--chumbo); }
-.capa-texto p { margin: 0; font-size: 1.9cqw; font-weight: 500; color: rgba(51,51,51,.72); }
+/* Capa: quadro 16:9 de ponta a ponta da coluna de conteúdo (frame 5851:721 do Figma, versão branca).
+   A faixa ouro ocupa a altura de um azulejo (11,5% da largura) e o título fica no grid, dentro dela. */
+.capa { padding-block: 0; }
+.capa-arte { position: relative; aspect-ratio: 16 / 9; container-type: inline-size; overflow: hidden; }
+.capa-fundo, .capa-linhas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.capa-faixa { position: absolute; left: 0; width: 100%; clip-path: url(#capa-faixa); }
+.capa-texto { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; justify-content: center; gap: .8cqw; }
+.capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(22px, 5.2cqw); line-height: .95; letter-spacing: -.02em; color: var(--chumbo); }
+.capa-texto p { margin: 0; font-size: max(12px, 1.5cqw); font-weight: 500; color: rgba(51,51,51,.72); }
 .capa-meta { display: flex; flex-wrap: wrap; gap: var(--e2) var(--e5); padding-block: var(--e4) 0; font-size: 13px; color: var(--texto-2); }
 .capa-meta b { color: var(--chumbo); font-weight: 700; }
 
