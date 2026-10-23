@@ -62,15 +62,25 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 /* Capa em tela cheia (frame 5851:721 do Figma, versão branca). O fundo Carvão claro esmaece com a rolagem
    (--esmaecer, de 1 a 0); a faixa ouro sólida fica no meio, afastada das bordas, com o título no grid. */
-.capa { position: relative; min-height: 100vh; min-height: 100dvh; display: grid; grid-template-rows: 1fr auto 1fr; container-type: inline-size; overflow: hidden; }
-.capa-fundo { position: absolute; inset: 0; opacity: var(--esmaecer, 1); }
+.capa { position: relative; min-height: 100vh; min-height: 100dvh; display: grid; grid-template-rows: 1fr auto 1fr; container-type: inline-size; }
+/* O fundo ocupa a largura da tela: no desktop passa por baixo do menu lateral (248 px), que fica translúcido */
+/* O fundo passa 30vh da capa para dentro do capítulo seguinte: nítido na altura da tela,
+   depois desfoca (.capa-difuso) e esmaece até o branco, sem linha dura entre capa e conteúdo */
+.capa-fundo { position: absolute; inset: 0 0 -30vh -248px; z-index: -1; overflow: hidden; opacity: var(--esmaecer, 1);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30vh), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 30vh), transparent); }
+.capa-difuso { position: absolute; inset: auto 0 0; height: 30vh; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 60%); mask-image: linear-gradient(to bottom, transparent, #000 60%); }
 .capa-mesh, .capa-linhas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .capa-faixa { grid-row: 2; position: relative; margin-inline: var(--e4); padding-block: var(--e6); }
 .capa-texto { position: relative; display: flex; flex-direction: column; gap: var(--e2); }
 .capa-texto h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: max(34px, 5.2cqw); line-height: .95; letter-spacing: -.02em; color: var(--chumbo); }
 .capa-texto p { margin: 0; font-size: max(14px, 1.5cqw); font-weight: 500; color: rgba(51,51,51,.72); }
 .capa-meta { grid-row: 3; align-self: end; position: relative; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2) var(--e5); padding-block: var(--e5); font-size: 13px; color: var(--texto-2); }
+@media (min-width: 961px) {
+  .lateral { background: rgb(255 255 255 / .8); -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%); }
+}
 @media (max-width: 960px) {
+  .capa-fundo { left: 0; }
   .capa { min-height: calc(100vh - 56px); min-height: calc(100dvh - 56px); }
   .capa-faixa { margin-inline: var(--e3); padding-block: var(--e5); }
 }
