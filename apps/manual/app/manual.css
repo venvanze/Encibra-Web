@@ -20,10 +20,10 @@
   --ouro-claro: var(--cor-ouro-50);
   --basico: var(--cor-basico);
   --linha: var(--cor-neutro-100);
-  /* Bordas (Rodrigo, 23/10/2026): sempre internas (box-shadow inset, sem mudar o tamanho), branco a 16%;
+  /* Bordas (Rodrigo, 23/10/2026): sempre internas (box-shadow inset, sem mudar o tamanho), branco a 8%;
      sobre fundo claro, o equivalente em preto. --borda troca sozinha nas áreas escuras. */
-  --borda: rgb(0 0 0 / .16);
-  --borda-clara: rgb(255 255 255 / .16);
+  --borda: rgb(0 0 0 / .08);
+  --borda-clara: rgb(255 255 255 / .08);
   --erro: var(--cor-erro);
   --display: var(--fonte-display);
   --corpo: var(--fonte-corpo);
