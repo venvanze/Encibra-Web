@@ -658,8 +658,8 @@ export default function Manual() {
         </div>
 
         <div className="sub">
-          <Rotulo>Para LLMs</Rotulo>
-          <p className="claro">O manual inteiro em Markdown está em <a href="/llms-full.txt">/llms-full.txt</a>, com índice em <a href="/llms.txt">/llms.txt</a>. Cada capítulo também tem o botão “Copiar para LLM”, que copia só aquele trecho.</p>
+          <Rotulo>Para IA</Rotulo>
+          <p className="claro">O manual inteiro em Markdown está em <a href="/llms-full.txt">/llms-full.txt</a>, com índice em <a href="/llms.txt">/llms.txt</a>. Cada capítulo também tem o botão “Copiar para IA”, que copia só aquele trecho.</p>
         </div>
 
         <div className="sub">

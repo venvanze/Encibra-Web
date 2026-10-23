@@ -1,4 +1,4 @@
-// Versão em Markdown de cada seção, para o botão "Copiar para LLM" e para /llms.txt e /llms-full.txt.
+// Versão em Markdown de cada seção, para o botão "Copiar para IA" e para /llms.txt e /llms-full.txt.
 // Monta o texto a partir dos mesmos dados da página, para as duas versões não divergirem.
 import { contraste, cor, tokens } from "@encibra/marca";
 import * as d from "./dados";

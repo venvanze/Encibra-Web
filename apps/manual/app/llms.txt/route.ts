@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 export function GET() {
   const corpo = `${cabecalho}
 
-O manual inteiro em Markdown está em /llms-full.txt. Cada seção da página também tem um botão "Copiar para LLM".
+O manual inteiro em Markdown está em /llms-full.txt. Cada seção da página também tem um botão "Copiar para IA".
 
 ## Manual
 

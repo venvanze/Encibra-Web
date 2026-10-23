@@ -223,7 +223,7 @@ footer.fim .fim-privacidade { flex-basis: 100%; }
   .conteudo .wrap { padding-left: var(--e5); padding-right: max(var(--e5), env(safe-area-inset-right, 0px)); }
 }
 
-/* Ações do capítulo: botão Copiar para LLM */
+/* Ações do capítulo: botão Copiar para IA */
 .cap-acoes { grid-area: acoes; }
 .copiar-llm { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 6px 14px; border: 1px solid var(--linha); border-radius: 999px; background: var(--basico); color: var(--chumbo); font: 500 13px/1 var(--corpo); cursor: pointer; }
 .copiar-llm svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; }

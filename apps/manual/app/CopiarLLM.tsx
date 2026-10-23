@@ -10,14 +10,14 @@ export function CopiarLLM({ texto, titulo }: { texto: string; titulo: string }) 
   async function copiar() {
     const ok = await copiarTexto(texto);
     setEstado(ok ? "ok" : "erro");
-    avisar(ok ? `Seção ${titulo} copiada em Markdown. Cole no chat da sua LLM.` : "Não foi possível copiar. Tente de novo.", [], ok ? "llm" : "erro");
+    avisar(ok ? `Seção ${titulo} copiada em Markdown. Cole no chat da sua IA.` : "Não foi possível copiar. Tente de novo.", [], ok ? "llm" : "erro");
     setTimeout(() => setEstado(""), 2400);
   }
 
   return (
-    <button type="button" className="copiar-llm" onClick={copiar} aria-label={`Copiar a seção ${titulo} em Markdown para LLM`}>
+    <button type="button" className="copiar-llm" onClick={copiar} aria-label={`Copiar a seção ${titulo} em Markdown para IA`}>
       <IconeCopiar />
-      <span>{estado === "ok" ? "Copiado" : estado === "erro" ? "Não foi possível copiar" : "Copiar para LLM"}</span>
+      <span>{estado === "ok" ? "Copiado" : estado === "erro" ? "Não foi possível copiar" : "Copiar para IA"}</span>
     </button>
   );
 }
